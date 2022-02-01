@@ -11,8 +11,8 @@ using OnePageNet.App.Data;
 namespace OnePageNet.App.Migrations
 {
     [DbContext(typeof(OnePageNetDbContext))]
-    [Migration("20220131204930_Initial")]
-    partial class Initial
+    [Migration("20220201085040_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
