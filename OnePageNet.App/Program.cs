@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data;
-using OnePageNet.App.Models;
+using OnePageNet.App.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<OnePageNetDbContext>(options =>
+    options.UseSqlServer(connectionString));builder.Services.AddDbContext<OnePageNetDbContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
