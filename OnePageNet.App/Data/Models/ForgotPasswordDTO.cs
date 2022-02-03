@@ -2,11 +2,10 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class RegisterUserModel
+    public class ForgotPasswordDTO
     {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        public int MyProperty { get; set; }
     }
 }

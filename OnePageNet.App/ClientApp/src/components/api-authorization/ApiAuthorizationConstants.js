@@ -19,7 +19,7 @@ export const LoginActions = {
   Register: 'register'
 };
 
-const prefix = '/Account';
+const prefix = 'Account';
 
 export const ApplicationPaths = {
   DefaultLoginRedirectPath: '/',
@@ -32,6 +32,6 @@ export const ApplicationPaths = {
   Profile: `${prefix}/${LoginActions.Profile}`,
   LogOut: `${prefix}/${LogoutActions.Logout}`,
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
-  IdentityRegisterPath: 'Identity/Account/Register',
+  IdentityRegisterPath: `${prefix}/Register`,
   IdentityManagePath: 'Identity/Account/Manage'
 };

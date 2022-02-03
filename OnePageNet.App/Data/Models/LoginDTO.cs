@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class LoginViewModel
+    public class LoginDTO
     {
         [Required]
         [EmailAddress]

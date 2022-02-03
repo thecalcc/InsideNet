@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class ChangePasswordViewModel
+    public class ChangePasswordDTO
     {
         [Required]
         [DataType(DataType.Password)]

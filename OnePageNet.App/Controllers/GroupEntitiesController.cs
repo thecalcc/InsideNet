@@ -44,7 +44,6 @@ namespace OnePageNet.App.Controllers
         }
 
         // PUT: api/GroupEntities/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGroupEntity(int id, GroupEntity groupEntity)
         {
@@ -75,7 +74,6 @@ namespace OnePageNet.App.Controllers
         }
 
         // POST: api/GroupEntities
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<GroupEntity>> PostGroupEntity(GroupEntity groupEntity)
         {

@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class RegisterViewModel
+    public class RegisterDTO
     {
         [Required]
         [EmailAddress]

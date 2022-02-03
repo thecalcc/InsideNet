@@ -1,31 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnePageNet.App.Data.Models.PostDTOs;
 
 namespace OnePageNet.App.Controllers
 {
-    public class HomeController : Controller
+    public class PostController : Controller
     {
-        // GET: HomeController
-        public ActionResult Index()
+        // TODO
+
+        [HttpGet]
+        public ActionResult Details([FromRoute] string id)
         {
             return View();
         }
 
-        // GET: HomeController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: HomeController/Create
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: HomeController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create([FromBody] CreatePostDTO createPostDto)
+        {
+            //TODO Business Logic
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult Edit([FromRoute] string id)
+        {
+            //TODO Business Logic
+            return View();
+        }
+
+        [HttpPost] // TODO fix this - we have to make a put request for edit, if not whichever property we submit with null value will update with null value
+        public ActionResult Edit([FromBody] EditPostDTO editPostDTO)
         {
             try
             {
@@ -37,37 +53,14 @@ namespace OnePageNet.App.Controllers
             }
         }
 
-        // GET: HomeController/Edit/5
-        public ActionResult Edit(int id)
-        {
+        public ActionResult Delete([FromRoute] string id)
+        {            
+            //TODO Business Logic
             return View();
         }
 
-        // POST: HomeController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: HomeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: HomeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult DeletePost(string id)
         {
             try
             {
@@ -79,4 +72,5 @@ namespace OnePageNet.App.Controllers
             }
         }
     }
+}
 }
