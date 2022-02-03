@@ -2,15 +2,13 @@
 
 namespace OnePageNet.App.Data.Models.PostDTOs
 {
-    public class PostDTO : BaseDTO
+    public class PostDto : BaseDto
     {
         [Required]
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual List<CommentDTO> Comments { get; set; }
-        public UserReactionDTO Reaction { get; set; }
-        // TODO Add last two fields to DB
+        public virtual List<CommentDto> Comments { get; set; }
+        public UserReactionDto Reaction { get; set; }
         public string Text { get; set; }
-        public string MediaURI { get; set; }
-
+        public string MediaUri { get; set; }
     }
 }

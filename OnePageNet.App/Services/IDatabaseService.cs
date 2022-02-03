@@ -1,15 +1,15 @@
-﻿using OnePageNet.App.Data.Models;
+﻿using OnePageNet.App.Data.Entities;
 
 namespace OnePageNet.App.Services
 {
-    public interface IDatabaseService
+    public interface IDatabaseService<T> where T : BaseEntity
     {
-        Task<IEnumerable<T>> ToListAsync<T>() where T : BaseEntity;
-        Task<T> FindByPublicId<T>(string publicId) where T : BaseEntity;
-        void Update<T>(T entity) where T : BaseEntity;
+        Task<IEnumerable<T>> ToListAsync();
+        Task<T> FindByPublicId(string publicId);
+        void Update(T entity);
         Task SaveChangesAsync();
-        Task AddAsync<T>(T entity) where T : BaseEntity;
-        void Remove<T>(T entity) where T : BaseEntity;
-        bool Exists<T>(string publicId) where T : BaseEntity;
+        void AddAsync(T entity);
+        void Remove(T entity);
+        bool Exists(string publicId);
     }
 }

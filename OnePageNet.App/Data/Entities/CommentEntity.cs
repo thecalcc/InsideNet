@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OnePageNet.App.Data.Models;
 
-namespace OnePageNet.App.Data.Models
+namespace OnePageNet.App.Data.Entities
 {
     public class CommentEntity : BaseEntity
     {
@@ -8,7 +9,7 @@ namespace OnePageNet.App.Data.Models
         public string Content { get; set; }
 
         [Required]
-        public string MediaURI { get; set; }
+        public string MediaUri { get; set; }
 
         [Required]
         public virtual ApplicationUser ApplicationUser { get; set; }

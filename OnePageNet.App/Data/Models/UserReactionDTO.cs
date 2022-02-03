@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class UserReactionDTO
+    public class UserReactionDto
     {
         public ReactionEntity Reaction { get; set; }
         public ApplicationUser ApplicationUser { get; set; }

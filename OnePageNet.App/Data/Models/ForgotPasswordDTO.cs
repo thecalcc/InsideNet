@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class ForgotPasswordDTO
+    public class ForgotPasswordDto
     {
         [Required]
         [EmailAddress]

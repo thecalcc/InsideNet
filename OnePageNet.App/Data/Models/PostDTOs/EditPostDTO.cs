@@ -2,13 +2,13 @@
 
 namespace OnePageNet.App.Data.Models.PostDTOs
 {
-    public class EditPostDTO
+    public class EditPostDto
     {
         [Required]
         public string PublicId { get; set; }
         [Required]
         public ApplicationUser ApplicationUser { get; set; }
         public string Text { get; set; }
-        public string MediaURI { get; set; }
+        public string MediaUri { get; set; }
     }
 }

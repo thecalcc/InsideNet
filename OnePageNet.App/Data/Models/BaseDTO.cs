@@ -1,8 +1,8 @@
 ﻿namespace OnePageNet.App.Data.Models
 {
-    public class BaseDTO
+    public class BaseDto
     {
-        public BaseDTO()
+        public BaseDto()
         {
             PublicId = Guid.NewGuid().ToString();
         }
