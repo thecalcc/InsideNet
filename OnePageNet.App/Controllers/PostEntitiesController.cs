@@ -47,7 +47,7 @@ namespace OnePageNet.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDTO>> GetPostEntity(string publicId)
         {
-            var postEntity = await databaseService.FindByPublicId(_context.PostEntities, publicId);
+            var postEntity = await databaseService.FindByPublicId<PostEntity>(publicId);
 
             if (postEntity == null)
             {

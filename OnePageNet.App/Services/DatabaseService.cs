@@ -1,13 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.Data;
 using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Services
 {
     public class DatabaseService : IDatabaseService
     {
-        public async Task<T> FindByPublicId<T>(DbSet<T> dbSet, string publicId) where T : BaseEntity
+        private readonly ApiAuthorizationDbContext<ApplicationUser> dbContext;
+
+        public DatabaseService(ApiAuthorizationDbContext<ApplicationUser> dbContext)
         {
-            return await dbSet.FirstOrDefaultAsync(x => x.PublicId == publicId);
+            this.dbContext = dbContext;
+        }
+
+        public async Task<T> FindByPublicId<T>(string publicId) where T : BaseEntity
+        {
+            return await dbContext.Set<T>().FirstOrDefaultAsync(x => x.PublicId == publicId);
         }
     }
 }
