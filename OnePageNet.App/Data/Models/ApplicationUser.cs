@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OnePageNet.App.Models;
+namespace OnePageNet.App.Data.Models;
 
 public class ApplicationUser : IdentityUser
 {

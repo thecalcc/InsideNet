@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
-using OnePageNet.App.Models;
 
 namespace OnePageNet.App.Data;
 
