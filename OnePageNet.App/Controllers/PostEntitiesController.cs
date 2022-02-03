@@ -13,16 +13,13 @@ namespace OnePageNet.App.Controllers
     public class PostEntitiesController : ControllerBase
     {
         // TODO 
-        private readonly OnePageNetDbContext _context;
         private readonly IDatabaseService databaseService;
         private readonly IMapper mapper;
 
         public PostEntitiesController(
-            OnePageNetDbContext context,
             IDatabaseService databaseService,
             IMapper mapper)
         {
-            _context = context;
             this.databaseService = databaseService;
             this.mapper = mapper;
         }
@@ -31,9 +28,9 @@ namespace OnePageNet.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetPostEntities()
         {
-            var entities = await _context.PostEntities.ToListAsync();
+           var entities = databaseService.ToListAsync<PostEntity>();
 
-            var dtos = mapper.Map<IEnumerable<PostDTO>>(entities);
+           var dtos = mapper.Map<IEnumerable<PostDTO>>(entities);
 
             if (dtos.Count() <= 0 || dtos?.Count() == null)
             {
@@ -68,15 +65,15 @@ namespace OnePageNet.App.Controllers
 
             var postEntity = mapper.Map<PostEntity>(postDto);
 
-            _context.Entry(postEntity).State = EntityState.Modified;
+            databaseService.Update(postEntity);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await databaseService.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PostEntityExists(publicId))
+                if (!databaseService.Exists<PostEntity>(publicId))
                 {
                     return NotFound();
                 }
@@ -95,8 +92,8 @@ namespace OnePageNet.App.Controllers
         {
             var postEntity = mapper.Map<PostEntity>(postDto);
 
-            _context.PostEntities.Add(postEntity);
-            await _context.SaveChangesAsync();
+            databaseService.AddAsync(postEntity);
+            await databaseService.SaveChangesAsync();
 
             return CreatedAtAction("GetPostEntity", new { id = postDto.PublicId }, postDto);
         }
@@ -114,15 +111,10 @@ namespace OnePageNet.App.Controllers
                 return NotFound();
             }
 
-            _context.PostEntities.Remove(postEntity);
-            await _context.SaveChangesAsync();
+            databaseService.Remove(postEntity);
+            await databaseService.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool PostEntityExists(string publicId)
-        {
-            return _context.PostEntities.Any(e => e.PublicId == publicId);
         }
     }
 }
