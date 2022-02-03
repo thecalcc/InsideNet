@@ -1,7 +1,10 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Models;
+using OnePageNet.App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +25,16 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
+
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingProfile());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 

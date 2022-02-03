@@ -6,6 +6,8 @@ namespace OnePageNet.App.Data.Models
     {
         public int Id { get; set; }
 
+        public string PublicId { get; set; }
+
         [Required]
         public DateTime DeletedAt { get; set; }
 
