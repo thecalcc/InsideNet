@@ -12,7 +12,7 @@ namespace OnePageNet.App.Data.Models
         public string MediaUri { get; set; }
 
         [Required]
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
 
         [Required]
         public virtual PostEntity Post { get; set; }

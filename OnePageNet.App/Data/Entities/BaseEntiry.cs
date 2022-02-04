@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Data.Entities
 {

@@ -5,9 +5,9 @@ namespace OnePageNet.App.Data.Models.PostDTOs
     public class PostDto : BaseDto
     {
         [Required]
-        public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual List<CommentDto> Comments { get; set; }
-        public UserReactionDto Reaction { get; set; }
+        public string UserId { get; set; }
+        public List<string> CommentsIds { get; set; }
+        public string ReactionId { get; set; }
         public string Text { get; set; }
         public string MediaUri { get; set; }
     }

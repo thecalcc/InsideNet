@@ -36,12 +36,10 @@ namespace OnePageNet.App.Controllers
                     _logger.LogInformation(1, "User logged in");
                     return Ok();
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     
-                    return BadRequest(loginDto);
-                }
+                return BadRequest(loginDto);
             }
 
             return UnprocessableEntity(loginDto);

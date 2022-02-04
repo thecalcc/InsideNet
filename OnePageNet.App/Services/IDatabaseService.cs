@@ -1,4 +1,5 @@
 ﻿using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Services
 {
@@ -8,7 +9,7 @@ namespace OnePageNet.App.Services
         Task<T> FindByPublicId(string publicId);
         void Update(T entity);
         Task SaveChangesAsync();
-        void AddAsync(T entity);
+        Task AddAsync(T entity);
         void Remove(T entity);
         bool Exists(string publicId);
     }

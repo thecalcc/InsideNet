@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Data.Models.PostDTOs;
 
 namespace OnePageNet.App.AutoMapper
@@ -9,7 +10,8 @@ namespace OnePageNet.App.AutoMapper
         public MappingProfile()
         {
             CreateMap<PostEntity, PostDto>();
-            CreateMap<PostDto, PostEntity>();
+            CreateMap<PostDto, PostEntity>()
+                .ForPath(x => x.ApplicationUser.Id, x => x.MapFrom(z => z.UserId));
         }
     }
 }

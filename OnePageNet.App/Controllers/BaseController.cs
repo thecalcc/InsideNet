@@ -2,17 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services;
 
 namespace OnePageNet.App.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    public class BaseController<T> : ControllerBase where T : BaseEntity
+    public abstract class BaseController<T, TG> : ControllerBase 
+        where T : BaseEntity
+        where TG : BaseDto
     {
         private readonly IDatabaseService<T> _databaseService;
         private readonly IMapper _mapper;
 
-        public BaseController(
+        protected BaseController(
             IDatabaseService<T> databaseService,
             IMapper mapper)
         {
@@ -21,22 +25,23 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<T>>> GetAll()
+        [Route("get-all")]
+        public async Task<ActionResult<IEnumerable<TG>>> GetAll()
         {
            var entities = await _databaseService.ToListAsync();
 
-            var dtos = (List<T>) _mapper.Map<IEnumerable<T>>(entities);
+            var dtos = (List<TG>) _mapper.Map<IEnumerable<TG>>(entities);
             
             if (!dtos.Any() || dtos?.Count == null)
             {
-                return NotFound();
+                return NotFound($"There are no such entities in the database.");
             }
 
             return Ok(dtos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<T>> Get(string publicId)
+        [HttpGet("get/{id}")]
+        public async Task<ActionResult<TG>> Get(string publicId)
         {
             var entity = await _databaseService.FindByPublicId(publicId);
             // TODO - Fix
@@ -45,11 +50,11 @@ namespace OnePageNet.App.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<T>(entity));
+            return Ok(_mapper.Map<TG>(entity));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEntity(string publicId, T dto)
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateEntity(string publicId, TG dto)
         {
             if (publicId != dto.PublicId)
             {
@@ -58,7 +63,7 @@ namespace OnePageNet.App.Controllers
 
             var entity = _mapper.Map<T>(dto);
 
-            _databaseService.Update(dto);
+            _databaseService.Update(entity);
 
             try
             {
@@ -76,18 +81,18 @@ namespace OnePageNet.App.Controllers
             return NoContent();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<T>> Create(T dto)
+        [HttpPost("create")]
+        public async Task<ActionResult<TG>> Create([FromBody]TG dto)
         {
             var entity = _mapper.Map<T>(dto);
-
-            _databaseService.AddAsync(dto);
-            await _databaseService.SaveChangesAsync();
+            
+            await _databaseService.AddAsync(entity);
+            
             // TODO Fix - we should only return data and not view since we are using React as front-end
             return CreatedAtAction("Get", new { id = dto.PublicId }, dto);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{publicId}")]
         public async Task<IActionResult> Delete(string publicId)
         {
 

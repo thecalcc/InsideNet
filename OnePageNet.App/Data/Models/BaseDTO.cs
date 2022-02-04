@@ -2,6 +2,7 @@
 {
     public class BaseDto
     {
+        // TODO
         public BaseDto()
         {
             PublicId = Guid.NewGuid().ToString();

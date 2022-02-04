@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+﻿using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 
@@ -7,9 +8,9 @@ namespace OnePageNet.App.Services
 {
     public class DatabaseService<T> : IDatabaseService<T> where T : BaseEntity
     {
-        private readonly ApiAuthorizationDbContext<ApplicationUser> _dbContext;
+        private readonly OnePageNetDbContext _dbContext;
 
-        public DatabaseService(ApiAuthorizationDbContext<ApplicationUser> dbContext)
+        public DatabaseService(OnePageNetDbContext dbContext)
         {
             this._dbContext = dbContext;
         }
@@ -33,18 +34,20 @@ namespace OnePageNet.App.Services
         {
             await _dbContext.SaveChangesAsync();
         }
-        
-        public async void AddAsync(T entity)
+
+        public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
+            
+            await _dbContext.SaveChangesAsync();
         }
-        
+
         public void Remove(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
         }
 
-        public bool Exists(string publicId)        
+        public bool Exists(string publicId)
         {
             return _dbContext.Set<T>().Any(e => e.PublicId == publicId);
         }

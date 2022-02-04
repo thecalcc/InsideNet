@@ -1,4 +1,5 @@
-﻿using OnePageNet.App.Data.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using OnePageNet.App.Data.Enums;
 using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Data.Entities
