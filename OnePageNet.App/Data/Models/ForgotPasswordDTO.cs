@@ -1,11 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OnePageNet.App.Data.Models
+namespace OnePageNet.App.Data.Models;
+
+public class ForgotPasswordDto
 {
-    public class ForgotPasswordDto
-    {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-    }
+    [Required] [EmailAddress] public string Email { get; set; }
 }

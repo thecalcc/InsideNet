@@ -10,18 +10,18 @@
   "profiles": {
     "OnePageNet.App": {
       "commandName": "Project",
-//      "launchBrowser": true,
+      //      "launchBrowser": true,
       "applicationUrl": "https://localhost:7231;http://localhost:5231",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
         //"ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     },
     "IIS Express": {
       "commandName": "IISExpress",
-//      "launchBrowser": true,
+      //      "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Development"
         //"ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     }

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 export class LoginComponent extends Component {
-  static displayName = LoginComponent.name;
+    static displayName = LoginComponent.name;
 
-  render () {
-    return (
-        // TODO Add HTML BS
-        <div></div>
-    );
-  }
+    render() {
+        return (
+            // TODO Add HTML BS
+            <div></div>
+        );
+    }
 }

@@ -1,5 +1,5 @@
-import { UserManager, WebStorageStateStore } from 'oidc-client';
-import { ApplicationPaths, ApplicationName } from './ApiAuthorizationConstants';
+import {UserManager, WebStorageStateStore} from 'oidc-client';
+import {ApplicationName, ApplicationPaths} from './ApiAuthorizationConstants';
 
 export class AuthorizeService {
     _callbacks = [];
@@ -10,6 +10,10 @@ export class AuthorizeService {
     // By default pop ups are disabled because they don't work properly on Edge.
     // If you want to enable pop up authentication simply set this flag to false.
     _popUpDisabled = true;
+
+    static get instance() {
+        return authService
+    }
 
     async isAuthenticated() {
         const user = await this.getUser();
@@ -26,12 +30,6 @@ export class AuthorizeService {
         return user && user.profile;
     }
 
-    async getAccessToken() {
-        await this.ensureUserManagerInitialized();
-        const user = await this.userManager.getUser();
-        return user && user.access_token;
-    }
-
     // We try to authenticate the user in three different ways:
     // 1) We try to see if we can authenticate the user silently. This happens
     //    when the user is already logged in on the IdP and is done using a hidden iframe
@@ -39,6 +37,13 @@ export class AuthorizeService {
     // 2) We try to authenticate the user using a PopUp Window. This might fail if there is a
     //    Pop-Up blocker or the user has disabled PopUps.
     // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
+
+    async getAccessToken() {
+        await this.ensureUserManagerInitialized();
+        const user = await this.userManager.getUser();
+        return user && user.access_token;
+    }
+
     //    redirect flow.
     async signIn(state) {
         await this.ensureUserManagerInitialized();
@@ -78,6 +83,11 @@ export class AuthorizeService {
         }
     }
 
+    // We try to sign out the user in two different ways:
+    // 1) We try to do a sign-out using a PopUp Window. This might fail if there is a
+    //    Pop-Up blocker or the user has disabled PopUps.
+    // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
+
     async completeSignIn(url) {
         try {
             await this.ensureUserManagerInitialized();
@@ -90,10 +100,6 @@ export class AuthorizeService {
         }
     }
 
-    // We try to sign out the user in two different ways:
-    // 1) We try to do a sign-out using a PopUp Window. This might fail if there is a
-    //    Pop-Up blocker or the user has disabled PopUps.
-    // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
     //    post logout redirect flow.
     async signOut(state) {
         await this.ensureUserManagerInitialized();
@@ -136,13 +142,13 @@ export class AuthorizeService {
     }
 
     subscribe(callback) {
-        this._callbacks.push({ callback, subscription: this._nextSubscriptionId++ });
+        this._callbacks.push({callback, subscription: this._nextSubscriptionId++});
         return this._nextSubscriptionId - 1;
     }
 
     unsubscribe(subscriptionId) {
         const subscriptionIndex = this._callbacks
-            .map((element, index) => element.subscription === subscriptionId ? { found: true, index } : { found: false })
+            .map((element, index) => element.subscription === subscriptionId ? {found: true, index} : {found: false})
             .filter(element => element.found === true);
         if (subscriptionIndex.length !== 1) {
             throw new Error(`Found an invalid number of subscriptions ${subscriptionIndex.length}`);
@@ -159,19 +165,19 @@ export class AuthorizeService {
     }
 
     createArguments(state) {
-        return { useReplaceToNavigate: true, data: state };
+        return {useReplaceToNavigate: true, data: state};
     }
 
     error(message) {
-        return { status: AuthenticationResultStatus.Fail, message };
+        return {status: AuthenticationResultStatus.Fail, message};
     }
 
     success(state) {
-        return { status: AuthenticationResultStatus.Success, state };
+        return {status: AuthenticationResultStatus.Success, state};
     }
 
     redirect() {
-        return { status: AuthenticationResultStatus.Redirect };
+        return {status: AuthenticationResultStatus.Redirect};
     }
 
     async ensureUserManagerInitialized() {
@@ -198,8 +204,6 @@ export class AuthorizeService {
             this.updateState(undefined);
         });
     }
-
-    static get instance() { return authService }
 }
 
 const authService = new AuthorizeService();

@@ -7,7 +7,7 @@ namespace OnePageNet.App.Controllers;
 
 public class UserGroupsController : BaseController<UserGroupEntity, UserGroupDto>
 {
-    public UserGroupsController(IDatabaseService<UserGroupEntity> databaseService, IMapper mapper) 
+    public UserGroupsController(IDatabaseService<UserGroupEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

@@ -1,11 +1,9 @@
 ﻿using OnePageNet.App.Data.Enums;
-using OnePageNet.App.Data.Models;
 
-namespace OnePageNet.App.Data.Entities
+namespace OnePageNet.App.Data.Entities;
+
+public class UserReactionEntity : BaseEntity
 {
-    public class UserReactionEntity : BaseEntity
-    {
-        public virtual ReactionEntity Reaction { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
-    }
+    public virtual ReactionEntity Reaction { get; set; }
+    public virtual ApplicationUser ApplicationUser { get; set; }
 }

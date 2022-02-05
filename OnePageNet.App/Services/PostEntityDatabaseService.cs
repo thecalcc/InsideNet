@@ -13,50 +13,14 @@ public class PostEntityDatabaseService : DatabaseService<PostEntity>, IDatabaseS
         _dbContext = dbContext;
     }
 
-    public async Task<bool>  AttachUser(string id, PostEntity? entity = null)
+    public async Task<bool> AttachUser(PostEntity entity)
     {
-        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
-        
-        if (user?.Id != id) return false;
-        
-        entity.Poster = user;
+        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == entity.PosterId);
+    
+        if (user?.Id != entity.PosterId) return false;
+    
+        _dbContext.Attach(user);
+    
         return true;
     }
-    
-    // public Task<IEnumerable<PostEntity>> ToListAsync()
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public Task<PostEntity> FindByPublicId(string publicId)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    //
-    //
-    // public void Update(PostEntity entity)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public Task SaveChangesAsync()
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public Task AddAsync(PostEntity entity)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public void Remove(PostEntity entity)
-    // {
-    //     throw new NotImplementedException();
-    // }
-    //
-    // public bool Exists(string publicId)
-    // {
-    //     throw new NotImplementedException();
-    // }
 }

@@ -7,7 +7,7 @@ namespace OnePageNet.App.Controllers;
 
 public class UserReactionsController : BaseController<UserReactionEntity, UserReactionDto>
 {
-    public UserReactionsController(IDatabaseService<UserReactionEntity> databaseService, IMapper mapper) 
+    public UserReactionsController(IDatabaseService<UserReactionEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

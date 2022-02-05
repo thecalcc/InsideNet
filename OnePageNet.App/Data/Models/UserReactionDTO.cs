@@ -1,10 +1,10 @@
-﻿using OnePageNet.App.Data.Enums;
+﻿using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Enums;
 
-namespace OnePageNet.App.Data.Models
+namespace OnePageNet.App.Data.Models;
+
+public class UserReactionDto : BaseDTO
 {
-    public class UserReactionDto : BaseDto
-    {
-        public ReactionEntity Reaction { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
-    }
+    public ReactionEntity Reaction { get; set; }
+    public ApplicationUser ApplicationUser { get; set; }
 }
