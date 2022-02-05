@@ -1,6 +1,4 @@
-﻿using OnePageNet.App.Data.Entities;
-
-namespace OnePageNet.App.Data.Models;
+﻿namespace OnePageNet.App.Data.Models;
 
 public class GroupDto : BaseDto
 {

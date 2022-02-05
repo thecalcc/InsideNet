@@ -2,12 +2,7 @@
 {
     public class BaseDto
     {
-        // TODO
-        public BaseDto()
-        {
-            PublicId = Guid.NewGuid().ToString();
-        }
-
+        public string? ApplicationUserId { get; set; }
         public string PublicId { get; set; }
 
         public DateTime DeletedAt { get; set; }

@@ -1,10 +1,10 @@
-﻿namespace OnePageNet.App.Data.Enums
+﻿using OnePageNet.App.Data.Entities;
+
+namespace OnePageNet.App.Data.Enums
 {
-    public enum ReactionEntity
+    public class ReactionEntity : BaseEntity
     {
-        Like,
-        Love,
-        Wow,
-        Lol
+        public string Name { get; set; }
+        public ICollection<UserReactionEntity> Users { get; set; }
     }
 }

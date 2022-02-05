@@ -1,8 +1,6 @@
-﻿using Microsoft.CodeAnalysis.VisualBasic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Services
 {
@@ -20,9 +18,18 @@ namespace OnePageNet.App.Services
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public virtual async Task<bool> AttachUser(string id, T? entity = null)
+        {
+            var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id);
+            if (user?.Id != id) return false;
+
+            _dbContext.Attach(user);
+            return true;
+        }
+
         public async Task<T> FindByPublicId(string? publicId)
         {
-            return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.PublicId == publicId);
+            return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id.ToString() == publicId);
         }
 
         public void Update(T entity)
@@ -38,7 +45,7 @@ namespace OnePageNet.App.Services
         public async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
-            
+
             await _dbContext.SaveChangesAsync();
         }
 
@@ -49,7 +56,7 @@ namespace OnePageNet.App.Services
 
         public bool Exists(string publicId)
         {
-            return _dbContext.Set<T>().Any(e => e.PublicId == publicId);
+            return _dbContext.Set<T>().Any(e => e.Id.ToString() == publicId);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data.Entities;
@@ -85,6 +86,12 @@ namespace OnePageNet.App.Controllers
         public async Task<ActionResult<TG>> Create([FromBody]TG dto)
         {
             var entity = _mapper.Map<T>(dto);
+            if (dto.ApplicationUserId != null)
+            {
+                var isAttached = await _databaseService.AttachUser(dto.ApplicationUserId, entity);
+                
+                if (isAttached) await _databaseService.AddAsync(entity);
+            }            
             
             await _databaseService.AddAsync(entity);
             

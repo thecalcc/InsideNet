@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models.PostDTOs;
 using OnePageNet.App.Services;

@@ -5,7 +5,6 @@ using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
-using OnePageNet.App.Data.Models.PostDTOs;
 using OnePageNet.App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +27,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
 builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
 
 var mapperConfig = new MapperConfiguration(mc =>
@@ -38,7 +38,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+builder.Services.AddMvc();
 
 var app = builder.Build();
 
@@ -67,7 +67,9 @@ app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();
 
-app.UseMvc();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
 

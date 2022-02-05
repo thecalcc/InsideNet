@@ -1,6 +1,5 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.CodeAnalysis.VisualBasic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnePageNet.App.Data.Entities;
@@ -14,6 +13,11 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
         : base(options, operationalStoreOptions)
     {
 
+    }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<CommentEntity> CommentEntities { get; set; }

@@ -6,7 +6,8 @@ using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Controllers
 {
-    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -23,8 +24,7 @@ namespace OnePageNet.App.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             if (ModelState.IsValid)
@@ -45,9 +45,7 @@ namespace OnePageNet.App.Controllers
             return UnprocessableEntity(loginDto);
         }
 
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost("register")]
         public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
         {
             if (ModelState.IsValid)
@@ -69,9 +67,7 @@ namespace OnePageNet.App.Controllers
             return BadRequest("You did not register successfully");
         }
 
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost("logoff")]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -79,12 +75,8 @@ namespace OnePageNet.App.Controllers
             return Ok();
         }
 
-        // GET: /Account/ConfirmEmail
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(
-            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Disallow)]string userId,
-            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Disallow)] string code)
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
             var user = await _userManager.FindByIdAsync(userId);
             
@@ -94,7 +86,7 @@ namespace OnePageNet.App.Controllers
             }
             
             var result = await _userManager.ConfirmEmailAsync(user, code);
-
+        
             if (result.Succeeded)
             {
                 return Ok();
@@ -103,9 +95,7 @@ namespace OnePageNet.App.Controllers
             return BadRequest("Did not confirm email");
         }
 
-        // POST: /Account/ForgotPassword
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost("forgot-password")]
         public async Task<ActionResult<ForgotPasswordDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             if (ModelState.IsValid)
@@ -123,9 +113,7 @@ namespace OnePageNet.App.Controllers
             return forgotPasswordDto;
         }
 
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             if (!ModelState.IsValid)

@@ -7,6 +7,7 @@ namespace OnePageNet.App.Services
     {
         Task<IEnumerable<T>> ToListAsync();
         Task<T> FindByPublicId(string publicId);
+        Task<bool> AttachUser(string id, T entity);
         void Update(T entity);
         Task SaveChangesAsync();
         Task AddAsync(T entity);

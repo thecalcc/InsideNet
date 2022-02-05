@@ -1,18 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using OnePageNet.App.Data.Models;
+﻿using MessagePack;
 
 namespace OnePageNet.App.Data.Entities
 {
-    public abstract class BaseEntity
+    public class BaseEntity
     {
-        public int Id { get; set; }
-
-        public string? PublicId { get; set; }
-
-        [Required]
+        public BaseEntity()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+        public string Id { get; set; }
         public DateTime DeletedAt { get; set; }
-
-        [Required]
         public DateTime CreatedAt { get; set; }
     }
 }
