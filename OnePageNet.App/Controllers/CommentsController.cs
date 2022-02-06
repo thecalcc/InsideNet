@@ -8,9 +8,9 @@ namespace OnePageNet.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostsController : BaseController<PostEntity, PostDto>
+public class CommentsController : BaseController<CommentEntity, CommentDto>
 {
-    public PostsController(IDatabaseService<PostEntity> databaseService, IMapper mapper)
+    public CommentsController(IDatabaseService<CommentEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

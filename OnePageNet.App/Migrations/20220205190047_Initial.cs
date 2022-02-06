@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace OnePageNet.App.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,6 +68,21 @@ namespace OnePageNet.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GroupEntities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupEntities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Keys",
                 columns: table => new
                 {
@@ -102,35 +118,6 @@ namespace OnePageNet.App.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserGroupEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserGroupEntities", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRelationEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserRelationship = table.Column<int>(type: "INTEGER", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRelationEntities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,129 +227,14 @@ namespace OnePageNet.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserReactionEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Reaction = table.Column<int>(type: "INTEGER", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserReactionEntities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserReactionEntities_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserUserGroupEntity",
-                columns: table => new
-                {
-                    GroupsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsersId = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserUserGroupEntity", x => new { x.GroupsId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserGroupEntity_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserGroupEntity_UserGroupEntities_GroupsId",
-                        column: x => x.GroupsId,
-                        principalTable: "UserGroupEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GroupEntities",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserGroupId = table.Column<int>(type: "INTEGER", nullable: false),
-                    MediaURI = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupEntities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_GroupEntities_UserGroupEntities_UserGroupId",
-                        column: x => x.UserGroupId,
-                        principalTable: "UserGroupEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserUserRelationEntity",
-                columns: table => new
-                {
-                    CurrentRelationshipsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CurrentUserId = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserUserRelationEntity", x => new { x.CurrentRelationshipsId, x.CurrentUserId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserRelationEntity_AspNetUsers_CurrentUserId",
-                        column: x => x.CurrentUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserRelationEntity_UserRelationEntities_CurrentRelationshipsId",
-                        column: x => x.CurrentRelationshipsId,
-                        principalTable: "UserRelationEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ApplicationUserUserRelationEntity1",
-                columns: table => new
-                {
-                    TargetRelationshipsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TargetUserId = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ApplicationUserUserRelationEntity1", x => new { x.TargetRelationshipsId, x.TargetUserId });
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserRelationEntity1_AspNetUsers_TargetUserId",
-                        column: x => x.TargetUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ApplicationUserUserRelationEntity1_UserRelationEntities_TargetRelationshipsId",
-                        column: x => x.TargetRelationshipsId,
-                        principalTable: "UserRelationEntities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PostEntities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    ReactionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    PosterId = table.Column<string>(type: "TEXT", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -373,12 +245,33 @@ namespace OnePageNet.App.Migrations
                         name: "FK_PostEntities_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRelationEntities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserRelationship = table.Column<int>(type: "INTEGER", nullable: false),
+                    CurrentUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    TargetUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRelationEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRelationEntities_AspNetUsers_CurrentUserId",
+                        column: x => x.CurrentUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PostEntities_UserReactionEntities_ReactionId",
-                        column: x => x.ReactionId,
-                        principalTable: "UserReactionEntities",
+                        name: "FK_UserRelationEntities_AspNetUsers_TargetUserId",
+                        column: x => x.TargetUserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -387,14 +280,13 @@ namespace OnePageNet.App.Migrations
                 name: "MessageEntities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Read = table.Column<bool>(type: "INTEGER", nullable: false),
                     Delivered = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SenderId = table.Column<string>(type: "TEXT", nullable: true),
-                    DestinationId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SenderId = table.Column<string>(type: "TEXT", nullable: false),
+                    DestinationId = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaURI = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -405,7 +297,8 @@ namespace OnePageNet.App.Migrations
                         name: "FK_MessageEntities_AspNetUsers_SenderId",
                         column: x => x.SenderId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MessageEntities_GroupEntities_DestinationId",
                         column: x => x.DestinationId,
@@ -415,15 +308,40 @@ namespace OnePageNet.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserGroupEntities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    GroupId = table.Column<string>(type: "TEXT", nullable: false),
+                    UsersId = table.Column<string>(type: "TEXT", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroupEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserGroupEntities_AspNetUsers_UsersId",
+                        column: x => x.UsersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserGroupEntities_GroupEntities_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "GroupEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CommentEntities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaURI = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PostId = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -444,20 +362,50 @@ namespace OnePageNet.App.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserUserGroupEntity_UsersId",
-                table: "ApplicationUserUserGroupEntity",
-                column: "UsersId");
+            migrationBuilder.CreateTable(
+                name: "ReactionEntity",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    PostEntityId = table.Column<string>(type: "TEXT", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReactionEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReactionEntity_PostEntities_PostEntityId",
+                        column: x => x.PostEntityId,
+                        principalTable: "PostEntities",
+                        principalColumn: "Id");
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserUserRelationEntity_CurrentUserId",
-                table: "ApplicationUserUserRelationEntity",
-                column: "CurrentUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUserUserRelationEntity1_TargetUserId",
-                table: "ApplicationUserUserRelationEntity1",
-                column: "TargetUserId");
+            migrationBuilder.CreateTable(
+                name: "UserReactionEntities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    ReactionId = table.Column<string>(type: "TEXT", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserReactionEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserReactionEntities_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserReactionEntities_ReactionEntity_ReactionId",
+                        column: x => x.ReactionId,
+                        principalTable: "ReactionEntity",
+                        principalColumn: "Id");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -518,11 +466,6 @@ namespace OnePageNet.App.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupEntities_UserGroupId",
-                table: "GroupEntities",
-                column: "UserGroupId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Keys_Use",
                 table: "Keys",
                 column: "Use");
@@ -563,27 +506,43 @@ namespace OnePageNet.App.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostEntities_ReactionId",
-                table: "PostEntities",
-                column: "ReactionId");
+                name: "IX_ReactionEntity_PostEntityId",
+                table: "ReactionEntity",
+                column: "PostEntityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroupEntities_GroupId",
+                table: "UserGroupEntities",
+                column: "GroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserGroupEntities_UsersId",
+                table: "UserGroupEntities",
+                column: "UsersId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserReactionEntities_ApplicationUserId",
                 table: "UserReactionEntities",
                 column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserReactionEntities_ReactionId",
+                table: "UserReactionEntities",
+                column: "ReactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRelationEntities_CurrentUserId",
+                table: "UserRelationEntities",
+                column: "CurrentUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRelationEntities_TargetUserId",
+                table: "UserRelationEntities",
+                column: "TargetUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "ApplicationUserUserGroupEntity");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserUserRelationEntity");
-
-            migrationBuilder.DropTable(
-                name: "ApplicationUserUserRelationEntity1");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -615,22 +574,25 @@ namespace OnePageNet.App.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
+                name: "UserGroupEntities");
+
+            migrationBuilder.DropTable(
+                name: "UserReactionEntities");
+
+            migrationBuilder.DropTable(
                 name: "UserRelationEntities");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "PostEntities");
-
-            migrationBuilder.DropTable(
                 name: "GroupEntities");
 
             migrationBuilder.DropTable(
-                name: "UserReactionEntities");
+                name: "ReactionEntity");
 
             migrationBuilder.DropTable(
-                name: "UserGroupEntities");
+                name: "PostEntities");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

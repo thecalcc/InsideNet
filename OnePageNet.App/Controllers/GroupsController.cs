@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿#nullable disable
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
@@ -8,9 +9,9 @@ namespace OnePageNet.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PostsController : BaseController<PostEntity, PostDto>
+public class GroupEntitiesController : BaseController<GroupEntity, GroupDTO>
 {
-    public PostsController(IDatabaseService<PostEntity> databaseService, IMapper mapper)
+    public GroupEntitiesController(IDatabaseService<GroupEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

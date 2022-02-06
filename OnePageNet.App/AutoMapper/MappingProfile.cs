@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models.PostDTOs;
+using OnePageNet.App.Data.Models;
 
-namespace OnePageNet.App.AutoMapper
+namespace OnePageNet.App.AutoMapper;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<PostEntity, PostDto>();
-            CreateMap<PostDto, PostEntity>();
-        }
+        CreateMap<PostEntity, PostDto>();
+        CreateMap<PostDto, PostEntity>();
     }
 }
