@@ -10,7 +10,7 @@ public class MessageDto : BaseDTO
     public string SenderId { get; set; }
 
     // Relates to the GroupEntity but ...
-    public string GroupDestinationId { get; set; }
+    public string DestinationId { get; set; }
     public string Content { get; set; }
     public string MediaUri { get; set; }
 }

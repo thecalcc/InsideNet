@@ -23,9 +23,9 @@ public class DatabaseService<T> : IDatabaseService<T> where T : BaseEntity
         return false;
     }
 
-    public async Task<T> FindByPublicId(string? publicId)
+    public async Task<T> FindById(string? Id)
     {
-        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id.ToString() == publicId);
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
     }
 
     public void Update(T entity)
@@ -50,8 +50,8 @@ public class DatabaseService<T> : IDatabaseService<T> where T : BaseEntity
         _dbContext.Set<T>().Remove(entity);
     }
 
-    public bool Exists(string publicId)
+    public bool Exists(string Id)
     {
-        return _dbContext.Set<T>().Any(e => e.Id.ToString() == publicId);
+        return _dbContext.Set<T>().Any(e => e.Id.ToString() == Id);
     }
 }

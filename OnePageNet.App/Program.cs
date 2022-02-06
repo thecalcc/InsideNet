@@ -28,6 +28,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
 builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
+builder.Services.AddScoped<IDatabaseService<MessageEntity>, MessageEntityDatabaseService>();
 builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
 
 
@@ -67,7 +68,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     "default",
-    "{controller=Home}/{action=Index}/{id?}");
+    "{controller=Home}/{action=Index}/{Id?}");
 
 app.MapFallbackToFile("index.html");
 

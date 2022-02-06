@@ -11,5 +11,8 @@ public class MappingProfile : Profile
         CreateMap<PostEntity, PostDto>().ReverseMap();
         CreateMap<CommentEntity, CommentDto>().ReverseMap();
         CreateMap<GroupEntity, GroupDTO>().ReverseMap();
+        CreateMap<MessageEntity, MessageDto>().ReverseMap();
+        CreateMap<ReactionEntity, ReactionDTO>().ReverseMap();
+        CreateMap<RelationEntity, RelationDTO>().ReverseMap();
     }
 }

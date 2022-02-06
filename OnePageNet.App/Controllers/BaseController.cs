@@ -37,20 +37,22 @@ public abstract class BaseController<T, TG> : ControllerBase
         return Ok(dtos);
     }
 
-    [HttpGet("get/{id}")]
-    public async Task<ActionResult<TG>> Get(string publicId)
+    [Route("get/{Id}")]
+    [HttpGet]
+    public async Task<ActionResult<TG>> Get(string Id)
     {
-        var entity = await _databaseService.FindByPublicId(publicId);
+        var entity = await _databaseService.FindById(Id);
         // TODO - Fix
         if (entity == null) return NotFound();
 
         return Ok(_mapper.Map<TG>(entity));
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateEntity(string publicId, TG dto)
+    [Route("update/{Id}")]
+    [HttpPut]
+    public async Task<IActionResult> UpdateEntity([FromRoute] string Id,[FromBody] TG dto)
     {
-        if (publicId != dto.Id) return BadRequest();
+        if (Id != dto.Id) return BadRequest();
 
         var entity = _mapper.Map<T>(dto);
 
@@ -62,7 +64,7 @@ public abstract class BaseController<T, TG> : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_databaseService.Exists(publicId)) return NotFound();
+            if (!_databaseService.Exists(Id)) return NotFound();
 
             throw;
         }
@@ -70,7 +72,8 @@ public abstract class BaseController<T, TG> : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("create")]
+    [Route("create")]
+    [HttpPost]
     public async Task<ActionResult<TG>> Create([FromBody] TG dto)
     {
         var entity = _mapper.Map<T>(dto);
@@ -80,10 +83,11 @@ public abstract class BaseController<T, TG> : ControllerBase
         return CreatedAtAction("Get", new {id = dto.Id}, dto);
     }
 
-    [HttpDelete("delete/{publicId}")]
-    public async Task<IActionResult> Delete(string publicId)
+    [Route("delete/{Id}")]
+    [HttpDelete]
+    public async Task<IActionResult> Delete(string Id)
     {
-        var entity = await _databaseService.FindByPublicId(publicId);
+        var entity = await _databaseService.FindById(Id);
         // TODO - Discover how Task work and how to deal with null results in tasks
         if (entity == null) return NotFound();
 

@@ -1,6 +1,4 @@
-﻿using OnePageNet.App.Data.Entities;
-
-namespace OnePageNet.App.Data.Enums;
+﻿namespace OnePageNet.App.Data.Entities;
 
 public class ReactionEntity : BaseEntity
 {

@@ -357,6 +357,7 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.CommentEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ApplicationUserId")
@@ -368,6 +369,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
@@ -379,9 +381,6 @@ namespace OnePageNet.App.Migrations
 
                     b.Property<string>("PostId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -396,9 +395,11 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.GroupEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
@@ -412,9 +413,6 @@ namespace OnePageNet.App.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("GroupEntities");
@@ -423,6 +421,7 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.MessageEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Content")
@@ -430,6 +429,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
@@ -453,9 +453,6 @@ namespace OnePageNet.App.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationId");
@@ -468,9 +465,11 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.PostEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
@@ -481,13 +480,11 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PosterId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -497,12 +494,63 @@ namespace OnePageNet.App.Migrations
                     b.ToTable("PostEntities");
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostEntityId");
+
+                    b.ToTable("ReactionEntity");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.RelationEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RelationEntity");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
@@ -510,9 +558,6 @@ namespace OnePageNet.App.Migrations
 
                     b.Property<string>("GroupId")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UsersId")
@@ -530,21 +575,20 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserReactionEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DeletedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ReactionId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -559,9 +603,11 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserRelationEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CurrentUserId")
@@ -575,11 +621,8 @@ namespace OnePageNet.App.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<string>("UserRelationshipId")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("UserRelationship")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -587,35 +630,9 @@ namespace OnePageNet.App.Migrations
 
                     b.HasIndex("TargetUserId");
 
+                    b.HasIndex("UserRelationshipId");
+
                     b.ToTable("UserRelationEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PostEntityId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostEntityId");
-
-                    b.ToTable("ReactionEntity");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -710,10 +727,19 @@ namespace OnePageNet.App.Migrations
             modelBuilder.Entity("OnePageNet.App.Data.Entities.PostEntity", b =>
                 {
                     b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "Poster")
-                        .WithMany()
-                        .HasForeignKey("PosterId");
+                        .WithMany("Posts")
+                        .HasForeignKey("PosterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Poster");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
+                {
+                    b.HasOne("OnePageNet.App.Data.Entities.PostEntity", null)
+                        .WithMany("Reaction")
+                        .HasForeignKey("PostEntityId");
                 });
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
@@ -739,7 +765,7 @@ namespace OnePageNet.App.Migrations
                         .WithMany("Reactions")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("OnePageNet.App.Data.Enums.ReactionEntity", "Reaction")
+                    b.HasOne("OnePageNet.App.Data.Entities.ReactionEntity", "Reaction")
                         .WithMany("Users")
                         .HasForeignKey("ReactionId");
 
@@ -762,16 +788,15 @@ namespace OnePageNet.App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnePageNet.App.Data.Entities.RelationEntity", "UserRelationship")
+                        .WithMany("Users")
+                        .HasForeignKey("UserRelationshipId");
+
                     b.Navigation("CurrentUser");
 
                     b.Navigation("TargetUser");
-                });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
-                {
-                    b.HasOne("OnePageNet.App.Data.Entities.PostEntity", null)
-                        .WithMany("Reaction")
-                        .HasForeignKey("PostEntityId");
+                    b.Navigation("UserRelationship");
                 });
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.ApplicationUser", b =>
@@ -779,6 +804,8 @@ namespace OnePageNet.App.Migrations
                     b.Navigation("CurrentRelationships");
 
                     b.Navigation("Groups");
+
+                    b.Navigation("Posts");
 
                     b.Navigation("Reactions");
 
@@ -799,7 +826,12 @@ namespace OnePageNet.App.Migrations
                     b.Navigation("Reaction");
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.RelationEntity", b =>
                 {
                     b.Navigation("Users");
                 });
