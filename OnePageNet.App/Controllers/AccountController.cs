@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OnePageNet.App.Controllers;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using OnePageNet.App.Data.Models;
 
-namespace IdentitySample.Controllers
+namespace OnePageNet.App.Controllers
 {
     [Authorize]
     public class AccountController : Controller
@@ -23,179 +23,133 @@ namespace IdentitySample.Controllers
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        // GET: /Account/Login
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Login(string? returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
-
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginDTO model, string? returnUrl = null)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, lockoutOnFailure: false);
+         
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    _logger.LogInformation(1, "User logged in");
+                    return Ok();
                 }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                    
+                    return BadRequest(loginDto);
                 }
             }
 
-            return View(model);
-        }
-
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string? returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return UnprocessableEntity(loginDto);
         }
 
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO model, string? returnUrl = null)
+        public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // TODO Add isPersistent as a parameter
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    
+                    _logger.LogInformation(3, "User account created successfully");
+                    
+                    return Ok();
                 }
                 AddErrors(result);
             }
 
-            return View(model);
+            return BadRequest("You did not register successfully");
         }
 
-        //
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            _logger.LogInformation(4, "User logged out");
+            return Ok();
         }
 
         // GET: /Account/ConfirmEmail
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        public async Task<IActionResult> ConfirmEmail(
+            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Disallow)]string userId,
+            [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Disallow)] string code)
         {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
             var user = await _userManager.FindByIdAsync(userId);
+            
             if (user == null)
             {
-                return View("Error");
+                return NotFound(userId);
             }
+            
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
-        }
 
-        // GET: /Account/ForgotPassword
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPassword()
-        {
-            return View();
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            
+            return BadRequest("Did not confirm email");
         }
 
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO model)
+        public async Task<ActionResult<ForgotPasswordDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    return View("ForgotPasswordConfirmation");
-                }
+                var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-
+                Url.Action("ResetPassword", "Account", 
+                        new { userId = user.Id }, HttpContext.Request.Scheme);
                 // TODO Code a emailSender
                 //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
                 //   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-                return View("ForgotPasswordConfirmation");
+                return Ok();
             }
 
-            return View(model);
+            return forgotPasswordDto;
         }
 
-        // GET: /Account/ForgotPasswordConfirmation
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        // GET: /Account/ResetPassword
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
-        {
-            return code == null ? View("Error") : View();
-        }
-
-        //
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDTO model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return UnprocessableEntity(resetPasswordDto);
             }
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            
             if (user == null)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return NotFound(resetPasswordDto);
             }
-            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            
+            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Code, resetPasswordDto.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return Ok();
             }
+            
             AddErrors(result);
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPasswordConfirmation
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult ResetPasswordConfirmation()
-        {
-            return View();
+            return BadRequest(result);
         }
 
         private void AddErrors(IdentityResult result)
@@ -203,23 +157,6 @@ namespace IdentitySample.Controllers
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
-            }
-        }
-
-        private Task<ApplicationUser> GetCurrentUserAsync()
-        {
-            return _userManager.GetUserAsync(HttpContext.User);
-        }
-
-        private IActionResult RedirectToLocal(string returnUrl)
-        {
-            if (Url.IsLocalUrl(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class RegisterUserDTO
+    public class RegisterUserDto
     {
         [Required]
         [EmailAddress]

@@ -26,7 +26,7 @@ builder.Services.AddAuthentication()
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<IDatabaseService, DatabaseService>();
+builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
 
 var mapperConfig = new MapperConfiguration(mc =>
 {

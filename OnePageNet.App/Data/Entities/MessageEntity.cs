@@ -9,6 +9,6 @@ namespace OnePageNet.App.Data.Entities
         public virtual ApplicationUser Sender { get; set; }
         public virtual GroupEntity Destination { get; set; }
         public string Content { get; set; }
-        public string MediaURI { get; set; }
+        public string MediaUri { get; set; }
     }
 }

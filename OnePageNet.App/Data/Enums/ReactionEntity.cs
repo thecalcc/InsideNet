@@ -5,6 +5,6 @@
         Like,
         Love,
         Wow,
-        LOL
+        Lol
     }
 }

@@ -2,7 +2,7 @@
 
 namespace OnePageNet.App.Data.Models
 {
-    public class ResetPasswordDTO
+    public class ResetPasswordDto
     {
         [Required]
         [EmailAddress]
