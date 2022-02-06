@@ -27,7 +27,9 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
+builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
 builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
+
 
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
 

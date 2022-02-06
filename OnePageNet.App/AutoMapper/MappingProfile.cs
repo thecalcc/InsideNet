@@ -10,5 +10,8 @@ public class MappingProfile : Profile
     {
         CreateMap<PostEntity, PostDto>();
         CreateMap<PostDto, PostEntity>();
+
+        CreateMap<CommentEntity, CommentDto>();
+        CreateMap<CommentDto, CommentEntity>();
     }
 }
