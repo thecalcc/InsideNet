@@ -15,9 +15,9 @@ public class PostEntityDatabaseService : DatabaseService<PostEntity>, IDatabaseS
 
     public async Task<bool> AttachUser(PostEntity entity)
     {
-        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == entity.ApplicationUserId);
+        var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == entity.PosterId);
     
-        if (user?.Id != entity.ApplicationUserId) return false;
+        if (user?.Id != entity.PosterId) return false;
     
         _dbContext.Attach(user);
     

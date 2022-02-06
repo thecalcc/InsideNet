@@ -21,7 +21,19 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
     public DbSet<UserReactionEntity> UserReactionEntities { get; set; }
     public DbSet<UserRelationEntity> UserRelationEntities { get; set; }
 
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        UpdateDateColumns();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
     public override int SaveChanges()
+    {
+        UpdateDateColumns();
+        return base.SaveChanges();
+    }
+
+    private void UpdateDateColumns()
     {
         var entries = ChangeTracker
             .Entries()
@@ -29,18 +41,16 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
         foreach (var entityEntry in entries)
         {
-            if (entityEntry.State == EntityState.Deleted)
+            switch (entityEntry.State)
             {
-                ((BaseEntity)entityEntry.Entity).DeletedAt = DateTime.Now;
-            }
-            
-            if (entityEntry.State == EntityState.Added)
-            {
-                ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.Now;
+                case EntityState.Deleted:
+                    ((BaseEntity)entityEntry.Entity).DeletedAt = DateTime.Now;
+                    break;
+                case EntityState.Added:
+                    ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.Now;
+                    break;
             }
         }
-
-        return base.SaveChanges();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,13 +1,13 @@
-﻿namespace OnePageNet.App.Data.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace OnePageNet.App.Data.Entities;
 
 public class BaseEntity
 {
-    public BaseEntity()
-    {
-        Id = Guid.NewGuid().ToString();
-    }
-
-    public string Id { get; set; } = Guid.NewGuid().ToString();
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public string Id { get; set; }
     public DateTime DeletedAt { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public DateTime CreatedAt { get; set; }
 }
