@@ -121,6 +121,20 @@ namespace OnePageNet.App.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RelationEntity",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RelationEntity", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -234,7 +248,6 @@ namespace OnePageNet.App.Migrations
                     Text = table.Column<string>(type: "TEXT", nullable: false),
                     MediaUri = table.Column<string>(type: "TEXT", nullable: false),
                     PosterId = table.Column<string>(type: "TEXT", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "TEXT", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -242,35 +255,8 @@ namespace OnePageNet.App.Migrations
                 {
                     table.PrimaryKey("PK_PostEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostEntities_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRelationEntities",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserRelationship = table.Column<int>(type: "INTEGER", nullable: false),
-                    CurrentUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    TargetUserId = table.Column<string>(type: "TEXT", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRelationEntities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserRelationEntities_AspNetUsers_CurrentUserId",
-                        column: x => x.CurrentUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserRelationEntities_AspNetUsers_TargetUserId",
-                        column: x => x.TargetUserId,
+                        name: "FK_PostEntities_AspNetUsers_PosterId",
+                        column: x => x.PosterId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -331,6 +317,39 @@ namespace OnePageNet.App.Migrations
                         principalTable: "GroupEntities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRelationEntities",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserRelationshipId = table.Column<string>(type: "TEXT", nullable: true),
+                    CurrentUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    TargetUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRelationEntities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRelationEntities_AspNetUsers_CurrentUserId",
+                        column: x => x.CurrentUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRelationEntities_AspNetUsers_TargetUserId",
+                        column: x => x.TargetUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRelationEntities_RelationEntity_UserRelationshipId",
+                        column: x => x.UserRelationshipId,
+                        principalTable: "RelationEntity",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -501,9 +520,9 @@ namespace OnePageNet.App.Migrations
                 columns: new[] { "SubjectId", "SessionId", "Type" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostEntities_ApplicationUserId",
+                name: "IX_PostEntities_PosterId",
                 table: "PostEntities",
-                column: "ApplicationUserId");
+                column: "PosterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReactionEntity_PostEntityId",
@@ -539,6 +558,11 @@ namespace OnePageNet.App.Migrations
                 name: "IX_UserRelationEntities_TargetUserId",
                 table: "UserRelationEntities",
                 column: "TargetUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRelationEntities_UserRelationshipId",
+                table: "UserRelationEntities",
+                column: "UserRelationshipId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -590,6 +614,9 @@ namespace OnePageNet.App.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReactionEntity");
+
+            migrationBuilder.DropTable(
+                name: "RelationEntity");
 
             migrationBuilder.DropTable(
                 name: "PostEntities");

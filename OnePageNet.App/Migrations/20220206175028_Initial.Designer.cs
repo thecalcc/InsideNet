@@ -11,8 +11,8 @@ using OnePageNet.App.Data;
 namespace OnePageNet.App.Migrations
 {
     [DbContext(typeof(OnePageNetDbContext))]
-    [Migration("20220205190432_Initialv2")]
-    partial class Initialv2
+    [Migration("20220206175028_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -292,247 +292,7 @@ namespace OnePageNet.App.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.CommentEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaUri")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PostId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("CommentEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.GroupEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaUri")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.MessageEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Delivered")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("DestinationId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaUri")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Read")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("MessageEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.PostEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("MediaUri")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PosterId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PosterId");
-
-                    b.ToTable("PostEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("GroupId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("UserGroupEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserReactionEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ReactionId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ReactionId");
-
-                    b.ToTable("UserReactionEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserRelationEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CurrentUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TargetUserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserRelationship")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrentUserId");
-
-                    b.HasIndex("TargetUserId");
-
-                    b.ToTable("UserRelationEntities");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PostEntityId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostEntityId");
-
-                    b.ToTable("ReactionEntity");
-                });
-
-            modelBuilder.Entity("OnePageNet.App.Data.Models.ApplicationUser", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
@@ -596,6 +356,287 @@ namespace OnePageNet.App.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.CommentEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaUri")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("CommentEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.GroupEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaUri")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GroupEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.MessageEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Delivered")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DestinationId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaUri")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("MessageEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.PostEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MediaUri")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PosterId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PosterId");
+
+                    b.ToTable("PostEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PostEntityId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostEntityId");
+
+                    b.ToTable("ReactionEntity");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.RelationEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RelationEntity");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroupId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserGroupEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserReactionEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReactionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ReactionId");
+
+                    b.ToTable("UserReactionEntities");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.UserRelationEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CurrentUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TargetUserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserRelationshipId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentUserId");
+
+                    b.HasIndex("TargetUserId");
+
+                    b.HasIndex("UserRelationshipId");
+
+                    b.ToTable("UserRelationEntities");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -607,7 +648,7 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", null)
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -616,7 +657,7 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", null)
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -631,7 +672,7 @@ namespace OnePageNet.App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", null)
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -640,7 +681,7 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", null)
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -649,7 +690,7 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.CommentEntity", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -674,7 +715,7 @@ namespace OnePageNet.App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "Sender")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -687,11 +728,20 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.PostEntity", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "Poster")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "Poster")
                         .WithMany("Posts")
-                        .HasForeignKey("PosterId");
+                        .HasForeignKey("PosterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Poster");
+                });
+
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
+                {
+                    b.HasOne("OnePageNet.App.Data.Entities.PostEntity", null)
+                        .WithMany("Reaction")
+                        .HasForeignKey("PostEntityId");
                 });
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserGroupEntity", b =>
@@ -702,7 +752,7 @@ namespace OnePageNet.App.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "Users")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "Users")
                         .WithMany("Groups")
                         .HasForeignKey("UsersId");
 
@@ -713,11 +763,11 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserReactionEntity", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "ApplicationUser")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany("Reactions")
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("OnePageNet.App.Data.Enums.ReactionEntity", "Reaction")
+                    b.HasOne("OnePageNet.App.Data.Entities.ReactionEntity", "Reaction")
                         .WithMany("Users")
                         .HasForeignKey("ReactionId");
 
@@ -728,28 +778,40 @@ namespace OnePageNet.App.Migrations
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.UserRelationEntity", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "CurrentUser")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "CurrentUser")
                         .WithMany("CurrentRelationships")
                         .HasForeignKey("CurrentUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnePageNet.App.Data.Models.ApplicationUser", "TargetUser")
+                    b.HasOne("OnePageNet.App.Data.Entities.ApplicationUser", "TargetUser")
                         .WithMany("TargetRelationships")
                         .HasForeignKey("TargetUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnePageNet.App.Data.Entities.RelationEntity", "UserRelationship")
+                        .WithMany("Users")
+                        .HasForeignKey("UserRelationshipId");
+
                     b.Navigation("CurrentUser");
 
                     b.Navigation("TargetUser");
+
+                    b.Navigation("UserRelationship");
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("OnePageNet.App.Data.Entities.PostEntity", null)
-                        .WithMany("Reaction")
-                        .HasForeignKey("PostEntityId");
+                    b.Navigation("CurrentRelationships");
+
+                    b.Navigation("Groups");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reactions");
+
+                    b.Navigation("TargetRelationships");
                 });
 
             modelBuilder.Entity("OnePageNet.App.Data.Entities.GroupEntity", b =>
@@ -766,22 +828,14 @@ namespace OnePageNet.App.Migrations
                     b.Navigation("Reaction");
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Enums.ReactionEntity", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.ReactionEntity", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("OnePageNet.App.Data.Models.ApplicationUser", b =>
+            modelBuilder.Entity("OnePageNet.App.Data.Entities.RelationEntity", b =>
                 {
-                    b.Navigation("CurrentRelationships");
-
-                    b.Navigation("Groups");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("Reactions");
-
-                    b.Navigation("TargetRelationships");
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

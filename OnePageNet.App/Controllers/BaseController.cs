@@ -42,8 +42,7 @@ public abstract class BaseController<T, TG> : ControllerBase
     public async Task<ActionResult<TG>> Get(string Id)
     {
         var entity = await _databaseService.FindById(Id);
-        // TODO - Fix
-        if (entity == null) return NotFound();
+        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
         return Ok(_mapper.Map<TG>(entity));
     }
@@ -79,7 +78,6 @@ public abstract class BaseController<T, TG> : ControllerBase
         var entity = _mapper.Map<T>(dto);
         await _databaseService.AttachUser(entity);
         await _databaseService.AddAsync(entity);
-        // TODO Fix - we should only return data and not view since we are using React as front-end
         return CreatedAtAction("Get", new {id = dto.Id}, dto);
     }
 
@@ -88,8 +86,7 @@ public abstract class BaseController<T, TG> : ControllerBase
     public async Task<IActionResult> Delete(string Id)
     {
         var entity = await _databaseService.FindById(Id);
-        // TODO - Discover how Task work and how to deal with null results in tasks
-        if (entity == null) return NotFound();
+        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
         _databaseService.Remove(entity);
         await _databaseService.SaveChangesAsync();

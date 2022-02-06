@@ -26,46 +26,41 @@ public class AccountController : Controller
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
+        var result =
+            await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, false);
+
+        if (result.Succeeded)
         {
-            var result =
-                await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, false);
-
-            if (result.Succeeded)
-            {
-                _logger.LogInformation(1, "User logged in");
-                return Ok();
-            }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-
-            return BadRequest(loginDto);
+            _logger.LogInformation(1, "User logged in");
+            return Ok();
         }
 
-        return UnprocessableEntity(loginDto);
+        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+        return BadRequest(loginDto);
+
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return BadRequest("You did not register successfully");
+        
+        var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+        var result = await _userManager.CreateAsync(user, model.Password);
+        
+        if (!result.Succeeded)
         {
-            var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                // TODO Add isPersistent as a parameter
-                await _signInManager.SignInAsync(user, false);
-
-                _logger.LogInformation(3, "User account created successfully");
-
-                return Ok();
-            }
-
             AddErrors(result);
+            return BadRequest("You did not register successfully");
         }
 
-        return BadRequest("You did not register successfully");
+        // TODO Front end has to send us a RememberMe param -> isPersistent
+        await _signInManager.SignInAsync(user, false);
+
+        _logger.LogInformation(3, "User account created successfully");
+
+        return Ok();
     }
 
     [HttpPost("logoff")]
@@ -93,19 +88,16 @@ public class AccountController : Controller
     [HttpPost("forgot-password")]
     public async Task<ActionResult<ForgotPasswordDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
     {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+        if (!ModelState.IsValid) return forgotPasswordDto;
+        var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
 
-            Url.Action("ResetPassword", "Account",
-                new {userId = user.Id}, HttpContext.Request.Scheme);
-            // TODO Code a emailSender
-            //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-            //   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
-            return Ok();
-        }
+        Url.Action("ResetPassword", "Account",
+            new {userId = user.Id}, HttpContext.Request.Scheme);
+        // TODO Code a SMTP server
+        //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+        //   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+        return Ok();
 
-        return forgotPasswordDto;
     }
 
     [HttpPost("reset-password")]
