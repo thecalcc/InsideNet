@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services;
 

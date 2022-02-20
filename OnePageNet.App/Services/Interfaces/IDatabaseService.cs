@@ -1,6 +1,6 @@
 ﻿using OnePageNet.App.Data.Entities;
 
-namespace OnePageNet.App.Services;
+namespace OnePageNet.App.Services.Interfaces;
 
 public interface IDatabaseService<T> where T : BaseEntity
 {
