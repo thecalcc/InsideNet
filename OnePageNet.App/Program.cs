@@ -1,10 +1,15 @@
 using AutoMapper;
+using Hangfire;
+using Hangfire.Storage.SQLite;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Options;
 using OnePageNet.App.Services;
+using OnePageNet.App.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,12 +30,17 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+// builder.Services.Configure<SendGridOptions>(builder.Configuration);
 
+// builder.Services
+//     .AddFluentEmail("testSender@test.test")
+//     .AddRazorRenderer();
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
 builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
 builder.Services.AddScoped<IDatabaseService<MessageEntity>, MessageEntityDatabaseService>();
 builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
-
 
 var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
 
