@@ -46,16 +46,15 @@ public class AccountController : Controller
 
     }
 
-    // [Route("register/{email}/{password}/{confirmPassword}")]
-    // [HttpGet]
-    // public async Task<ActionResult<string>> Register([FromRoute] string email, [FromRoute] string password,
-    //     [FromRoute] string repeatPass)
-    // {
-    //     Console.WriteLine("work ni");
-    //
-    //     return default;
-    // }
-    
+    [Route("register/{email}")]
+    [HttpPost]
+    public async Task<ActionResult<string>> Register([FromRoute] string email)
+    {
+        Console.WriteLine("work nigger, like yoiur ancestors");
+
+        return default;
+    }
+
     [Route("register")]
     [HttpPost]
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)

@@ -37,7 +37,14 @@ export class Register extends Component {
       ConfirmPassword: this.state.passrepeat,
     };
 
-    axios({
+      axios.post("https://localhost:7231/api/Account/register/", {
+         ...registerDto
+      });
+
+
+      axios.post("https://localhost:7231/api/Account/register/detroit");
+
+    /*axios({
       method: "post",
       url: "https://localhost:7231/api/Account/register",
       headers: {
@@ -47,13 +54,13 @@ export class Register extends Component {
       data: {
         ...registerDto
       },
-    });
+    });*/
   }
 
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <div class="container">
+        <div className="container">
           <h1>Register</h1>
           <p>Please fill in this form to create an account.</p>
 
@@ -87,12 +94,12 @@ export class Register extends Component {
             onChange={(e) => this.handleInputChange(e)}
           />
 
-          <button type="submit" class="registerbtn">
+          <button type="submit" className="registerbtn">
             Register
           </button>
         </div>
 
-        <div class="container signin">
+        <div className="container signin">
           <p>
             Already have an account? <a href="#">Sign in</a>.
           </p>
