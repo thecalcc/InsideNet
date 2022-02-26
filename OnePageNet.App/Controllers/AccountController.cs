@@ -27,7 +27,8 @@ public class AccountController : Controller
         _logger = loggerFactory.CreateLogger<AccountController>();
     }
 
-    [HttpPost("login")]
+    [Route("login")]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
@@ -45,7 +46,18 @@ public class AccountController : Controller
 
     }
 
-    [HttpPost("register")]
+    // [Route("register/{email}/{password}/{confirmPassword}")]
+    // [HttpGet]
+    // public async Task<ActionResult<string>> Register([FromRoute] string email, [FromRoute] string password,
+    //     [FromRoute] string repeatPass)
+    // {
+    //     Console.WriteLine("work ni");
+    //
+    //     return default;
+    // }
+    
+    [Route("register")]
+    [HttpPost]
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
