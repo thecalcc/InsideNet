@@ -36,6 +36,7 @@ builder.Services.AddSwaggerGen();
 //     .AddFluentEmail("testSender@test.test")
 //     .AddRazorRenderer();
 
+builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
 builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
