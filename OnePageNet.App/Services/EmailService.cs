@@ -8,22 +8,37 @@ namespace OnePageNet.App.Services;
 
 public class EmailService : IEmailService
 {
-    public async Task SendEmail()
+    private SmtpSender Sender { get; set; }
+    
+    // TODO Cleanup, remove hard coded values
+    public EmailService()
     {
-        var sender = new SmtpSender(() => new SmtpClient("smtp.gmail.com")
+        Sender = new SmtpSender(() => new SmtpClient("smtp.gmail.com")
         {
             UseDefaultCredentials = false,
             Port = 587,
             Credentials = new NetworkCredential("maga.ot.oz.spam@gmail.com", "EiKradecHaknaLiMe"),
             EnableSsl = true,
         });
+    }
 
-        Email.DefaultSender = sender;
+    public async Task SendResetPasswordEmail(string to)
+    {
+        var callbackUrl = string.Empty;
+        
+        var body = $"Reset Password Please reset your password by clicking here: <a href=\"{callbackUrl}\">link</a>";
+
+        await SendEmail(to, body);
+    }
+    
+    public async Task SendEmail(string? to = null, string? body = null)
+    {
+        Email.DefaultSender = Sender;
         var email = await Email
             .From("maga.ot.oz.spam@gmail.com", "kosyotester")
-            .To("kosyo.marko@gmail.com", "kosyoistinski")
+            .To(to ?? "kosyo.marko@gmail.com", "kosyoistinski")
             .Subject("test email subject")
-            .Body("This is the email body")
+            .Body(body ?? "This is the email body")
             .SendAsync();
     }
 }

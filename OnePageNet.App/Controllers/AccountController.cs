@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
+using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers;
 
@@ -11,15 +12,18 @@ public class AccountController : Controller
 {
     private readonly ILogger _logger;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IEmailService _emailService;
     private readonly UserManager<ApplicationUser> _userManager;
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
+        IEmailService emailService,
         ILoggerFactory loggerFactory)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _emailService = emailService;
         _logger = loggerFactory.CreateLogger<AccountController>();
     }
 
@@ -93,11 +97,9 @@ public class AccountController : Controller
 
         Url.Action("ResetPassword", "Account",
             new {userId = user.Id}, HttpContext.Request.Scheme);
-        // TODO Code a SMTP server
-        //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-        //   "Please reset your password by clicking here: <a href=\"" + callbackUrl + "\">link</a>");
+        
+        await _emailService.SendResetPasswordEmail(forgotPasswordDto.Email);
         return Ok();
-
     }
 
     [HttpPost("reset-password")]
