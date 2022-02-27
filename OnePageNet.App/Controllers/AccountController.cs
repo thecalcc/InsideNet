@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Duende.IdentityServer.Events;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
@@ -45,7 +47,6 @@ public class AccountController : Controller
 
         ModelState.AddModelError(string.Empty, "Invalid login attempt.");
         return BadRequest(loginDto);
-
     }
 
     [Route("register")]
@@ -54,10 +55,10 @@ public class AccountController : Controller
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
-        
+
         var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
         var result = await _userManager.CreateAsync(user, model.Password);
-        
+
         if (!result.Succeeded)
         {
             AddErrors(result);
@@ -69,7 +70,7 @@ public class AccountController : Controller
 
         _logger.LogInformation(3, "User account created successfully");
 
-        return Ok("Successs!*@#1823*!#@&*!@");
+        return Ok();
     }
 
     [HttpPost("logoff")]
@@ -102,7 +103,7 @@ public class AccountController : Controller
 
         Url.Action("ResetPassword", "Account",
             new {userId = user.Id}, HttpContext.Request.Scheme);
-        
+
         await _emailService.SendResetPasswordEmail(forgotPasswordDto.Email);
         return Ok();
     }
