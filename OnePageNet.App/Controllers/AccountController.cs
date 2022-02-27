@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
@@ -46,17 +48,9 @@ public class AccountController : Controller
 
     }
 
-    [Route("register/{email}")]
-    [HttpPost]
-    public async Task<ActionResult<string>> Register([FromRoute] string email)
-    {
-        Console.WriteLine("work nigger, like yoiur ancestors");
-
-        return default;
-    }
-
     [Route("register")]
     [HttpPost]
+    [AllowAnonymous]
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
@@ -75,7 +69,7 @@ public class AccountController : Controller
 
         _logger.LogInformation(3, "User account created successfully");
 
-        return Ok();
+        return Ok("Successs!*@#1823*!#@&*!@");
     }
 
     [HttpPost("logoff")]

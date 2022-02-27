@@ -1,25 +1,30 @@
 using AutoMapper;
-using Hangfire;
-using Hangfire.Storage.SQLite;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Options;
 using OnePageNet.App.Services;
 using OnePageNet.App.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<OnePageNetDbContext>(options =>
     options.UseSqlite(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<ApplicationUser>()
+builder.Services.AddDefaultIdentity<ApplicationUser>(o =>
+    {
+        o.Password.RequireDigit = false;
+        o.Password.RequireLowercase = false;
+        o.Password.RequireUppercase = false;
+        o.Password.RequiredUniqueChars = 0;
+        o.Password.RequireNonAlphanumeric = false;
+        o.Password.RequiredLength = 3;
+    })
     .AddEntityFrameworkStores<OnePageNetDbContext>();
 
 builder.Services.AddIdentityServer()
@@ -28,13 +33,17 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
-// builder.Services.Configure<SendGridOptions>(builder.Configuration);
+builder.Services.AddCors(c =>
+    c.AddPolicy("AllowOrigin",
+        options => options
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()));
 
-// builder.Services
-//     .AddFluentEmail("testSender@test.test")
-//     .AddRazorRenderer();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
+
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -47,8 +56,6 @@ var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProf
 
 var mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
-
-builder.Services.AddMvc();
 
 var app = builder.Build();
 
@@ -72,6 +79,11 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseIdentityServer();

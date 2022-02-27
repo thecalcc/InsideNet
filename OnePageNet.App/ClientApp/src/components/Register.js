@@ -1,25 +1,19 @@
-import axios from "axios";
-import React, { Component } from "react";
-import { useState } from "react";
+import React from "react";
+import { useHistory } from "react-router-dom";
 
-export class Register extends Component {
+export class Register extends React.Component {
   static displayName = Register.name;
+
   constructor(props) {
     super(props);
+
     this.state = {
-      error: null,
-      isLoaded: false,
-      items: [],
+      isLoggedIn: this.props.isLoggedIn,
     };
 
+    history = useHistory();
     this.onSubmit = this.onSubmit.bind(this);
   }
-
-  delta = () => {
-    this.setState({
-      count: this.state.count + 1,
-    });
-  };
 
   handleInputChange(event) {
     const target = event.target;
@@ -31,30 +25,29 @@ export class Register extends Component {
   }
 
   async onSubmit(e) {
+
     const registerDto = {
-      Email: this.state.email,
-      Password: this.state.pass,
-      ConfirmPassword: this.state.passrepeat,
+      email: this.state.email,
+      password: this.state.password,
+      confirmPassword: this.state.confirmPassword,
     };
 
-      axios.post("https://localhost:7231/api/Account/register/", {
-         ...registerDto
-      });
+    const url = "https://localhost:7231/api/Account/register";
 
-
-      axios.post("https://localhost:7231/api/Account/register/detroit");
-
-    /*axios({
-      method: "post",
-      url: "https://localhost:7231/api/Account/register",
+    await fetch(url, {
+      method: "POST",
+      mode: "cors",
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
+        "Content-Type": "text/json",
+        "Access-Control-Allow-Origin": "*",
       },
-      data: {
-        ...registerDto
-      },
-    });*/
+      body: JSON.stringify(registerDto),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        this.state.isLoggedIn = true;
+      });
   }
 
   render() {
@@ -78,7 +71,7 @@ export class Register extends Component {
             <b>Password</b>
           </label>
           <input
-            name="pass"
+            name="password"
             type="password"
             value={this.state.pass}
             onChange={(e) => this.handleInputChange(e)}
@@ -88,7 +81,7 @@ export class Register extends Component {
             <b>Repeat Password</b>
           </label>
           <input
-            name="passrepeat"
+            name="confirmPassword"
             type="password"
             value={this.state.passrepeat}
             onChange={(e) => this.handleInputChange(e)}
@@ -97,12 +90,6 @@ export class Register extends Component {
           <button type="submit" className="registerbtn">
             Register
           </button>
-        </div>
-
-        <div className="container signin">
-          <p>
-            Already have an account? <a href="#">Sign in</a>.
-          </p>
         </div>
       </form>
     );
