@@ -9,16 +9,16 @@ export class Login extends React.Component {
       };
     }
 
-    render(){
-        return (
-          <>
-            <button
-              type="submit"
-              value={this.state.isLoggedIn}
-              onClick={this.state.isLoggedIn = false}
-            ></button>
-          </>
-        );
-    }
+    // render(){
+    //     return (
+    //       <>
+    //         <button
+    //           type="submit"
+    //           value={this.state.isLoggedIn}
+    //           onClick={this.state.isLoggedIn = false}
+    //         ></button>
+    //       </>
+    //     );
+    // }
 
 }

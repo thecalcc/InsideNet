@@ -18,7 +18,7 @@ export const App = (props) => {
           <Route exact path="/" component={Home}></Route>
         ) : (
           <>
-            <Route exact path="/register"><Register isLoggedIn/></Route>
+            <Route exact path="/register"><Register isLoggedIn={isLoggedIn}/></Route>
             <Route exact path="/login" component={Login} />
           </>
         )}
