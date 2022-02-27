@@ -1,43 +1,33 @@
 import React, { useState} from "react";
 import { useHistory } from "react-router-dom";
 
-export function Login(props) {
+async function loginUser(credentials) {
+  const url = "https://localhost:7231/api/Account/login";
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+ }
+
+export function Login({setIsLoggedIn}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
-  const [isLoggedIn, setIsLoggedIn] = useState();
+  // const history = useHistory();
+  // const [isLoggedIn, setIsLoggedIn] = useState();
 
 
-  const handleSubmit = async () => {
-    const postUrl = "https://localhost:7231/api/Account/login";
-
-    const login = async () => {
-      const res = fetch(postUrl, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      await res.then((response) => {        
-        if (response.ok) {
-          setIsLoggedIn(x => x = true);
-        } else {
-          console.log("Login failed");
-          setIsLoggedIn(false);
-        }
-      });
-    };
-
-    try{
-     await login().then(history.push("/"));
-    } catch(e){
-      console.log(e.error);
-    }
-  };
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = await loginUser({
+      email,
+      password
+    });
+    setIsLoggedIn(true);
+  }
 
   return (
     <form onSubmit={handleSubmit}>

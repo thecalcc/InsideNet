@@ -1,45 +1,31 @@
-import React, { useState} from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 
-export function Register(props) {
+async function registerUser(credentials) {
+  const url = "https://localhost:7231/api/Account/register";
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+}
+
+export function Register({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState();
-  const history = useHistory();
 
-  const handleSubmit = async () => {
-    const url = "https://localhost:7231/api/Account/register";
-
-    const register = async () => {
-      const res = fetch(url, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ email, password, confirmPassword }),
-      });
-
-      await res.then((response) => {
-        if (response.ok) {
-          console.log(response.data);
-          setIsLoggedIn(true);
-        } else {
-          console.log("Login failed");
-          setIsLoggedIn(false);
-        }
-      });
-    };
-
-    try {
-      await register().then(history.push("/"));
-    } catch (e) {
-      console.log(e.error);
-    }
-  };
-
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const token = await registerUser({
+      email,
+      password,
+      confirmPassword
+    });
+    setIsLoggedIn(true);
+  }
   return (
     <form onSubmit={handleSubmit}>
       <div className="container">
