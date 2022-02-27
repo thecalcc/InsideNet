@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Route} from 'react-router';
 import {Layout} from './components/Layout';
 import {Home} from './components/Home';
@@ -7,30 +7,21 @@ import {Login} from './components/Login'
 
 import './custom.css'
 
-export default class App extends Component {
-    static displayName = App.name;
 
-    constructor(props){
-      super(props);
+export const App = (props) => {
+    const [isLoggedIn, setIsLoggedIn] = useState();
 
-      this.state = {
-        isLoggedIn: this.props.isLoggedIn,
-      };
-    }
-
-    render() {
-        return (
-          <Layout>
-            <Route exact path="/" component={Home} />
-            {this.state.isLoggedIn === true ? (
-              <Route exact path="/" component={Home}></Route>
-            ) : (
-              <>
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/login" component={Login} />
-              </>
-            )}
-          </Layout>
-        );
-    }
+    return (
+      <Layout>
+        <Route exact path="/" component={Home} />
+        {isLoggedIn === true ? (
+          <Route exact path="/" component={Home}></Route>
+        ) : (
+          <>
+            <Route exact path="/register"><Register isLoggedIn/></Route>
+            <Route exact path="/login" component={Login} />
+          </>
+        )}
+      </Layout>
+    );
 }

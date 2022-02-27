@@ -1,97 +1,80 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-export class Register extends React.Component {
-  static displayName = Register.name;
 
-  constructor(props) {
-    super(props);
+async function onSubmit(props){
 
-    this.state = {
-      isLoggedIn: this.props.isLoggedIn,
-    };
+  const registerDto = {
+    email: props.email,
+    password: props.password,
+    confirmPassword: props.confirmPassword,
+  };
 
-    history = useHistory();
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+  const url = "https://localhost:7231/api/Account/register";
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
+  await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "text/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify(registerDto),
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+      this.state.isLoggedIn = true;
     });
-  }
+ }
 
-  async onSubmit(e) {
+export const Register = (props) => {
 
-    const registerDto = {
-      email: this.state.email,
-      password: this.state.password,
-      confirmPassword: this.state.confirmPassword,
-    };
+  // this.onSubmit = this.onSubmit.bind(this);
 
-    const url = "https://localhost:7231/api/Account/register";
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
-    await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "text/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(registerDto),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        this.state.isLoggedIn = true;
-      });
-  }
+  return (
+    <form onSubmit={onSubmit({email, password, confirmPassword})}>
+      <div className="container">
+        <h1>Register</h1>
+        <p>Please fill in this form to create an account.</p>
 
-  render() {
-    return (
-      <form onSubmit={this.onSubmit}>
-        <div className="container">
-          <h1>Register</h1>
-          <p>Please fill in this form to create an account.</p>
+        <label>
+          <b>Email</b>
+        </label>
+        <input
+          name="email"
+          type="email"
+          value={this.email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-          <label>
-            <b>Email</b>
-          </label>
-          <input
-            name="email"
-            type="email"
-            value={this.state.email}
-            onChange={(e) => this.handleInputChange(e)}
-          />
+        <label>
+          <b>Password</b>
+        </label>
+        <input
+          name="password"
+          type="password"
+          value={this.password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-          <label>
-            <b>Password</b>
-          </label>
-          <input
-            name="password"
-            type="password"
-            value={this.state.pass}
-            onChange={(e) => this.handleInputChange(e)}
-          />
+        <label>
+          <b>Repeat Password</b>
+        </label>
+        <input
+          name="confirmPassword"
+          type="password"
+          value={this.confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
 
-          <label>
-            <b>Repeat Password</b>
-          </label>
-          <input
-            name="confirmPassword"
-            type="password"
-            value={this.state.passrepeat}
-            onChange={(e) => this.handleInputChange(e)}
-          />
-
-          <button type="submit" className="registerbtn">
-            Register
-          </button>
-        </div>
-      </form>
-    );
-  }
+        <button type="submit" className="registerbtn">
+          Register
+        </button>
+      </div>
+    </form>
+  );
 }
