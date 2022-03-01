@@ -1,6 +1,4 @@
-﻿using OnePageNet.App.Data.Entities;
-
-namespace OnePageNet.App.Data.Entities;
+﻿namespace OnePageNet.App.Data.Entities;
 
 public class RelationEntity:BaseEntity
 {
