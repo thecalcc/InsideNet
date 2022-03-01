@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { setTokenSourceMapRange } from "typescript";
+import useToken from "./useToken";
 
 async function registerUser(credentials) {
   const url = "https://localhost:7231/api/Account/register";
