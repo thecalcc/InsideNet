@@ -1,7 +1,5 @@
+import { data } from "jquery";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { setTokenSourceMapRange } from "typescript";
-import useToken from "./useToken";
 
 async function registerUser(credentials) {
   const url = "https://localhost:7231/api/Account/register";
@@ -24,13 +22,18 @@ export function Register({ setToken }) {
   // TODO const history = useHistory();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = await registerUser({
-      email,
-      password,
-      confirmPassword,
-    });
-    setToken(token);
+    const url = "https://localhost:7231/api/Account/register";
+
+    fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "text/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ email, password, confirmPassword }),
+    }).then((data) => setToken(data.json()));
+
     try {
       // TODO then(history.push("/"));
     } catch (e) {
