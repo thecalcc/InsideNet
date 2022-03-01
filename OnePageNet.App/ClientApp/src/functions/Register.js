@@ -1,40 +1,38 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { setTokenSourceMapRange } from "typescript";
+import useToken from "./useToken";
 
-export function Register(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState();
-  const history = useHistory();
+async function registerUser(credentials) {
+  const url = "https://localhost:7231/api/Account/register";
 
-  const handleSubmit = async () => {
-    const url = "https://localhost:7231/api/Account/register";
+  return fetch(url, {
+    method: "POST",
+    mode: "cors",
+    headers: {
+      "Content-Type": "text/json",
+      "Access-Control-Allow-Origin": "*",
+    },
+    body: JSON.stringify(credentials),
+  }).then((data) => data.json());
+}
 
-    const register = async () => {
-      const res = fetch(url, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ email, password, confirmPassword }),
-      });
+export function Register({ setToken }) {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+  // TODO const history = useHistory();
 
-      await res.then((response) => {
-        if (response.ok) {
-          console.log(response.data);
-          setIsLoggedIn(true);
-        } else {
-          console.log("Login failed");
-          setIsLoggedIn(false);
-        }
-      });
-    };
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = await registerUser({
+      email,
+      password,
+      confirmPassword,
+    });
+    setToken(token);
     try {
-      await register().then(history.push("/"));
+      // TODO then(history.push("/"));
     } catch (e) {
       console.log(e.error);
     }
