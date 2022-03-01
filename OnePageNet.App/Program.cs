@@ -1,13 +1,11 @@
+using System.Text;
 using AutoMapper;
-using Hangfire;
-using Hangfire.Storage.SQLite;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Options;
 using OnePageNet.App.Services;
 using OnePageNet.App.Services.Interfaces;
 
@@ -25,16 +23,28 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, OnePageNetDbContext>();
 
-builder.Services.AddAuthentication()
-    .AddIdentityServerJwt();
+builder.Services.AddSession();
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new
+            SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes
+                (builder.Configuration["Jwt:Key"]))
+    };
+});
+
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-// builder.Services.Configure<SendGridOptions>(builder.Configuration);
-
-// builder.Services
-//     .AddFluentEmail("testSender@test.test")
-//     .AddRazorRenderer();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -62,6 +72,18 @@ else
 {
     app.UseHsts();
 }
+
+app.UseSession();
+app.Use(async (context, next) =>
+{
+    var token = context.Session.GetString("Token");
+    if (!string.IsNullOrEmpty(token))
+    {
+        context.Request.Headers.Add("Authorization", "Bearer " + token);
+    }
+
+    await next();
+});
 
 app.UseSwaggerUI(options =>
 {

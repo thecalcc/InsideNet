@@ -1,65 +1,84 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace OnePageNet.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController : Controller
+public class AuthenticationController : Controller
 {
     private readonly ILogger _logger;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
+
+    private readonly ITokenService _tokenService;
+
+    // TODO Fix this - don't inject the database into the controller directly !!!!!!!!!!!!!!!!!!!
+    private readonly OnePageNetDbContext _dbContext;
+    private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AccountController(
+    public AuthenticationController(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService,
+        ITokenService tokenService,
+        OnePageNetDbContext dbContext,
+        IConfiguration configuration,
         ILoggerFactory loggerFactory)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _emailService = emailService;
-        _logger = loggerFactory.CreateLogger<AccountController>();
+        _tokenService = tokenService;
+        _dbContext = dbContext;
+        _configuration = configuration;
+        _logger = loggerFactory.CreateLogger<AuthenticationController>();
     }
 
-    [HttpPost("login")]
+    [HttpPost]
+    [Route("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
         var result =
             await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, false);
 
-        if (result.Succeeded)
-        {
-            _logger.LogInformation(1, "User logged in");
-            return Ok();
-        }
+        if (result != SignInResult.Success) return BadRequest(loginDto);
 
-        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        return BadRequest(loginDto);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
 
+        var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],
+            _configuration["Jwt:Issuer"], user);
+
+        if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
+
+        HttpContext.Session.SetString("Token", generatedToken);
+        return Ok(generatedToken);
     }
 
     [HttpPost("register")]
     public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
-        
+
         var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
         var result = await _userManager.CreateAsync(user, model.Password);
-        
+
         if (!result.Succeeded)
         {
-            AddErrors(result);
             return BadRequest("You did not register successfully");
         }
 
-        // TODO Front end has to send us a RememberMe param -> isPersistent
         await _signInManager.SignInAsync(user, false);
 
         _logger.LogInformation(3, "User account created successfully");
@@ -95,9 +114,9 @@ public class AccountController : Controller
         if (!ModelState.IsValid) return forgotPasswordDto;
         var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
 
-        Url.Action("ResetPassword", "Account",
+        Url.Action("ResetPassword", "Authentication",
             new {userId = user.Id}, HttpContext.Request.Scheme);
-        
+
         await _emailService.SendResetPasswordEmail(forgotPasswordDto.Email);
         return Ok();
     }
@@ -114,12 +133,6 @@ public class AccountController : Controller
         var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Code, resetPasswordDto.Password);
         if (result.Succeeded) return Ok();
 
-        AddErrors(result);
         return BadRequest(result);
-    }
-
-    private void AddErrors(IdentityResult result)
-    {
-        foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
     }
 }
