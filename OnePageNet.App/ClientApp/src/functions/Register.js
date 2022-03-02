@@ -22,17 +22,21 @@ export function Register({ setToken }) {
   // TODO const history = useHistory();
 
   const handleSubmit = async (e) => {
-    const url = "https://localhost:7231/api/Account/register";
+    e.preventDefault();
+    const url = "https://localhost:7231/api/authentication/register";
 
-    fetch(url, {
+    await fetch(url, {
       method: "POST",
       mode: "cors",
+      "Access-Control-Allow-Origin": "https://localhost:44476/",
       headers: {
         "Content-Type": "text/json",
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ email, password, confirmPassword }),
-    }).then((data) => setToken(data.json()));
+    })
+      .then((data) => data.json())
+      .then((data) => setToken(JSON.stringify(data)));
 
     try {
       // TODO then(history.push("/"));
@@ -42,7 +46,7 @@ export function Register({ setToken }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={e => handleSubmit(e)}>
       <div className="container">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>

@@ -1,46 +1,36 @@
-import React, { useState} from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export function Login({setToken}) {
+export function Login({ setToken }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const [isLoggedIn, setIsLoggedIn] = useState();
 
 
-  const handleSubmit = async () => {
-    const postUrl = "https://localhost:7231/api/Account/login";
 
-    const login = async () => {
-      const res = fetch(postUrl, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "text/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const postUrl = "https://localhost:7231/api/authentication/login";
 
-      await res.then((response) => {        
-        if (response.ok) {
-          setIsLoggedIn(x => x = true);
-        } else {
-          console.log("Login failed");
-          setIsLoggedIn(false);
-        }
-      });
-    };
-
-    try{
-     await login().then(history.push("/"));
-    } catch(e){
-      console.log(e.error);
-    }
+   await fetch(postUrl, {
+     method: "POST",
+     mode: "cors",
+     "Access-Control-Allow-Origin": "https://localhost:44476/",
+     headers: {
+       //  "Content-Type": "text/json",
+       "Content-Type": "application/json",
+       Accept: "application/json",
+       "Access-Control-Allow-Origin": "*",
+     },
+     body: JSON.stringify({ email, password }),
+   })
+     .then((result) => result.json())
+     .then((result) => setToken(result));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="container">
         <h1>Login</h1>
         <p>Please fill in this form to login to an account.</p>
@@ -65,7 +55,7 @@ export function Login({setToken}) {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <input type="submit" value="Login" />
+        <input type="submit" value="Login" onClick={(e) => handleSubmit(e)} />
       </div>
     </form>
   );
