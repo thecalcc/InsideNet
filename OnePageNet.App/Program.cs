@@ -42,6 +42,21 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.AddCors(c =>
+    {
+        c.AddPolicy("AllowOrigin",
+            options => options
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+        c.AddPolicy("FrontendOrigin",
+            opt =>
+                opt.WithOrigins(" https://localhost:44476/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+    }
+);
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
@@ -94,6 +109,11 @@ app.UseSwaggerUI(options =>
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseCors(corsPolicyBuilder => corsPolicyBuilder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 app.UseAuthentication();
 app.UseIdentityServer();
