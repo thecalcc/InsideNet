@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +54,10 @@ public class AuthenticationController : Controller
 
         if (result != SignInResult.Success) return BadRequest(loginDto);
 
+        //TODO Fix - shouldn't use the DB from the controller
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+
+        if (user == null)return BadRequest(loginDto);
 
         var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],
             _configuration["Jwt:Issuer"], user);
@@ -73,18 +74,19 @@ public class AuthenticationController : Controller
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
 
         var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
-        var result = await _userManager.CreateAsync(user, model.Password);
+        await _userManager.CreateAsync(user, model.Password);
 
-        if (!result.Succeeded)
-        {
-            return BadRequest("You did not register successfully");
-        }
+        var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],
+            _configuration["Jwt:Issuer"], user);
+
+        if (string.IsNullOrEmpty(generatedToken)) return BadRequest(model);
 
         await _signInManager.SignInAsync(user, false);
 
         _logger.LogInformation(3, "User account created successfully");
 
-        return Ok();
+        HttpContext.Session.SetString("Token", generatedToken);
+        return Ok(generatedToken);
     }
 
     [HttpPost("logoff")]

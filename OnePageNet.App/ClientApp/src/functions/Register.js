@@ -1,19 +1,4 @@
-import { data } from "jquery";
 import React, { useState } from "react";
-
-async function registerUser(credentials) {
-  const url = "https://localhost:7231/api/Account/register";
-
-  return fetch(url, {
-    method: "POST",
-    mode: "cors",
-    headers: {
-      "Content-Type": "text/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json());
-}
 
 export function Register({ setToken }) {
   const [email, setEmail] = useState();
@@ -28,15 +13,15 @@ export function Register({ setToken }) {
     await fetch(url, {
       method: "POST",
       mode: "cors",
-      "Access-Control-Allow-Origin": "https://localhost:44476/",
       headers: {
-        "Content-Type": "text/json",
+        "Content-Type": "application/json",
+        Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({ email, password, confirmPassword }),
     })
       .then((data) => data.json())
-      .then((data) => setToken(JSON.stringify(data)));
+      .then((data) => setToken(data));
 
     try {
       // TODO then(history.push("/"));

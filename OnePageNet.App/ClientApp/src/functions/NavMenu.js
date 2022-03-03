@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Collapse,
   Container,
@@ -11,8 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
 
-export const NavMenu = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState();
+export const NavMenu = ({ setToken, token }) => {
   const [collapsed, setCollapsed] = useState();
 
   return (
@@ -40,7 +39,7 @@ export const NavMenu = () => {
                   Home
                 </NavLink>
               </NavItem>
-              {isLoggedIn === false ? (
+              {token == "" || token == undefined ? (
                 <>
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/register">
@@ -54,7 +53,9 @@ export const NavMenu = () => {
                   </NavItem>
                 </>
               ) : (
-                <button onClick={() => setIsLoggedIn(false)}>Log Out</button>
+                <NavItem>
+                  <button onClick={setToken("")}>Log Out</button>
+                </NavItem>
               )}
             </ul>
           </Collapse>

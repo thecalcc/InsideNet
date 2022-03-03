@@ -7,8 +7,6 @@ export function Login({ setToken }) {
   const [password, setPassword] = useState("");
   const history = useHistory();
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const postUrl = "https://localhost:7231/api/authentication/login";
@@ -16,9 +14,7 @@ export function Login({ setToken }) {
    await fetch(postUrl, {
      method: "POST",
      mode: "cors",
-     "Access-Control-Allow-Origin": "https://localhost:44476/",
      headers: {
-       //  "Content-Type": "text/json",
        "Content-Type": "application/json",
        Accept: "application/json",
        "Access-Control-Allow-Origin": "*",
