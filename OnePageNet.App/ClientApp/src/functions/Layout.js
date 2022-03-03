@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
 import { Home } from "./Home";
 import { Register } from "./Register";
 import { Login } from "./Login";
+import useToken from "./useToken";
 
-export function Layout({ setToken, token }) {
+export function Layout() {
+  const { token, setToken } = useToken();
+
   return (
     <div>
-      <NavMenu token={token} setToken={setToken} />
-      {token === null || token === "" || token === undefined ? (
+      <NavMenu setToken={setToken} token={token} />
+      {token != "" ? (
         <>
           <Route exact path="/">
             <Home />
           </Route>
           <Route exact path="/register">
-            <Register token={token} setToken={setToken} />
+            <Register setToken={setToken} />
           </Route>
           <Route exact path="/login">
-            <Login token={token} setToken={setToken} />
+            <Login setToken={setToken} />
           </Route>
         </>
       ) : (
@@ -27,7 +30,7 @@ export function Layout({ setToken, token }) {
             <Home />
           </Route>
         </>
-      )}{" "}
+      )}
     </div>
   );
 }

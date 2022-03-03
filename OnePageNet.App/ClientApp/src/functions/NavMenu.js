@@ -11,7 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
 
-export const NavMenu = ({ setToken, token }) => {
+export function NavMenu({setToken, token}) {
   const [collapsed, setCollapsed] = useState();
 
   return (
@@ -39,7 +39,7 @@ export const NavMenu = ({ setToken, token }) => {
                   Home
                 </NavLink>
               </NavItem>
-              {token == "" || token == undefined ? (
+              {token == undefined ? (
                 <>
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/register">
