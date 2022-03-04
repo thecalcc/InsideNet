@@ -17,7 +17,6 @@ public class AuthenticationController : Controller
     private readonly ILogger _logger;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
-
     private readonly ITokenService _tokenService;
 
     // TODO Fix this - don't inject the database into the controller directly !!!!!!!!!!!!!!!!!!!
