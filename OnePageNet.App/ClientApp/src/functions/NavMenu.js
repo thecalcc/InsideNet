@@ -11,8 +11,14 @@ import {
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
 
-export const NavMenu = ({ setToken, token }) => {
+export function NavMenu({setToken, token}) {
   const [collapsed, setCollapsed] = useState();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setToken(null);
+    sessionStorage.removeItem("token");
+  } 
 
   return (
     <header>
@@ -27,19 +33,29 @@ export const NavMenu = ({ setToken, token }) => {
                 <NavLink tag={Link} to="/register">
                   Register
                 </NavLink>
-              </li>
-              <li>
-                <NavLink tag={Link} to="/login">
-                  LogIn
-                </NavLink>
-              </li>
-            </>
-          ) : (
-            <NavItem>
-              <button onClick={setToken("")}>Log Out</button>
-            </NavItem>
-          )}
-        </ul>
+
+              </NavItem>
+              {token == null ? (
+                <>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/register">
+                      Register
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/login">
+                      LogIn
+                    </NavLink>
+                  </NavItem>
+                </>
+              ) : (
+                <NavItem>
+                  <button onClick={(e) => handleClick(e)}>Log Out</button>
+                </NavItem>
+              )}
+            </ul>
+          </Collapse>
+        </Container>
       </Navbar>
     </header >
   );

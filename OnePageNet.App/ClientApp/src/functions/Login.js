@@ -11,18 +11,21 @@ export function Login({ setToken }) {
     e.preventDefault();
     const postUrl = "https://localhost:7231/api/authentication/login";
 
-   await fetch(postUrl, {
-     method: "POST",
-     mode: "cors",
-     headers: {
-       "Content-Type": "application/json",
-       Accept: "application/json",
-       "Access-Control-Allow-Origin": "*",
-     },
-     body: JSON.stringify({ email, password }),
-   })
-     .then((result) => result.json())
-     .then((result) => setToken(result));
+    await fetch(postUrl, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({ email, password }),
+    })
+      .then((result) => result.json())
+      .then((result) => {
+        setToken(result);
+        sessionStorage.setItem("token", JSON.stringify(result));
+      });
   };
 
   return (

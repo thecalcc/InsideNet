@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useToken from "./useToken";
 
 export function Register({ setToken }) {
   const [email, setEmail] = useState();
@@ -31,7 +32,7 @@ export function Register({ setToken }) {
   };
 
   return (
-    <form onSubmit={e => handleSubmit(e)}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <div className="container">
         <h1>Register</h1>
         <p>Please fill in this form to create an account.</p>
