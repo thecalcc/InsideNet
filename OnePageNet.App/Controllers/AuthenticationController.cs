@@ -18,7 +18,6 @@ public class AuthenticationController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
-
     // TODO Fix this - don't inject the database into the controller directly !!!!!!!!!!!!!!!!!!!
     private readonly OnePageNetDbContext _dbContext;
     private readonly IConfiguration _configuration;

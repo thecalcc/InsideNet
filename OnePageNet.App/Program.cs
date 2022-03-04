@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services;
 using OnePageNet.App.Services.Interfaces;
 
@@ -57,21 +59,22 @@ builder.Services.AddCors(c =>
     }
 );
 
+var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+
+var mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
-builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
-builder.Services.AddScoped<IDatabaseService<MessageEntity>, MessageEntityDatabaseService>();
-builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
-
-var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
-
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddScoped<DatabaseService<PostDto, PostEntity>, PostEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<CommentDto, CommentEntity>, CommentEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<MessageDto, MessageEntity>, MessageEntityDatabaseService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
 
 builder.Services.AddMvc();
 

@@ -8,7 +8,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<PostEntity, PostDto>().ReverseMap();
+        // CreateMap<PostEntity, PostDto>().ReverseMap();
         CreateMap<CommentEntity, CommentDto>().ReverseMap();
         CreateMap<GroupEntity, GroupDTO>().ReverseMap();
         CreateMap<MessageEntity, MessageDto>().ReverseMap();
