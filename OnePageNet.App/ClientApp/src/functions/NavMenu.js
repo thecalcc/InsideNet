@@ -9,7 +9,7 @@ import {
   NavLink,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import "./NavMenu.css";
+import "./styles/NavMenu.css";
 
 export function NavMenu({ setToken, token }) {
   const [collapsed, setCollapsed] = useState();
