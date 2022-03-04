@@ -22,7 +22,10 @@ export function Login({ setToken }) {
       body: JSON.stringify({ email, password }),
     })
       .then((result) => result.json())
-      .then((result) => setToken(result));
+      .then((result) => {
+        setToken(result);
+        sessionStorage.setItem("token", JSON.stringify(result));
+      });
   };
 
   return (

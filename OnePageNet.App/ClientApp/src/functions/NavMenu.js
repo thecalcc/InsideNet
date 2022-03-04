@@ -14,6 +14,12 @@ import "./NavMenu.css";
 export function NavMenu({setToken, token}) {
   const [collapsed, setCollapsed] = useState();
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    setToken(null);
+    sessionStorage.removeItem("token");
+  } 
+
   return (
     <header>
       <Navbar
@@ -39,7 +45,7 @@ export function NavMenu({setToken, token}) {
                   Home
                 </NavLink>
               </NavItem>
-              {token == undefined ? (
+              {token == null ? (
                 <>
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/register">
@@ -54,7 +60,7 @@ export function NavMenu({setToken, token}) {
                 </>
               ) : (
                 <NavItem>
-                  <button onClick={setToken("")}>Log Out</button>
+                  <button onClick={(e) => handleClick(e)}>Log Out</button>
                 </NavItem>
               )}
             </ul>
