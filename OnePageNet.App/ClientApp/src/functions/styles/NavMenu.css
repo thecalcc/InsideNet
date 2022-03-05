@@ -10,6 +10,8 @@
     background-color: #3d3c3c;
     align-items: center;
     text-transform: uppercase;
+    height: 8vh;
+    padding:0;
 }
 
 .menuLogo{

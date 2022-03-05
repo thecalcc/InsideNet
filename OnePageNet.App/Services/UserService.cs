@@ -51,13 +51,6 @@ public class UserService : IUserService
         return _dbContext.Users.Any(e => e.Id.ToString() == id);
     }
 
-    public async Task AddAsync(UserDto userDto)
-    {
-        // TODO propaby fix -> first fetch 
-        await _dbContext.Users.AddAsync(_mapper.Map<ApplicationUser>(userDto));
-        await _dbContext.SaveChangesAsync();
-    }
-
     public async Task<bool> AttachUser(UserDto userDto)
     {
         var user = await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == userDto.Id);

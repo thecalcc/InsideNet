@@ -72,7 +72,7 @@ public class AuthenticationController : Controller
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
 
-        var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
+        var user = new ApplicationUser {UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, DoB = model.DoB, MediaURI = model.MediaURI, PhoneNumber = model.PhoneNumber, Gender = model.Gender};
         await _userManager.CreateAsync(user, model.Password);
 
         var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],

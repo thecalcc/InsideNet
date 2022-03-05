@@ -61,15 +61,6 @@ public class UsersController : Controller
         return NoContent();
     }
 
-    [Route("create")]
-    [HttpPost]
-    public async Task<ActionResult<UserDto>> Create([FromBody] UserDto userDto)
-    {
-        await _userService.AttachUser(userDto);
-        await _userService.AddAsync(userDto);
-        return CreatedAtAction("Get", new {id = userDto.Id}, userDto);
-    }
-
     [Route("delete/{id}")]
     [HttpDelete]
     public async Task<IActionResult> Delete(string id)

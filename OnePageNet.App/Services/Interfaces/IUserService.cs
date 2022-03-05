@@ -10,7 +10,6 @@ public interface IUserService
     void Update(UserDto userDto);
     Task SaveChangesAsync();
     bool Exists(string id);
-    Task AddAsync(UserDto userDto);
     Task<bool> AttachUser(UserDto userDto);
     Task<bool> Remove(string id);
 }
