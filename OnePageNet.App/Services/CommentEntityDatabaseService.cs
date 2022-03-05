@@ -12,11 +12,12 @@ namespace OnePageNet.App.Services
         IDatabaseService<CommentDto, CommentEntity>
     {
         private readonly OnePageNetDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CommentEntityDatabaseService(OnePageNetDbContext dbContext) : base(dbContext,
-            new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); })))
+        public CommentEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<bool> AttachUser(CommentDto entity)

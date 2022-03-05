@@ -11,10 +11,8 @@ public class PostEntityDatabaseService : DatabaseService<PostDto, PostEntity>
 {
     private readonly OnePageNetDbContext _dbContext;
 
-    public PostEntityDatabaseService(OnePageNetDbContext dbContext)
-        : base(dbContext,
-            new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); }))
-            )
+    public PostEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
+        : base(dbContext, mapper)
     {
         _dbContext = dbContext;
     }

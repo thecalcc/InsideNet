@@ -13,8 +13,8 @@ namespace OnePageNet.App.Services
     {
         private readonly OnePageNetDbContext _dbContext;
 
-        public MessageEntityDatabaseService(OnePageNetDbContext dbContext)
-            : base(dbContext, new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); })))
+        public MessageEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
+            : base(dbContext, mapper)
         {
             _dbContext = dbContext;
         }

@@ -25,7 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, OnePageNetDbContext>();
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -60,10 +60,9 @@ builder.Services.AddCors(c =>
     }
 );
 
-var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
-
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+// var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+// var mapper = mapperConfig.CreateMapper();
+// builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();

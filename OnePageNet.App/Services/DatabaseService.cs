@@ -12,9 +12,9 @@ public class DatabaseService<T, TG> : IDatabaseService<T,TG>
     where TG : BaseEntity
 {
     private readonly OnePageNetDbContext _dbContext;
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
 
-    public DatabaseService(OnePageNetDbContext dbContext, Mapper mapper)
+    public DatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
         _mapper = mapper;

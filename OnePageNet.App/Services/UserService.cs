@@ -11,12 +11,12 @@ namespace OnePageNet.App.Services;
 public class UserService : IUserService
 {
     private readonly OnePageNetDbContext _dbContext;
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
 
-    public UserService(OnePageNetDbContext dbContext)
+    public UserService(OnePageNetDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
-        _mapper = new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); }));
+        _mapper = mapper;
     }
 
     public async Task<List<UserDto>> GetAll()
