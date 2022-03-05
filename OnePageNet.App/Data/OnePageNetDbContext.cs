@@ -27,7 +27,7 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
         UpdateDateColumns();
         return base.SaveChangesAsync(cancellationToken);
     }
-
+    
     public override int SaveChanges()
     {
         UpdateDateColumns();
@@ -39,12 +39,6 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
         var entries = ChangeTracker
             .Entries()
             .Where(e => e.Entity is BaseEntity && e.State is EntityState.Added or EntityState.Modified);
-
-        foreach (var entityEntry in ChangeTracker.Entries()
-                     .Where(x => x.Entity is IdentityUser && x.State is EntityState.Added))
-        {
-            ((IdentityUser) entityEntry.Entity).Id = Guid.NewGuid().ToString();
-        }
 
         foreach (var entityEntry in entries)
         {

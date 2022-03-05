@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Net.Mime;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
+using ReturnStatementSyntax = Microsoft.CodeAnalysis.CSharp.Syntax.ReturnStatementSyntax;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace OnePageNet.App.Controllers;
@@ -18,9 +22,8 @@ public class AuthenticationController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
-
-    // TODO Fix this - don't inject the database into the controller directly !!!!!!!!!!!!!!!!!!!
-    private readonly OnePageNetDbContext _dbContext;
+    private readonly IMapper _mapper;
+    private readonly IUserService _userService;
     private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
 
@@ -29,7 +32,8 @@ public class AuthenticationController : Controller
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService,
         ITokenService tokenService,
-        OnePageNetDbContext dbContext,
+        IMapper mapper,
+        IUserService userService,
         IConfiguration configuration,
         ILoggerFactory loggerFactory)
     {
@@ -37,7 +41,8 @@ public class AuthenticationController : Controller
         _signInManager = signInManager;
         _emailService = emailService;
         _tokenService = tokenService;
-        _dbContext = dbContext;
+        _mapper = mapper;
+        _userService = userService;
         _configuration = configuration;
         _logger = loggerFactory.CreateLogger<AuthenticationController>();
     }
@@ -48,18 +53,20 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
+        
+        var user = await _userService.GetByEmail(loginDto.Email);
+        
         var result =
-            await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, loginDto.RememberMe, false);
+            await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
         if (result != SignInResult.Success) return BadRequest(loginDto);
 
-        //TODO Fix - shouldn't use the DB from the controller
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email);
+        var dto = await _userService.GetByEmail(loginDto.Email);
 
-        if (user == null)return BadRequest(loginDto);
+        if (dto.Id == null) return BadRequest("There's no such user");
 
-        var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],
-            _configuration["Jwt:Issuer"], user);
+        var generatedToken = await _tokenService.BuildToken(_configuration["Jwt:Key"],
+            _configuration["Jwt:Issuer"], dto.Id);
 
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
@@ -68,17 +75,33 @@ public class AuthenticationController : Controller
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<string>> Register([FromBody] RegisterDto model)
+    public async Task<ActionResult<string>> Register([FromBody] RegisterDto registerDto)
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
 
-        var user = new ApplicationUser {UserName = model.Username, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, DoB = model.DoB, MediaURI = model.MediaURI, PhoneNumber = model.PhoneNumber, Gender = model.Gender};
-        await _userManager.CreateAsync(user, model.Password);
+        // var user = _mapper.Map<ApplicationUser>(registerDto);
+        var user = new ApplicationUser
+        {
+            UserName = registerDto.Username,
+            Email = registerDto.Email,
+            FirstName = registerDto.FirstName,
+            LastName = registerDto.LastName,
+            DoB = registerDto.DoB,
+            MediaURI = registerDto.MediaURI,
+            PhoneNumber = registerDto.PhoneNumber,
+            Gender = registerDto.Gender
+        };
 
-        var generatedToken = _tokenService.BuildToken(_configuration["Jwt:Key"],
-            _configuration["Jwt:Issuer"], user);
+        await _userManager.CreateAsync(user, registerDto.Password);
 
-        if (string.IsNullOrEmpty(generatedToken)) return BadRequest(model);
+        var registeredUser = await _userService.GetByEmail(registerDto.Email);
+
+        if (string.IsNullOrEmpty(registeredUser.Id)) return BadRequest("Something went wrong on our end.");
+
+        var generatedToken = await _tokenService.BuildToken(_configuration["Jwt:Key"],
+            _configuration["Jwt:Issuer"], registeredUser.Id);
+
+        if (string.IsNullOrEmpty(generatedToken)) return BadRequest(registerDto);
 
         await _signInManager.SignInAsync(user, false);
 

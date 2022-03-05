@@ -8,8 +8,8 @@ using OnePageNet.App.Services.Interfaces;
 namespace OnePageNet.App.Services;
 
 public class DatabaseService<T, TG> : IDatabaseService<T, TG>
-    where T : BaseDTO
-    where TG : BaseEntity
+    where T : BaseEntity
+    where TG : BaseDTO
 {
     private readonly OnePageNetDbContext _dbContext;
     private readonly IMapper _mapper;
@@ -20,24 +20,24 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
         _mapper = mapper;
     }
 
-    public async Task<List<T>> ToListAsync()
+    public async Task<List<TG>> ToListAsync()
     {
-        return _mapper.Map<List<T>>(await _dbContext.Set<TG>().ToListAsync());
+        return _mapper.Map<List<TG>>(await _dbContext.Set<T>().ToListAsync());
     }
 
-    public virtual async Task<bool> AttachUser(T dto)
+    public virtual async Task<bool> AttachUser(TG dto)
     {
         return false;
     }
 
     public async Task<T> FindById(string? id)
     {
-        return _mapper.Map<T>(await _dbContext.Set<TG>().FirstOrDefaultAsync(x => x.Id == id));
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void Update(T dto)
+    public void Update(TG dto)
     {
-        _dbContext.Entry(_mapper.Map<TG>(dto)).State = EntityState.Modified;
+        _dbContext.Entry(_mapper.Map<T>(dto)).State = EntityState.Modified;
     }
 
     public async Task SaveChangesAsync()
@@ -45,20 +45,21 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task AddAsync(T dto)
+    public async Task AddAsync(TG dto)
     {
-        await _dbContext.Set<TG>().AddAsync(_mapper.Map<TG>(dto));
+        await _dbContext.Set<T>().AddAsync(_mapper.Map<T>(dto));
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public void Remove(T entity)
+    public bool Remove(T entity)
     {
-        _dbContext.Set<TG>().Remove(_mapper.Map<TG>(entity));
+        var deleted = _dbContext.Set<T>().Remove(entity);
+        return deleted.State == EntityState.Deleted;
     }
 
     public bool Exists(string id)
     {
-        return _dbContext.Set<TG>().Any(e => e.Id.ToString() == id);
+        return _dbContext.Set<T>().Any(e => e.Id.ToString() == id);
     }
 }

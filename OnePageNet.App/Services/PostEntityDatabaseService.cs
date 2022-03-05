@@ -6,7 +6,7 @@ using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Services;
 
-public class PostEntityDatabaseService : DatabaseService<PostDto, PostEntity>
+public class PostEntityDatabaseService : DatabaseService<PostEntity, PostDto>
 {
     private readonly OnePageNetDbContext _dbContext;
 

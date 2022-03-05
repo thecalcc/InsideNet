@@ -1,4 +1,5 @@
-﻿using OnePageNet.App.Data.Models;
+﻿using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 
 namespace OnePageNet.App.Services.Interfaces;
 
@@ -10,6 +11,7 @@ public interface IUserService
     void Update(UserDto userDto);
     Task SaveChangesAsync();
     bool Exists(string id);
+    Task<ApplicationUser> GetUserEntityById(string id);
     Task<bool> AttachUser(UserDto userDto);
     Task<bool> Remove(string id);
 }

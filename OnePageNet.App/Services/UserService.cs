@@ -24,10 +24,16 @@ public class UserService : IUserService
                throw new Exception("No users found");
     }
 
+    public async Task<ApplicationUser> GetUserEntityById(string id)
+    {
+        return await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id) ??
+               throw new Exception("User with the given id wasn't found");
+    }
+
     public async Task<UserDto> GetById(string id)
     {
         return _mapper.Map<UserDto>(await _dbContext.Users.SingleOrDefaultAsync(x => x.Id == id)) ??
-               throw new Exception("User with the given email wasn't found");
+               throw new Exception("User with the given id wasn't found");
     }
 
     public async Task<UserDto> GetByEmail(string email)

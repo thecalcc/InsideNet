@@ -13,11 +13,11 @@ public abstract class BaseController<T, TG> : ControllerBase
     where T : BaseEntity
     where TG : BaseDTO
 {
-    private readonly IDatabaseService<TG, T> _databaseService;
+    private readonly IDatabaseService<T, TG> _databaseService;
     private readonly IMapper _mapper;
 
     protected BaseController(
-        IDatabaseService<TG, T> databaseService,
+        IDatabaseService<T, TG> databaseService,
         IMapper mapper)
     {
         _databaseService = databaseService;
@@ -29,7 +29,7 @@ public abstract class BaseController<T, TG> : ControllerBase
     public async Task<ActionResult<IEnumerable<TG>>> GetAll()
     {
         var dtos = await _databaseService.ToListAsync();
-        
+
         if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
 
         return Ok(dtos);
@@ -47,10 +47,10 @@ public abstract class BaseController<T, TG> : ControllerBase
 
     [Route("update/{id}")]
     [HttpPut]
-    public async Task<IActionResult> UpdateEntity([FromRoute] string id,[FromBody] TG dto)
+    public async Task<IActionResult> UpdateEntity([FromRoute] string id, [FromBody] TG dto)
     {
         if (id != dto.Id) return BadRequest();
-        
+
         _databaseService.Update(dto);
 
         try
@@ -83,9 +83,10 @@ public abstract class BaseController<T, TG> : ControllerBase
         var entity = await _databaseService.FindById(id);
         if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
-        _databaseService.Remove(entity);
+        var deleted = _databaseService.Remove(entity);
         await _databaseService.SaveChangesAsync();
 
-        return NoContent();
+        if (deleted) return Ok(deleted);
+        return BadRequest("Didn't delete the entity successfully.");
     }
 }

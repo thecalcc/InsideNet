@@ -8,8 +8,8 @@ using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services
 {
-    public class CommentEntityDatabaseService : DatabaseService<CommentDto, CommentEntity>,
-        IDatabaseService<CommentDto, CommentEntity>
+    public class CommentEntityDatabaseService : DatabaseService<CommentEntity, CommentDto>,
+        IDatabaseService<CommentEntity, CommentDto>
     {
         private readonly OnePageNetDbContext _dbContext;
 

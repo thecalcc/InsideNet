@@ -70,9 +70,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<DatabaseService<PostDto, PostEntity>, PostEntityDatabaseService>();
-builder.Services.AddScoped<DatabaseService<CommentDto, CommentEntity>, CommentEntityDatabaseService>();
-builder.Services.AddScoped<DatabaseService<MessageDto, MessageEntity>, MessageEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
 

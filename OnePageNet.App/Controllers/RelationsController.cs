@@ -10,7 +10,7 @@ namespace OnePageNet.App.Controllers
     [ApiController]
     public class RelationsController : BaseController<RelationEntity, RelationDTO>
     {
-        public RelationsController(IDatabaseService<RelationDTO, RelationEntity> databaseService, IMapper mapper)
+        public RelationsController(IDatabaseService<RelationEntity, RelationDTO> databaseService, IMapper mapper)
             : base(databaseService, mapper)
         {
         }

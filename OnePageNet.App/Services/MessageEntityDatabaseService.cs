@@ -7,7 +7,8 @@ using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services
 {
-    public class MessageEntityDatabaseService : DatabaseService<MessageDto, MessageEntity>, IDatabaseService<MessageDto, MessageEntity>
+    public class MessageEntityDatabaseService : DatabaseService<MessageEntity, MessageDto>,
+        IDatabaseService<MessageEntity, MessageDto>
     {
         private readonly OnePageNetDbContext _dbContext;
 
