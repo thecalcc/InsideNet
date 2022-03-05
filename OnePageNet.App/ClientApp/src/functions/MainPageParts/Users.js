@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants"
 export function Users() {
   const [users, setUsers] = useState();
   const [userRelations, setUserRelations] = useState();
@@ -50,28 +50,30 @@ export function Users() {
             <th>Name</th>
             <th>Username</th>
             <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           {users &&
             users.map((user) =>
               user.id !== sessionStorage.currentUserId ? (
-                <>
-                  <tr key={user.id}>
-                    <td>
-                      {user.firstName} {user.lastName}
-                    </td>
-                    <td>{user.userName}</td>
-                    {userRelations &&
-                      userRelations.map((userRelation) =>
-                        user.userName === userRelation.targetUser ? (
-                          <td> {userRelation.userRelationship} </td>
-                        ) : (
-                          <></>
-                        )
+                <tr key={user.id}>
+                  <td>
+                    {user.firstName} {user.lastName}
+                  </td>
+                  <td>{user.userName}</td>
+                  {userRelations &&
+                    userRelations.map((userRelation) =>
+                      user.userName === userRelation.targetUser ? (
+                        <td> {userRelation.userRelationship} </td>
+                        // userRelation.userRelationship == PendingInvite ?
+                        // <td><button type="button" value={PendingInvite}>Reject Invite</button></td> :
+                        // <td><button type="button" value={AcceptInvite}>Accept Invite</button></td>
+                    ) : (
+                  <></>
+                  )
                       )}
-                  </tr>
-                </>
+                </tr>
               ) : (
                 <></>
               )
