@@ -74,6 +74,7 @@ builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityDatab
 builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityDatabaseService>();
 builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRelationsService, UserRelationsService>();
 builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
 
 builder.Services.AddMvc();

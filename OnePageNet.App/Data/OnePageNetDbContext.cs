@@ -21,6 +21,7 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
     public DbSet<UserGroupEntity> UserGroupEntities { get; set; }
     public DbSet<UserReactionEntity> UserReactionEntities { get; set; }
     public DbSet<UserRelationEntity> UserRelationEntities { get; set; }
+    public DbSet<RelationEntity> RelationEntities { get; set; }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

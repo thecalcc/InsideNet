@@ -24,6 +24,7 @@ export function Login({ setToken }) {
       .then((result) => {
         setToken(result);
         sessionStorage.setItem("token", JSON.stringify(result));
+        sessionStorage.setItem("email", email);
       })
       .then(history.push("/"));
   };
