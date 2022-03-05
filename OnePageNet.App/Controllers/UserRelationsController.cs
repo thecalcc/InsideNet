@@ -1,6 +1,4 @@
-﻿using System.Text;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;

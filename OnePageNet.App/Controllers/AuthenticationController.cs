@@ -3,13 +3,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.EntityFrameworkCore;
-using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
-using ReturnStatementSyntax = Microsoft.CodeAnalysis.CSharp.Syntax.ReturnStatementSyntax;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace OnePageNet.App.Controllers;
