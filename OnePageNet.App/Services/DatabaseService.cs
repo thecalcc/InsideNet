@@ -1,37 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services;
 
-public class DatabaseService<T> : IDatabaseService<T> where T : BaseEntity
+public class DatabaseService<T, TG> : IDatabaseService<T, TG>
+    where T : BaseEntity
+    where TG : BaseDTO
 {
     private readonly OnePageNetDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public DatabaseService(OnePageNetDbContext dbContext)
+    public DatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
-    public async Task<IEnumerable<T>> ToListAsync()
+    public async Task<List<TG>> ToListAsync()
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        return _mapper.Map<List<TG>>(await _dbContext.Set<T>().ToListAsync());
     }
 
-    public virtual async Task<bool> AttachUser(T entity)
-    {   
+    public virtual async Task<bool> AttachUser(TG dto)
+    {
         return false;
     }
 
-    public async Task<T> FindById(string? Id)
+    public async Task<T> FindById(string? id)
     {
-        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == Id);
+        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public void Update(T entity)
+    public void Update(TG dto)
     {
-        _dbContext.Entry(entity).State = EntityState.Modified;
+        _dbContext.Entry(_mapper.Map<T>(dto)).State = EntityState.Modified;
     }
 
     public async Task SaveChangesAsync()
@@ -39,20 +45,21 @@ public class DatabaseService<T> : IDatabaseService<T> where T : BaseEntity
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(TG dto)
     {
-        await _dbContext.Set<T>().AddAsync(entity);
+        await _dbContext.Set<T>().AddAsync(_mapper.Map<T>(dto));
 
         await _dbContext.SaveChangesAsync();
     }
 
-    public void Remove(T entity)
+    public bool Remove(T entity)
     {
-        _dbContext.Set<T>().Remove(entity);
+        var deleted = _dbContext.Set<T>().Remove(entity);
+        return deleted.State == EntityState.Deleted;
     }
 
-    public bool Exists(string Id)
+    public bool Exists(string id)
     {
-        return _dbContext.Set<T>().Any(e => e.Id.ToString() == Id);
+        return _dbContext.Set<T>().Any(e => e.Id.ToString() == id);
     }
 }

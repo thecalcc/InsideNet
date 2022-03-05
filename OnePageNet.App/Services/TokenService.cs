@@ -3,16 +3,25 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services;
 
 public class TokenService : ITokenService
 {
+    private readonly IUserService _userService;
     private const double EXPIRY_DURATION_MINUTES = 30;
 
-    public string BuildToken(string key, string issuer, ApplicationUser user)
+    public TokenService(IUserService userService)
     {
+        _userService = userService;
+    }
+    
+    public async Task<string> BuildToken(string key, string issuer, string userId)
+    {
+        var user = await _userService.GetUserEntityById(userId);
+        
         var claims = new[]
         {
             new Claim(ClaimTypes.Email, user.Email),

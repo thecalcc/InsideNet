@@ -10,7 +10,7 @@ namespace OnePageNet.App.Controllers;
 [ApiController]
 public class CommentsController : BaseController<CommentEntity, CommentDto>
 {
-    public CommentsController(IDatabaseService<CommentEntity> databaseService, IMapper mapper)
+    public CommentsController(IDatabaseService<CommentEntity, CommentDto> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

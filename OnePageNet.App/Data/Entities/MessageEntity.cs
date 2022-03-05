@@ -11,5 +11,5 @@ public class MessageEntity : BaseEntity
     public string DestinationId { get; set; }
     [Required] public virtual GroupEntity Destination { get; set; }
     [Required] public string Content { get; set; }
-    public string MediaUri { get; set; }
+    public string? MediaUri { get; set; }
 }

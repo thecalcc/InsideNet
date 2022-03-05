@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import {
-  Collapse,
-  Container,
   Navbar,
   NavbarBrand,
-  NavbarToggler,
   NavItem,
   NavLink,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import "./NavMenu.css";
+import "./styles/NavMenu.css";
 
 export function NavMenu({ setToken, token }) {
   const [collapsed, setCollapsed] = useState();
@@ -46,6 +43,13 @@ export function NavMenu({ setToken, token }) {
             </>
           ) : (
             <>
+              <li>
+                <NavItem>
+                  <NavLink tag={Link} to="/users">
+                    Users
+                  </NavLink>
+                </NavItem>
+              </li>
               <li>
                 <NavItem>
                   <button onClick={(e) => handleClick(e)}>Log Out</button>

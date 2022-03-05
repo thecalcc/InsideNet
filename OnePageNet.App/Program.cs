@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
+using OnePageNet.App.Data.Models;
 using OnePageNet.App.Services;
 using OnePageNet.App.Services.Interfaces;
 
@@ -23,6 +25,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, OnePageNetDbContext>();
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -57,21 +60,21 @@ builder.Services.AddCors(c =>
     }
 );
 
+// var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
+// var mapper = mapperConfig.CreateMapper();
+// builder.Services.AddSingleton(mapper);
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<IDatabaseService<PostEntity>, PostEntityDatabaseService>();
-builder.Services.AddScoped<IDatabaseService<CommentEntity>, CommentEntityDatabaseService>();
-builder.Services.AddScoped<IDatabaseService<MessageEntity>, MessageEntityDatabaseService>();
-builder.Services.AddScoped(typeof(IDatabaseService<>), typeof(DatabaseService<>));
-
-var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
-
-var mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityDatabaseService>();
+builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
 
 builder.Services.AddMvc();
 

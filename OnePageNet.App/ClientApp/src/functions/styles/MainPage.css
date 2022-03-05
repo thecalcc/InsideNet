@@ -1,0 +1,34 @@
+.main-page{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0%;
+    height: 84vh;
+}
+
+.main-page-center{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 40vw;
+    height: inherit;
+}
+
+.main-page-left{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30vw;
+    height: inherit;
+}
+
+.main-page-right{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 30vw;
+    height: inherit;
+}

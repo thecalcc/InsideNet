@@ -19,4 +19,22 @@ public class RegisterDto
     [Display(Name = "ConfirmPassword")]
     [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
     public string ConfirmPassword { get; set; }
+
+    [Required]
+    [DataType(DataType.DateTime)]
+    [Display(Name ="Date of birth")]
+    public DateTime DoB { get; set; }
+
+    [Required]
+    public string FirstName { get; set; }
+
+    [Required]
+    public string LastName { get; set; }
+
+    [Required]
+    public string Username { get; set; }
+
+    public string Gender { get; set; }
+    public string? PhoneNumber { get; set; }
+    public string? MediaURI { get; set; }
 }

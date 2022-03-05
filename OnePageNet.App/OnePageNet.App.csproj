@@ -14,6 +14,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="FluentEmail.Core" Version="3.0.0" />
         <PackageReference Include="FluentEmail.Razor" Version="3.0.0" />
         <PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
@@ -55,6 +56,9 @@
         <_ContentIncludedByDefault Remove="Views\UserReactionEntities\Details.cshtml" />
         <_ContentIncludedByDefault Remove="Views\UserReactionEntities\Edit.cshtml" />
         <_ContentIncludedByDefault Remove="Views\UserReactionEntities\Index.cshtml" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Converters" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
