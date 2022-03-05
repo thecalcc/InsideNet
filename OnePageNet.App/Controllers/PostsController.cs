@@ -10,7 +10,7 @@ namespace OnePageNet.App.Controllers;
 [ApiController]
 public class PostsController : BaseController<PostEntity, PostDto>
 {
-    public PostsController(IDatabaseService<PostEntity> databaseService, IMapper mapper)
+    public PostsController(IDatabaseService<PostDto, PostEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

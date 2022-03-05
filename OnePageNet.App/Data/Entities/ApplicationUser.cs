@@ -10,4 +10,9 @@ public class ApplicationUser : IdentityUser
     public virtual ICollection<UserReactionEntity> Reactions { get; set; }
     public virtual ICollection<PostEntity> Posts { get; set; }
     public virtual ICollection<UserGroupEntity> Groups { get; set; }
+    public string? MediaURI { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime DoB { get; set; }
+    public string? Gender { get; set; }
 }

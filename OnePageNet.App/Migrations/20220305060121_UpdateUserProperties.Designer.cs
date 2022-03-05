@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnePageNet.App.Data;
 
@@ -10,9 +11,10 @@ using OnePageNet.App.Data;
 namespace OnePageNet.App.Migrations
 {
     [DbContext(typeof(OnePageNetDbContext))]
-    partial class OnePageNetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220305060121_UpdateUserProperties")]
+    partial class UpdateUserProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
@@ -298,11 +300,14 @@ namespace OnePageNet.App.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DoB")
+                    b.Property<DateOnly>("DoB")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
@@ -317,6 +322,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
@@ -330,6 +336,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MediaURI")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -393,6 +400,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MediaUri")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PostId")
@@ -459,6 +467,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MediaUri")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("Read")
@@ -491,6 +500,7 @@ namespace OnePageNet.App.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MediaUri")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PosterId")

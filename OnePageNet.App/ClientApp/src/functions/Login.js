@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -25,7 +24,8 @@ export function Login({ setToken }) {
       .then((result) => {
         setToken(result);
         sessionStorage.setItem("token", JSON.stringify(result));
-      });
+      })
+      .then(history.push("/"));
   };
 
   return (

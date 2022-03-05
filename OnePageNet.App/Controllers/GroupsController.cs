@@ -11,7 +11,7 @@ namespace OnePageNet.App.Controllers;
 [ApiController]
 public class GroupEntitiesController : BaseController<GroupEntity, GroupDTO>
 {
-    public GroupEntitiesController(IDatabaseService<GroupEntity> databaseService, IMapper mapper)
+    public GroupEntitiesController(IDatabaseService<GroupDTO, GroupEntity> databaseService, IMapper mapper)
         : base(databaseService, mapper)
     {
     }

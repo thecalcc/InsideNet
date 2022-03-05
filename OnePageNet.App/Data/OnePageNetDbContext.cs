@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnePageNet.App.Data.Entities;
@@ -39,20 +40,26 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
             .Entries()
             .Where(e => e.Entity is BaseEntity && e.State is EntityState.Added or EntityState.Modified);
 
+        foreach (var entityEntry in ChangeTracker.Entries()
+                     .Where(x => x.Entity is IdentityUser && x.State is EntityState.Added))
+        {
+            ((IdentityUser) entityEntry.Entity).Id = Guid.NewGuid().ToString();
+        }
+
         foreach (var entityEntry in entries)
         {
             switch (entityEntry.State)
             {
                 case EntityState.Deleted:
-                    ((BaseEntity)entityEntry.Entity).DeletedAt = DateTime.Now;
+                    ((BaseEntity) entityEntry.Entity).DeletedAt = DateTime.Now;
                     break;
                 case EntityState.Added:
-                    ((BaseEntity)entityEntry.Entity).CreatedAt = DateTime.Now;
+                    ((BaseEntity) entityEntry.Entity).CreatedAt = DateTime.Now;
                     break;
             }
         }
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
