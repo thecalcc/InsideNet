@@ -13,11 +13,11 @@ public abstract class BaseController<T, TG> : ControllerBase
     where T : BaseEntity
     where TG : BaseDTO
 {
-    private readonly IDatabaseService<T> _databaseService;
+    private readonly IDatabaseService<TG, T> _databaseService;
     private readonly IMapper _mapper;
 
     protected BaseController(
-        IDatabaseService<T> databaseService,
+        IDatabaseService<TG, T> databaseService,
         IMapper mapper)
     {
         _databaseService = databaseService;
@@ -28,34 +28,30 @@ public abstract class BaseController<T, TG> : ControllerBase
     [Route("get-all")]
     public async Task<ActionResult<IEnumerable<TG>>> GetAll()
     {
-        var entities = await _databaseService.ToListAsync();
-
-        var dtos = (List<TG>) _mapper.Map<IEnumerable<TG>>(entities);
-
+        var dtos = await _databaseService.ToListAsync();
+        
         if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
 
         return Ok(dtos);
     }
 
-    [Route("get/{Id}")]
+    [Route("get/{id}")]
     [HttpGet]
-    public async Task<ActionResult<TG>> Get(string Id)
+    public async Task<ActionResult<TG>> Get(string id)
     {
-        var entity = await _databaseService.FindById(Id);
+        var entity = await _databaseService.FindById(id);
         if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
         return Ok(_mapper.Map<TG>(entity));
     }
 
-    [Route("update/{Id}")]
+    [Route("update/{id}")]
     [HttpPut]
-    public async Task<IActionResult> UpdateEntity([FromRoute] string Id,[FromBody] TG dto)
+    public async Task<IActionResult> UpdateEntity([FromRoute] string id,[FromBody] TG dto)
     {
-        if (Id != dto.Id) return BadRequest();
-
-        var entity = _mapper.Map<T>(dto);
-
-        _databaseService.Update(entity);
+        if (id != dto.Id) return BadRequest();
+        
+        _databaseService.Update(dto);
 
         try
         {
@@ -63,7 +59,7 @@ public abstract class BaseController<T, TG> : ControllerBase
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_databaseService.Exists(Id)) return NotFound();
+            if (!_databaseService.Exists(id)) return NotFound();
 
             throw;
         }
@@ -75,17 +71,16 @@ public abstract class BaseController<T, TG> : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TG>> Create([FromBody] TG dto)
     {
-        var entity = _mapper.Map<T>(dto);
-        await _databaseService.AttachUser(entity);
-        await _databaseService.AddAsync(entity);
+        await _databaseService.AttachUser(dto);
+        await _databaseService.AddAsync(dto);
         return CreatedAtAction("Get", new {id = dto.Id}, dto);
     }
 
-    [Route("delete/{Id}")]
+    [Route("delete/{id}")]
     [HttpDelete]
-    public async Task<IActionResult> Delete(string Id)
+    public async Task<IActionResult> Delete(string id)
     {
-        var entity = await _databaseService.FindById(Id);
+        var entity = await _databaseService.FindById(id);
         if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
         _databaseService.Remove(entity);
