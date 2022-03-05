@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
@@ -7,15 +8,15 @@ using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services
 {
-    public class CommentEntityDatabaseService : DatabaseService<CommentDto, CommentEntity>, IDatabaseService<CommentDto, CommentEntity>
+    public class CommentEntityDatabaseService : DatabaseService<CommentDto, CommentEntity>,
+        IDatabaseService<CommentDto, CommentEntity>
     {
         private readonly OnePageNetDbContext _dbContext;
-        private readonly Mapper _mapper;
 
-        public CommentEntityDatabaseService(OnePageNetDbContext dbContext, Mapper mapper) : base(dbContext, mapper)
+        public CommentEntityDatabaseService(OnePageNetDbContext dbContext) : base(dbContext,
+            new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); })))
         {
             _dbContext = dbContext;
-            _mapper = mapper;
         }
 
         public async Task<bool> AttachUser(CommentDto entity)

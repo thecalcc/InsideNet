@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
@@ -12,10 +13,10 @@ public class UserService : IUserService
     private readonly OnePageNetDbContext _dbContext;
     private readonly Mapper _mapper;
 
-    public UserService(OnePageNetDbContext dbContext, Mapper mapper)
+    public UserService(OnePageNetDbContext dbContext)
     {
         _dbContext = dbContext;
-        _mapper = mapper;
+        _mapper = new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); }));
     }
 
     public async Task<List<UserDto>> GetAll()

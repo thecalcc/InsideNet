@@ -1,18 +1,20 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services.Interfaces;
 
 namespace OnePageNet.App.Services;
 
-public class PostEntityDatabaseService : DatabaseService<PostDto, PostEntity>, IDatabaseService<PostDto, PostEntity>
+public class PostEntityDatabaseService : DatabaseService<PostDto, PostEntity>
 {
     private readonly OnePageNetDbContext _dbContext;
 
-    public PostEntityDatabaseService(OnePageNetDbContext dbContext, Mapper mapper)
-        : base(dbContext, mapper)
+    public PostEntityDatabaseService(OnePageNetDbContext dbContext)
+        : base(dbContext,
+            new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); }))
+            )
     {
         _dbContext = dbContext;
     }

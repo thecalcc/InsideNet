@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
+using OnePageNet.App.AutoMapper;
 using OnePageNet.App.Data;
 using OnePageNet.App.Data.Entities;
 using OnePageNet.App.Data.Models;
@@ -12,8 +13,8 @@ namespace OnePageNet.App.Services
     {
         private readonly OnePageNetDbContext _dbContext;
 
-        public MessageEntityDatabaseService(OnePageNetDbContext dbContext, Mapper mapper)
-            : base(dbContext, mapper)
+        public MessageEntityDatabaseService(OnePageNetDbContext dbContext)
+            : base(dbContext, new Mapper(new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); })))
         {
             _dbContext = dbContext;
         }
