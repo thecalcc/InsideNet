@@ -7,8 +7,8 @@ namespace OnePageNet.App.Controllers;
 
 public class MessagesController : BaseController<MessageEntity, MessageDto>
 {
-    public MessagesController(IDatabaseService<MessageEntity, MessageDto> databaseService, IMapper mapper)
-        : base(databaseService, mapper)
+    public MessagesController(IDatabaseService<MessageEntity, MessageDto> databaseService)
+        : base(databaseService)
     {
     }
 }

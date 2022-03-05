@@ -22,7 +22,6 @@ public class AuthenticationController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
-    private readonly IMapper _mapper;
     private readonly IUserService _userService;
     private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -32,7 +31,6 @@ public class AuthenticationController : Controller
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService,
         ITokenService tokenService,
-        IMapper mapper,
         IUserService userService,
         IConfiguration configuration,
         ILoggerFactory loggerFactory)
@@ -41,7 +39,6 @@ public class AuthenticationController : Controller
         _signInManager = signInManager;
         _emailService = emailService;
         _tokenService = tokenService;
-        _mapper = mapper;
         _userService = userService;
         _configuration = configuration;
         _logger = loggerFactory.CreateLogger<AuthenticationController>();
@@ -53,9 +50,9 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
-        
+
         var user = await _userService.GetByEmail(loginDto.Email);
-        
+
         var result =
             await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
@@ -71,7 +68,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(generatedToken);
+        return Ok(new {generatedToken, dto.Id});
     }
 
     [HttpPost("register")]

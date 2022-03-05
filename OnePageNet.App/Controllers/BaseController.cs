@@ -14,14 +14,11 @@ public abstract class BaseController<T, TG> : ControllerBase
     where TG : BaseDTO
 {
     private readonly IDatabaseService<T, TG> _databaseService;
-    private readonly IMapper _mapper;
 
     protected BaseController(
-        IDatabaseService<T, TG> databaseService,
-        IMapper mapper)
+        IDatabaseService<T, TG> databaseService)
     {
         _databaseService = databaseService;
-        _mapper = mapper;
     }
 
     [HttpGet]

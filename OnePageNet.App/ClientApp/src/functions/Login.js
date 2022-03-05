@@ -22,9 +22,10 @@ export function Login({ setToken }) {
     })
       .then((result) => result.json())
       .then((result) => {
-        setToken(result);
-        sessionStorage.setItem("token", JSON.stringify(result));
-        sessionStorage.setItem("email", email);
+        console.log(result);
+        setToken(result.generatedToken);
+        sessionStorage.setItem("token", result.generatedToken);
+        sessionStorage.setItem("currentUserId", result.id);
       })
       .then(history.push("/"));
   };
