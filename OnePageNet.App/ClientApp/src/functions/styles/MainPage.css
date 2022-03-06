@@ -9,8 +9,8 @@
 .main-page-center{
     display:flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
+    justify-content:left;
+    align-items: flex-start;
     width: 40vw;
     height: inherit;
 }

@@ -9,7 +9,7 @@ export function MainPage(props) {
         <>
             <div className='main-page'>
                 <MainPageLeft/>
-                <MainPageCenter className = 'main-page-center' />
+                <MainPageCenter className = 'main-page-center'/>
                 <MainPageRight/>
             </div>
         </>

@@ -43,7 +43,7 @@ export function Users() {
   }, [setUserRelations]);
   return (
     <div className="container">
-      <h3 className="p-3 text-center">React - Display a list of items</h3>
+      <h3 className="p-3 text-center">Users List</h3>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
