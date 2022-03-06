@@ -62,7 +62,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(generatedToken);
+        return Ok(new{ generatedToken, user.Id});
     }
 
     [HttpPost("register")]
@@ -70,7 +70,6 @@ public class AuthenticationController : Controller
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
 
-        // var user = _mapper.Map<ApplicationUser>(registerDto);
         var user = new ApplicationUser
         {
             UserName = registerDto.Username,
