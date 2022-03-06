@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using OnePageNet.Data.Data.Entities;
+using OnePageNet.Data.Data.Models;
+using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers
 {

@@ -58,7 +58,12 @@
         <_ContentIncludedByDefault Remove="Views\UserReactionEntities\Index.cshtml" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Converters" />
+      <ProjectReference Include="..\OnePageNet.Data\OnePageNet.Data.csproj" />
+      <ProjectReference Include="..\OnePageNet.Helpers\OnePageNet.Helpers.csproj" />
+      <ProjectReference Include="..\OnePageNet.Services\OnePageNet.Services.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Migrations" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

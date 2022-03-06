@@ -1,15 +1,13 @@
-using System.Reflection;
 using System.Text;
-using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using OnePageNet.App.AutoMapper;
-using OnePageNet.App.Data;
-using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services;
-using OnePageNet.App.Services.Interfaces;
+using OnePageNet.Data.Data;
+using OnePageNet.Data.Data.Entities;
+using OnePageNet.Data.Data.Models;
+using OnePageNet.Helpers.AutoMapper;
+using OnePageNet.Services.Services;
+using OnePageNet.Services.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +23,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>()
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, OnePageNetDbContext>();
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddSession();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -59,10 +57,6 @@ builder.Services.AddCors(c =>
                     .AllowAnyMethod());
     }
 );
-
-// var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
-// var mapper = mapperConfig.CreateMapper();
-// builder.Services.AddSingleton(mapper);
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllers();

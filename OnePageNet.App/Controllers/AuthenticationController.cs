@@ -1,11 +1,9 @@
-﻿using System.Net.Mime;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services.Interfaces;
+using OnePageNet.Data.Data.Entities;
+using OnePageNet.Data.Data.Models;
+using OnePageNet.Services.Services.Interfaces;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace OnePageNet.App.Controllers;
@@ -46,9 +44,9 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
-
+        
         var user = await _userService.GetByEmail(loginDto.Email);
-
+        
         var result =
             await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
@@ -64,7 +62,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(new {generatedToken, dto.Id});
+        return Ok(generatedToken);
     }
 
     [HttpPost("register")]

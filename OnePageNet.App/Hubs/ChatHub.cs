@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using OnePageNet.App.Data.Models;
+using OnePageNet.Data.Data.Models;
 
 namespace OnePageNet.App.Hubs;
 

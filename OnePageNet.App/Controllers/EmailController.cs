@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnePageNet.App.Services.Interfaces;
+using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers;
 
