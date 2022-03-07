@@ -6,7 +6,7 @@ export function PostList() {
   const [posts, setPosts] = useState();
 
   useEffect(() => {
-    async function fetchPosts() {
+    const fetchPosts = async () => {
       const urlPosts = "https://localhost:7231/api/Posts/get-all";
       await fetch(urlPosts, {
         method: "GET",
@@ -19,9 +19,9 @@ export function PostList() {
       })
         .then((data) => data.json())
         .then((data) => setPosts(data));
-    }
+    };
 
-    async function fetchUsers() {
+    const fetchUsers = async () => {
       const urlUsers = "https://localhost:7231/api/Users/get-all";
       await fetch(urlUsers, {
         method: "GET",
@@ -34,20 +34,14 @@ export function PostList() {
       })
         .then((data) => data.json())
         .then((data) => setUsers(data));
-    }
+    };
 
-    fetchPosts();
     fetchUsers();
-  });
+    fetchPosts();
+  }, []);
 
-  const getPosterName = (posterId) => {
-    return users.map((user) => {
-      if (posterId === user.Id) {
-        return user.userName;
-      } else {
-        return null;
-      }
-    });
+  const getPosterName = (posterId) => {    
+    return users?.find((user) => user.id === posterId).userName;
   };
 
   return (
@@ -56,8 +50,8 @@ export function PostList() {
         return (
           <PostListItem
             createdAt={post.createdAt}
-            poster={(x) => getPosterName(x.posterId)}
-            text={post.text}
+            poster={getPosterName(post.posterId)}
+            text={post.text}  
           />
         );
       })}

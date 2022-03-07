@@ -24,6 +24,7 @@ export function Login({ setToken }) {
       .then((result) => {
         console.log(result);
         setToken(result.generatedToken);
+        // TODO extract userId from generatedToken with atob
         sessionStorage.setItem("token", result.generatedToken);
         sessionStorage.setItem("currentUserId", result.id);
       })
