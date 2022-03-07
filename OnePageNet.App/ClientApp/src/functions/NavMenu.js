@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { Navbar, NavbarBrand, NavItem, NavLink } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./styles/NavMenu.css";
+import { useHistory } from "react-router-dom";
 
 export function NavMenu({ setToken, token }) {
-  const [collapsed, setCollapsed] = useState();
+  const history = useHistory();
 
   const handleClick = (e) => {
     e.preventDefault();
     setToken(null);
     sessionStorage.removeItem("token");
-  }
+    history.push("/");
+  };
 
   return (
     <header>
@@ -61,4 +58,4 @@ export function NavMenu({ setToken, token }) {
       </Navbar>
     </header>
   );
-};
+}

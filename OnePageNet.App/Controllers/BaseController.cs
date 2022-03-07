@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services.Interfaces;
+using OnePageNet.Data.Data.Entities;
+using OnePageNet.Data.Data.Models;
+using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers;
 
@@ -14,14 +13,11 @@ public abstract class BaseController<T, TG> : ControllerBase
     where TG : BaseDTO
 {
     private readonly IDatabaseService<T, TG> _databaseService;
-    private readonly IMapper _mapper;
 
     protected BaseController(
-        IDatabaseService<T, TG> databaseService,
-        IMapper mapper)
+        IDatabaseService<T, TG> databaseService)
     {
         _databaseService = databaseService;
-        _mapper = mapper;
     }
 
     [HttpGet]

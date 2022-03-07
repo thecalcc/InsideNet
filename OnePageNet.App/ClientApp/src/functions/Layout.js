@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
 import { Home } from "./Home";
@@ -7,8 +7,6 @@ import { Login } from "./Login";
 import { MainPage } from "./MainPage";
 import useToken from "./useToken";
 import { Users } from "./MainPageParts/Users";
-
-
 
 export function Layout() {
   const { token, setToken } = useToken();

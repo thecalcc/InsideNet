@@ -22,8 +22,11 @@ export function Login({ setToken }) {
     })
       .then((result) => result.json())
       .then((result) => {
-        setToken(result);
-        sessionStorage.setItem("token", JSON.stringify(result));
+        console.log(result);
+        setToken(result.generatedToken);
+        // TODO extract userId from generatedToken with atob
+        sessionStorage.setItem("token", result.generatedToken);
+        sessionStorage.setItem("currentUserId", result.id);
       })
       .then(history.push("/"));
   };

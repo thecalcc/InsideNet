@@ -1,7 +1,13 @@
 import React from "react"
 import "../styles/MainPage.css"
+import { PostList } from "./PostList"
+
 export function MainPageCenter(){
     return(
-        <h1 className="main-page-center">Center</h1>
+        <div className = 'main-page-center'>
+            <h1>Center</h1>
+            <PostList/>
+        </div>
+
     )
 }

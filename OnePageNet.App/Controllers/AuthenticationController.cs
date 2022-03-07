@@ -1,15 +1,9 @@
-﻿using System.Net.Mime;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.EntityFrameworkCore;
-using OnePageNet.App.Data;
-using OnePageNet.App.Data.Entities;
-using OnePageNet.App.Data.Models;
-using OnePageNet.App.Services.Interfaces;
-using ReturnStatementSyntax = Microsoft.CodeAnalysis.CSharp.Syntax.ReturnStatementSyntax;
+using OnePageNet.Data.Data.Entities;
+using OnePageNet.Data.Data.Models;
+using OnePageNet.Services.Services.Interfaces;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace OnePageNet.App.Controllers;
@@ -22,7 +16,6 @@ public class AuthenticationController : Controller
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
-    private readonly IMapper _mapper;
     private readonly IUserService _userService;
     private readonly IConfiguration _configuration;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -32,7 +25,6 @@ public class AuthenticationController : Controller
         SignInManager<ApplicationUser> signInManager,
         IEmailService emailService,
         ITokenService tokenService,
-        IMapper mapper,
         IUserService userService,
         IConfiguration configuration,
         ILoggerFactory loggerFactory)
@@ -41,7 +33,6 @@ public class AuthenticationController : Controller
         _signInManager = signInManager;
         _emailService = emailService;
         _tokenService = tokenService;
-        _mapper = mapper;
         _userService = userService;
         _configuration = configuration;
         _logger = loggerFactory.CreateLogger<AuthenticationController>();
@@ -71,7 +62,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(generatedToken);
+        return Ok(new{ generatedToken, user.Id});
     }
 
     [HttpPost("register")]
@@ -79,7 +70,6 @@ public class AuthenticationController : Controller
     {
         if (!ModelState.IsValid) return BadRequest("You did not register successfully");
 
-        // var user = _mapper.Map<ApplicationUser>(registerDto);
         var user = new ApplicationUser
         {
             UserName = registerDto.Username,
