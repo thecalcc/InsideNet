@@ -40,7 +40,7 @@ export function PostList() {
     fetchPosts();
   }, []);
 
-  const getPosterName = (posterId) => {    
+  const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
   };
 
@@ -51,7 +51,7 @@ export function PostList() {
           <PostListItem
             createdAt={post.createdAt}
             poster={getPosterName(post.posterId)}
-            text={post.text}  
+            text={post.text}
           />
         );
       })}

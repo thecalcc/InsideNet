@@ -5,7 +5,7 @@ namespace OnePageNet.App.Hubs;
 
 public class ChatHub : Hub<IChatClient>
 {
-    public async Task Send(MessageDto message)
+    public async Task SendMessage(MessageDto message)
     {
         await Clients.All.ReceiveMessage(message);
     }
