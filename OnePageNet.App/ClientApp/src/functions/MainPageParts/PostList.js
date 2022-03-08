@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { PostListItem } from "./PostListItem";
-
+import "../styles/PostList.css"
 export function PostList() {
   const [users, setUsers] = useState();
   const [posts, setPosts] = useState();
@@ -45,7 +45,7 @@ export function PostList() {
   };
 
   return (
-    <ul>
+    <ul className = "post-list">
       {posts?.map((post) => {
         return (
           <PostListItem

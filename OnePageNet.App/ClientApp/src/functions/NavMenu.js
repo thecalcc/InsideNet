@@ -23,35 +23,27 @@ export function NavMenu({ setToken, token }) {
         <ul className="menuItems">
           {token == null ? (
             <>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>
                 </NavItem>
-              </li>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/login">
                     LogIn
                   </NavLink>
                 </NavItem>
-              </li>
             </>
           ) : (
             <>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/users">
                     Users
                   </NavLink>
                 </NavItem>
-              </li>
-              <li>
                 <NavItem>
-                  <button onClick={(e) => handleClick(e)}>Log Out</button>
+                  <NavLink tag={Link} onClick={(e) => handleClick(e)}>Log Out</NavLink>
                 </NavItem>
-              </li>
             </>
           )}
         </ul>
