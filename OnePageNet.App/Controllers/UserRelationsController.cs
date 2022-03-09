@@ -17,7 +17,7 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpGet("get-all/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> GetAll([FromRoute] string userId)
+        public async Task<ActionResult<IEnumerable<UserRelationsDto>>> GetAll([FromRoute] string userId)
         {
             var dtos = await _userRelationsService.GetAll(userId);
 
@@ -27,7 +27,7 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpGet("get-by-id/{currentUserId}/{targetUserId}")]
-        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> GetById(string currentUserId,
+        public async Task<ActionResult<IEnumerable<UserRelationsDto>>> GetById(string currentUserId,
             string targetUserId)
         {
             var dto = await _userRelationsService.GetById(currentUserId, targetUserId);
@@ -40,16 +40,17 @@ namespace OnePageNet.App.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<IEnumerable<UserRelationEntity>>> Create([FromBody] UserRelationsDto dto)
         {
-            await _userRelationsService.AddAsync(dto.CurrentUser, dto.TargetUser);
+            await _userRelationsService.AddAsync(dto.CurrentUser.Id, dto.TargetUser.Id);
 
             return Ok();
         }
 
         [HttpPost("update")]
-        public async Task<ActionResult<bool>> Update(string currentUserId, string targetUserId, string command)
+        public async Task<ActionResult<bool>> Update([FromBody] string currentUserId, [FromBody] string targetUserId,
+            [FromBody] string command)
         {
             var updated = await _userRelationsService.Update(currentUserId, targetUserId, command);
-            
+
             if (updated) return Ok(updated);
             return BadRequest(updated);
         }

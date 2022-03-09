@@ -22,7 +22,8 @@ namespace OnePageNet.Services.Services
         public async Task<List<UserRelationsDto>> GetAll(string userId)
         {
             var dtos = _mapper.Map<List<UserRelationsDto>>(await _dbContext.UserRelationEntities
-                .Where(x => x.CurrentUser.Id == userId).Include("CurrentUser").Include("TargetUser")
+                .Where(x => x.CurrentUser.Id == userId)
+                .Include("CurrentUser").Include("TargetUser")
                 .Include("UserRelationship").ToListAsync());
             return dtos ??
                    throw new Exception("No userRelations found");

@@ -1,9 +1,9 @@
 ﻿namespace OnePageNet.Data.Data.Models
 {
-    public class UserRelationsDto:BaseDTO
+    public class UserRelationsDto : BaseDTO
     {
         public string UserRelationship { get; set; }
-        public string CurrentUser { get; set; }
-        public string TargetUser { get; set; }
+        public UserDto CurrentUser { get; set; }
+        public UserDto TargetUser { get; set; }
     }
 }
