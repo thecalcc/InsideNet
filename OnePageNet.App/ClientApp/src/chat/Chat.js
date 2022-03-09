@@ -12,21 +12,13 @@ export function Chat() {
   latestChat.current = chat;
 
   useEffect(() => {
-
-    const protocol = new signalR.JsonHubProtocol();
-    const transport = signalR.HttpTransportType.WebSockets;
-
     const options = {
-      transport,
       logger: signalR.LogLevel.Trace,
-      "Content-Type": "application/json",
-      Accept: "application/json",
       "Access-Control-Allow-Origin": "*",
     };
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7231/hubs/chat", options)
-      .withHubProtocol(protocol)
+      .withUrl("http://localhost:5231/hubs/chat", { headers: { ...options } })
       .withAutomaticReconnect()
       .build();
 

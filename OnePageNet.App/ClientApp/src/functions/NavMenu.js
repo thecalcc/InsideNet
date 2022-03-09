@@ -21,24 +21,6 @@ export function NavMenu({ setToken, token }) {
           OnePage
         </NavbarBrand>
         <ul className="menuItems">
-          {token == null ? (
-            <>
-              <li>
-                <NavItem>
-                  <NavLink tag={Link} to="/register">
-                    Register
-                  </NavLink>
-                </NavItem>
-              </li>
-              <li>
-                <NavItem>
-                  <NavLink tag={Link} to="/login">
-                    LogIn
-                  </NavLink>
-                </NavItem>
-              </li>
-            </>
-          ) : (
             <>
               <li>
                 <NavItem>
@@ -53,7 +35,6 @@ export function NavMenu({ setToken, token }) {
                 </NavItem>
               </li>
             </>
-          )}
         </ul>
       </Navbar>
     </header>
