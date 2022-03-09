@@ -1,3 +1,3 @@
-const PendingInvite = "Pending invite";
-const AcceptInvite = "Accept invite";
-const Friends = "Friend";
+export const PendingInvite = "Pending invite";
+export const AcceptInvite = "Accept invite";
+export const Friend = "Friend";

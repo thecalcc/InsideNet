@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants"
 export function Users() {
   const [users, setUsers] = useState();
   const [userRelations, setUserRelations] = useState();
-
   useEffect(() => {
     const fetchUsers = async () => {
       const url = "https://localhost:7231/api/Users/get-all";
@@ -62,17 +62,34 @@ export function Users() {
                     {user.firstName} {user.lastName}
                   </td>
                   <td>{user.userName}</td>
-                  {userRelations &&
-                    userRelations.map((userRelation) =>
-                      user.userName === userRelation.targetUser ? (
-                        <td> {userRelation.userRelationship} </td>
-                        // userRelation.userRelationship == PendingInvite ?
-                        // <td><button type="button" value={PendingInvite}>Reject Invite</button></td> :
-                        // <td><button type="button" value={AcceptInvite}>Accept Invite</button></td>
-                    ) : (
-                  <></>
-                  )
-                      )}
+                  {userRelations && userRelations.map((userRelation) => {
+                    if(user.userName === userRelation.targetUser) {
+                      if(userRelation.userRelationship == PendingInvite){
+                        return(
+                          <>
+                            <td> {userRelation.userRelationship} </td>
+                            <td><Link tag = {Link} value={PendingInvite}>Reject Invite</Link></td>
+                          </>
+                        )
+                      }else if(userRelation.userRelationship == AcceptInvite){
+                        return(
+                        <>
+                          <td> {userRelation.userRelationship} </td>
+                          <td><Link tag = {Link} value={AcceptInvite}>Accept Invite</Link></td>
+                        </>
+                        )
+                      }else{
+                        return(
+                            <>
+                              <td> {userRelation.userRelationship} </td>
+                              <td><Link tag = {Link} value={Friend}>Unfriend</Link></td>
+                            </>
+                        )
+                      }
+                    } 
+                    return null
+                  }
+                    )}
                 </tr>
               ) : (
                 <></>
