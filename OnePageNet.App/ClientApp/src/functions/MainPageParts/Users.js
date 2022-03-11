@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants";
+import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants"
 export function Users() {
   const [users, setUsers] = useState();
   const [userRelations, setUserRelations] = useState();
@@ -21,27 +21,6 @@ export function Users() {
     };
     fetchUsers();
   }, [setUsers]);
-
-  const handleClick = async (currentUserId, targetUserId, command) => {
-    const url = "https://localhost:7231/api/userrelations/update";
-
-    const res = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        currentUserId,
-        targetUserId,
-        command,
-      }),
-    });
-
-    const jsonRes = await res.json();
-  };
 
   useEffect(() => {
     const fetchUserRelation = async () => {
@@ -83,57 +62,34 @@ export function Users() {
                     {user.firstName} {user.lastName}
                   </td>
                   <td>{user.userName}</td>
-                  {userRelations &&
-                    userRelations.map((userRelation) => {
-                      if (user.id === userRelation.targetUser.id) {
-                        if (userRelation.userRelationship === PendingInvite) {
-                          return (
+                  {userRelations && userRelations.map((userRelation) => {
+                    if(user.userName === userRelation.targetUser) {
+                      if(userRelation.userRelationship == PendingInvite){
+                        return(
+                          <>
+                            <td> {userRelation.userRelationship} </td>
+                            <td><Link tag = {Link} value={PendingInvite}>Reject Invite</Link></td>
+                          </>
+                        )
+                      }else if(userRelation.userRelationship == AcceptInvite){
+                        return(
+                        <>
+                          <td> {userRelation.userRelationship} </td>
+                          <td><Link tag = {Link} value={AcceptInvite}>Accept Invite</Link></td>
+                        </>
+                        )
+                      }else{
+                        return(
                             <>
                               <td> {userRelation.userRelationship} </td>
-                              <td>
-                                <Link
-                                  tag={Link}
-                                  onClick={() =>
-                                    handleClick(
-                                      user.id,
-                                      userRelation.targetUser.id,
-                                      PendingInvite
-                                    )
-                                  }
-                                >
-                                  Reject Invite
-                                </Link>
-                              </td>
+                              <td><Link tag = {Link} value={Friend}>Unfriend</Link></td>
                             </>
-                          );
-                        } else if (
-                          userRelation.userRelationship === AcceptInvite
-                        ) {
-                          return (
-                            <>
-                              <td> {userRelation.userRelationship} </td>
-                              <td>
-                                <Link tag={Link} value={AcceptInvite}>
-                                  Accept Invite
-                                </Link>
-                              </td>
-                            </>
-                          );
-                        } else {
-                          return (
-                            <>
-                              <td> {userRelation.userRelationship} </td>
-                              <td>
-                                <Link tag={Link} value={Friend}>
-                                  Unfriend
-                                </Link>
-                              </td>
-                            </>
-                          );
-                        }
+                        )
                       }
-                      return null;
-                    })}
+                    } 
+                    return null
+                  }
+                    )}
                 </tr>
               ) : (
                 <></>
