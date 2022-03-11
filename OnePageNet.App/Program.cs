@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OnePageNet.App.Hubs;
 using OnePageNet.Data.Data;
 using OnePageNet.Data.Data.Entities;
 using OnePageNet.Data.Data.Models;
@@ -47,14 +48,10 @@ builder.Services.AddCors(c =>
     {
         c.AddPolicy("AllowOrigin",
             options => options
-                .AllowAnyOrigin()
+                .SetIsOriginAllowed((host) => true)
                 .AllowAnyMethod()
-                .AllowAnyHeader());
-        c.AddPolicy("FrontendOrigin",
-            opt =>
-                opt.WithOrigins(" https://localhost:44476/")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+                .AllowAnyHeader()
+                .WithOrigins("https://localhost:44476/"));
     }
 );
 
@@ -108,10 +105,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseCors(corsPolicyBuilder => corsPolicyBuilder
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors("AllowOrigin");
 
 app.UseAuthentication();
 app.UseIdentityServer();
@@ -120,6 +114,8 @@ app.UseAuthorization();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{Id?}");
+
+app.UseEndpoints(e => { e.MapHub<ChatHub>("/hubs/chat"); });
 
 app.MapFallbackToFile("index.html");
 
