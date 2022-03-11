@@ -46,10 +46,9 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<ActionResult<bool>> Update([FromBody] string currentUserId, [FromBody] string targetUserId,
-            [FromBody] string command)
+        public async Task<ActionResult<bool>> Update([FromBody] UserRelationsDto dto)
         {
-            var updated = await _userRelationsService.Update(currentUserId, targetUserId, command);
+            var updated = await _userRelationsService.Update(dto);
 
             if (updated) return Ok(updated);
             return BadRequest(updated);

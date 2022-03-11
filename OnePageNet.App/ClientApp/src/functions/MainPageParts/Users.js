@@ -22,27 +22,6 @@ export function Users() {
     fetchUsers();
   }, [setUsers]);
 
-  const handleClick = async (currentUserId, targetUserId, command) => {
-    const url = "https://localhost:7231/api/userrelations/update";
-
-    const res = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        currentUserId,
-        targetUserId,
-        command,
-      }),
-    });
-
-    const jsonRes = await res.json();
-  };
-
   useEffect(() => {
     const fetchUserRelation = async () => {
       const url =
@@ -62,6 +41,28 @@ export function Users() {
     };
     fetchUserRelation();
   }, [setUserRelations]);
+
+  const handleClick = async (currentUser, targetUser, userRelationship) => {
+    const url = "https://localhost:7231/api/userrelations/update";
+
+    const res = await fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        currentUser,
+        targetUser,
+        userRelationship,
+      }),
+    });
+
+    const jsonRes = await res.json();
+  };
+
   return (
     <div className="container">
       <h3 className="p-3 text-center">Users List</h3>
@@ -95,8 +96,8 @@ export function Users() {
                                   tag={Link}
                                   onClick={() =>
                                     handleClick(
-                                      user.id,
-                                      userRelation.targetUser.id,
+                                      userRelation.currentUser,
+                                      userRelation.targetUser,
                                       PendingInvite
                                     )
                                   }
@@ -113,7 +114,16 @@ export function Users() {
                             <>
                               <td> {userRelation.userRelationship} </td>
                               <td>
-                                <Link tag={Link} value={AcceptInvite}>
+                                <Link
+                                  tag={Link}
+                                  onClick={() =>
+                                    handleClick(
+                                      userRelation.currentUser,
+                                      userRelation.targetUser,
+                                      AcceptInvite
+                                    )
+                                  }
+                                >
                                   Accept Invite
                                 </Link>
                               </td>
@@ -124,7 +134,16 @@ export function Users() {
                             <>
                               <td> {userRelation.userRelationship} </td>
                               <td>
-                                <Link tag={Link} value={Friend}>
+                                <Link
+                                  tag={Link}
+                                  onClick={() =>
+                                    handleClick(
+                                      userRelation.currentUser,
+                                      userRelation.targetUser,
+                                      Friend
+                                    )
+                                  }
+                                >
                                   Unfriend
                                 </Link>
                               </td>
