@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants";
 export function Users() {
+  const badRes = "There are no userRelationEntities in the database.";
   const [users, setUsers] = useState();
   const [userRelations, setUserRelations] = useState();
+  const currentUserId = sessionStorage.currentUserId;
+  const [currentUser, setCurrentUser] = useState();
   useEffect(() => {
     const fetchUsers = async () => {
       const url = "https://localhost:7231/api/Users/get-all";
@@ -24,9 +27,7 @@ export function Users() {
 
   useEffect(() => {
     const fetchUserRelation = async () => {
-      const url =
-        //TODO change for this to be the current user not a hard coded value
-        `https://localhost:7231/api/UserRelations/get-all/${sessionStorage.currentUserId}`;
+      const url = `https://localhost:7231/api/UserRelations/get-all/${currentUserId}`;
       const res = await fetch(url, {
         method: "GET",
         mode: "cors",
@@ -37,10 +38,36 @@ export function Users() {
         },
       });
       const json = await res.json();
-      setUserRelations(json);
+      if (json === badRes) {
+        setUserRelations(undefined);
+      } else {
+        setUserRelations(json);
+      }
     };
     fetchUserRelation();
   }, [setUserRelations]);
+
+  const handleNewRelation = async (targetUser) => {
+    // TODO Get currentUser and pass it to the post request
+    const url = "https://localhost:7231/api/userrelations/create";
+
+    const res = await fetch(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        currentUser,
+        targetUser,
+        PendingInvite
+      }),
+    });
+
+    const jsonRes = await res.json();
+  };
 
   const handleClick = async (currentUser, targetUser, userRelationship) => {
     const url = "https://localhost:7231/api/userrelations/update";
@@ -77,16 +104,16 @@ export function Users() {
         </thead>
         <tbody>
           {users &&
-            users.map((user) =>
-              user.id !== sessionStorage.currentUserId ? (
-                <tr key={user.id}>
+            users.map((targetUser) =>
+              targetUser.id !== currentUserId ? (
+                <tr key={targetUser.id}>
                   <td>
-                    {user.firstName} {user.lastName}
+                    {targetUser.firstName} {targetUser.lastName}
                   </td>
-                  <td>{user.userName}</td>
+                  <td>{targetUser.userName}</td>
                   {userRelations &&
                     userRelations.map((userRelation) => {
-                      if (user.id === userRelation.targetUser.id) {
+                      if (targetUser.id === userRelation.targetUser.id) {
                         if (userRelation.userRelationship === PendingInvite) {
                           return (
                             <>
@@ -153,6 +180,15 @@ export function Users() {
                       }
                       return null;
                     })}
+                  <td></td>
+                  <td>
+                    <Link
+                      tag={Link}
+                      onClick={() => handleNewRelation(targetUser)}
+                    >
+                      Send Friend Request
+                    </Link>
+                  </td>
                 </tr>
               ) : (
                 <></>

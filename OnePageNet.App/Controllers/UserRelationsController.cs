@@ -21,7 +21,7 @@ namespace OnePageNet.App.Controllers
         {
             var dtos = await _userRelationsService.GetAll(userId);
 
-            if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
+            if (!dtos.Any() || dtos?.Count == 0) return NotFound("There are no userRelationEntities in the database.");
 
             return Ok(dtos);
         }
@@ -40,7 +40,7 @@ namespace OnePageNet.App.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<IEnumerable<UserRelationEntity>>> Create([FromBody] UserRelationsDto dto)
         {
-            await _userRelationsService.AddAsync(dto.CurrentUser.Id, dto.TargetUser.Id);
+            await _userRelationsService.AddAsync(dto.CurrentUser?.Id, dto.TargetUser?.Id);
 
             return Ok();
         }
