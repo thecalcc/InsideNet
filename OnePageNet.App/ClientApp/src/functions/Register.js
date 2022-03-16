@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import useToken from "./useToken";
+import { useHistory } from "react-router-dom";
 import "./styles/Register.css";
-import "./styles/basics.css"
+import "./styles/basics.css";
 
 export function Register({ setToken }) {
   const [email, setEmail] = useState();
@@ -14,7 +14,7 @@ export function Register({ setToken }) {
   const [DoB, setDoB] = useState();
   const [gender, setGender] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
-  // TODO const history = useHistory();
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,13 +28,23 @@ export function Register({ setToken }) {
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify({ email, password, confirmPassword, DoB, firstName, lastName, userName, gender, phoneNumber }),
+      body: JSON.stringify({
+        email,
+        password,
+        confirmPassword,
+        DoB,
+        firstName,
+        lastName,
+        userName,
+        gender,
+        phoneNumber,
+      }),
     })
       .then((data) => data.json())
       .then((data) => setToken(data));
 
     try {
-      // TODO then(history.push("/"));
+      history.push("/");
     } catch (e) {
       console.log(e.error);
     }
@@ -87,9 +97,15 @@ export function Register({ setToken }) {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <label><b>Date Of Birth</b></label>
-          <input name="DoB" type="date" value={DoB} onChange={(e) => setDoB(e.target.value)} />
-
+          <label>
+            <b>Date Of Birth</b>
+          </label>
+          <input
+            name="DoB"
+            type="date"
+            value={DoB}
+            onChange={(e) => setDoB(e.target.value)}
+          />
 
           <label>
             <b>First Name</b>

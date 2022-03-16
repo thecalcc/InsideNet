@@ -35,7 +35,7 @@ public class UsersController : Controller
     public async Task<ActionResult<UserDto>> Get(string id)
     {
         var entity = await _userService.GetById(id);
-        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
+        if (string.IsNullOrEmpty(entity.Id)) return NotFound("Ti si neshtastnik");
 
         return Ok(_mapper.Map<UserDto>(entity));
     }

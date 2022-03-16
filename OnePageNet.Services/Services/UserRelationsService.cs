@@ -21,10 +21,14 @@ namespace OnePageNet.Services.Services
 
         public async Task<List<UserRelationsDto>> GetAll(string userId)
         {
+
             var dtos = _mapper.Map<List<UserRelationsDto>>(await _dbContext.UserRelationEntities
                 .Where(x => x.CurrentUser.Id == userId)
-                .Include("CurrentUser").Include("TargetUser")
-                .Include("UserRelationship").ToListAsync());
+                .Include(x => x.CurrentUser)
+                .Include(x => x.TargetUser)
+                .Include(x => x.UserRelationship)
+                .ToListAsync());
+
             return dtos ??
                    throw new Exception("No userRelations found");
         }
@@ -34,7 +38,7 @@ namespace OnePageNet.Services.Services
             return _mapper.Map<UserRelationsDto>(await GetByCompositeIds(currentUserId, targetUserId)) ??
                    throw new Exception("No such relation found");
         }
-        
+
         public async Task AddAsync(string currUserId, string targetUserId)
         {
             var currUser = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == currUserId) ??
@@ -67,42 +71,50 @@ namespace OnePageNet.Services.Services
             };
 
             await _dbContext.Set<UserRelationEntity>()
-                .AddRangeAsync(new List<UserRelationEntity> {pending, accepting});
+                .AddRangeAsync(new List<UserRelationEntity> { pending, accepting });
 
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> Update(UserRelationsDto dto)
+        public async Task<bool> Update(UpdateUserRelationsDTO dto)
         {
-            var entity = await GetByCompositeIds(dto.CurrentUser.Id, dto.TargetUser.Id);
+            var entity = await GetByCompositeIds(dto.CurrentUserId, dto.TargetUserId);
+            var reverseEntity = await GetByCompositeIds(dto.TargetUserId, dto.CurrentUserId);
 
-            switch (dto.UserRelationship)
+            switch (dto.Command)
             {
-                case UserRelationConstants.PendingInvite:
-                {
-                    await RemoveAsync(entity);
-                    
-                    return true;
-                }
-                case UserRelationConstants.AcceptInvite:
-                {
-                    entity.UserRelationship = await FindRelationByName(UserRelationConstants.Friends);
-                    break;
-                }
+                case UserRelationCommands.Decline:
+                case UserRelationCommands.Abandon:
+                case UserRelationCommands.Unfriend:
+                    {
+                        await RemoveAsync(entity);
+                        await RemoveAsync(reverseEntity);
+                        break;
+                    }
+                case UserRelationCommands.Accept:
+                    {
+                        entity.UserRelationship = await FindRelationByName(UserRelationConstants.Friends);
+                        reverseEntity.UserRelationship = await FindRelationByName(UserRelationConstants.Friends);
+                        break;
+                    }
+                case UserRelationCommands.Block:
+                    {
+                        entity.UserRelationship = await FindRelationByName(UserRelationConstants.Block);
+                        break;
+                    }
                 default:
-                {
-                    await AddAsync(dto.CurrentUser.Id, dto.TargetUser.Id);
-                    return true;
-                }
+                    {
+                        return false;
+                    }
             }
-
-            return false;
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
 
         private async Task<UserRelationEntity> GetByCompositeIds(string currentUserId, string targetUserId)
         {
             var userRelationEntities = await _dbContext.UserRelationEntities.Include("CurrentUser")
-                       .Include("TargetUser").Include("UserRelationship").ToListAsync();
+                .Include("TargetUser").Include("UserRelationship").ToListAsync();
             return await _dbContext.UserRelationEntities.Include("CurrentUser")
                        .Include("TargetUser").Include("UserRelationship").FirstOrDefaultAsync(x =>
                            x.CurrentUser.Id == currentUserId && x.TargetUser.Id == targetUserId) ??
@@ -114,6 +126,7 @@ namespace OnePageNet.Services.Services
             return await _dbContext.RelationEntities.FirstOrDefaultAsync(x => x.Name == name) ??
                    throw new Exception("There's no such relation with the given name");
         }
+
         private async Task<bool> RemoveAsync(UserRelationEntity entity)
         {
             _dbContext.UserRelationEntities.Remove(entity);
