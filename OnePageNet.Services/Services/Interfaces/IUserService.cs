@@ -14,4 +14,5 @@ public interface IUserService
     Task<ApplicationUser> GetUserEntityById(string id);
     Task<bool> AttachUser(UserDto userDto);
     Task<bool> Remove(string id);
+    Task<List<UserDto>> GetFilteredUsers(string search);
 }

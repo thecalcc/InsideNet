@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { AcceptInvite, PendingInvite, Friend, Blocked } from "./UserRelationConstants";
 import {Dropdown, DropdownButton, ButtonGroup}  from 'react-bootstrap'
 import "../styles/Users.css";
@@ -8,22 +7,29 @@ export function Users() {
   const badRes = "There are no userRelationEntities in the database.";
   const [users, setUsers] = useState();
   const [userRelations, setUserRelations] = useState();
+  const [search, setSearch] = useState();
   const currentUserId = sessionStorage.currentUserId;
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const url = "https://localhost:7231/api/Users/get-all";
-      const res = await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const json = await res.json();
+
+  const fetchUsers = async () => {
+    const url = "https://localhost:7231/api/Users/get-all";
+    const res = await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    const json = await res.json();
+    if (json === badRes) {
+      setUsers(undefined);
+    } else {
       setUsers(json);
-    };
+    }
+  };
+
+  useEffect(() => {
     fetchUsers();
   }, [setUsers]);
 
@@ -89,9 +95,43 @@ export function Users() {
     });
   };
 
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    const fetchFilteredUsers = async () => {
+      const url = `https://localhost:7231/api/Users/get-filtered-users/${search}`;
+      const res = await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      const json = await res.json();
+      if (json === badRes) {
+          setUsers(undefined);
+        } else {
+          setUsers(json);
+        }
+    };
+    if(search != "" && search != null && search != undefined) fetchFilteredUsers();
+    else fetchUsers();
+  }
+
   return (
     <div className="container">
+
       <h3 className="p-3 text-center">Users List</h3>
+      <form onSubmit={(e) => handleSubmit(e)}>
+      <input
+            name="search"
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        <input type="submit" value ="Search"/>
+      </form>
       <table className="table table-striped table-bordered">
         <thead>
           <tr>
@@ -160,9 +200,12 @@ export function Users() {
                         <>
                     <td>None</td>
                     <td>
-                      <Link tag={Link} onClick={() => handleNewRelation(targetUser.id)}>
-                        Send Friend Request
-                      </Link>
+                    <DropdownButton
+                                  key='Friend'
+                                  title='User Actions'>
+                      <Dropdown.Item as="button" onClick={() => handleNewRelation(targetUser.id)}>Add Friend</Dropdown.Item>
+                      <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
+                    </DropdownButton>
                     </td>
                         </>
                       ):null

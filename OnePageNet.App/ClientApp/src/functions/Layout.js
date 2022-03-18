@@ -34,9 +34,6 @@ export function Layout() {
       ) : (
         <>
           <NavMenu setToken={setToken} token={token} />
-          <Route exact path="/users">
-            <Users />
-          </Route>
           <Route exact path="/">
             <MainPage />
           </Route>
