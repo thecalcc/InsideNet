@@ -1,19 +1,20 @@
 import React from "react"
 import dateFormat from 'dateformat';
 
-export function PostListItem({ createdAt, poster, text }) {
+export function PostListItem({ post, poster, selectPost, isMyPost}) {
   return (
-    <li className="post">
+    <>
       <div className="post-title">
         <div className="post-poster">
           <h6>@</h6>
           <h3>{poster}</h3>
+          {(isMyPost) ? (<button onClick={() => selectPost(post, "edit")}>Edit</button>):null}
         </div>
-        {dateFormat(createdAt, "dddd, mmmm dS, yyyy")}
+        {dateFormat(post.createdAt, "dddd, mmmm dS, yyyy")}
       </div>
       <div className="post-content">
-        {text}
+        {post.text}
       </div>
-    </li>
+    </>
   );
 }
