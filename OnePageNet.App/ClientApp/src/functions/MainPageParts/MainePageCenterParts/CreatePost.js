@@ -4,10 +4,10 @@ import { useHistory } from "react-router-dom";
 
 export function CreatePost() {
 const [text, setText] = useState();
-const PosterId = sessionStorage.currentUserId;
-const MediaUri = null;
-const CommentsIds = null;
-const ReactionId = null;
+const posterId = sessionStorage.currentUserId;
+const mediaUri = null;
+const commentsIds = null;
+const reactionId = null;
 const history = useHistory();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,19 +23,13 @@ const history = useHistory();
       },
       body: JSON.stringify({
         text,
-        MediaUri,
-        ReactionId,
-        CommentsIds,
-        PosterId
+        mediaUri,
+        reactionId,
+        commentsIds,
+        posterId
       }),
     })
-      .then((data) => data.json());
-
-    try {
-      history.push("/");
-    } catch (e) {
-      console.log(e.error);
-    }
+      .then((data) => data.json()).then(() => history.push("/"))
   };
 
   return (
