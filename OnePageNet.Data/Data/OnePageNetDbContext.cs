@@ -50,6 +50,9 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
                 case EntityState.Added:
                     ((BaseEntity) entityEntry.Entity).CreatedAt = DateTime.Now;
                     break;
+                case EntityState.Modified:
+                    ((BaseEntity) entityEntry.Entity).CreatedAt = DateTime.Now;
+                    break;
             }
         }
     }

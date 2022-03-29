@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import moment from 'moment';
+
 export function EditPost({ post }) {
     const [text, setText] = useState(post.text);
     const posterId = sessionStorage.currentUserId;
@@ -25,7 +27,7 @@ export function EditPost({ post }) {
             reactionId,
             commentsIds,
             posterId,
-            id:post.id
+            id:post.id,
           }),
         })
           .then((data) => data.json()).then(() => history.push("/"))
