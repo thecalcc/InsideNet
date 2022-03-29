@@ -17,17 +17,17 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpGet("get-all/{userId}")]
-        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> GetAll([FromRoute] string userId)
+        public async Task<ActionResult<IEnumerable<UserRelationsDto>>> GetAll([FromRoute] string userId)
         {
             var dtos = await _userRelationsService.GetAll(userId);
 
-            if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
+            if (!dtos.Any() || dtos?.Count == 0) return NotFound("There are no userRelationEntities in the database.");
 
             return Ok(dtos);
         }
 
         [HttpGet("get-by-id/{currentUserId}/{targetUserId}")]
-        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> GetById(string currentUserId,
+        public async Task<ActionResult<IEnumerable<UserRelationsDto>>> GetById(string currentUserId,
             string targetUserId)
         {
             var dto = await _userRelationsService.GetById(currentUserId, targetUserId);
@@ -38,18 +38,18 @@ namespace OnePageNet.App.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> Create([FromBody] UserRelationsDto dto)
+        public async Task<ActionResult<IEnumerable<UserRelationEntity>>> Create([FromBody] CreateUserRelationsDTO dto)
         {
-            await _userRelationsService.AddAsync(dto.CurrentUser, dto.TargetUser);
+            await _userRelationsService.AddAsync(dto.CurrentUserId, dto.TargetUserId);
 
             return Ok();
         }
 
         [HttpPost("update")]
-        public async Task<ActionResult<bool>> Update(string currentUserId, string targetUserId, string command)
+        public async Task<ActionResult<bool>> Update([FromBody] UpdateUserRelationsDTO dto)
         {
-            var updated = await _userRelationsService.Update(currentUserId, targetUserId, command);
-            
+            var updated = await _userRelationsService.Update(dto);
+
             if (updated) return Ok(updated);
             return BadRequest(updated);
         }

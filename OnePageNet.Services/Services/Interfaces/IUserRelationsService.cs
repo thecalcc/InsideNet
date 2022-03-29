@@ -7,6 +7,6 @@ namespace OnePageNet.Services.Services.Interfaces
         Task<List<UserRelationsDto>> GetAll(string userId);
         Task AddAsync(string currUserId, string targetUserId);
         Task<UserRelationsDto> GetById(string currentUserId, string targetUserId);
-        Task<bool> Update(string currentUserId, string targetUserId, string command);
+        Task<bool> Update(UpdateUserRelationsDTO dto);
     }
 }

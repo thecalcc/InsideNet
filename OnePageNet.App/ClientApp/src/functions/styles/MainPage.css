@@ -2,8 +2,10 @@
     display:flex;
     justify-content: space-between;
     align-items: center;
+    background-color: black;
+    color: white;
     padding:0%;
-    height: 84vh;
+    height: 92vh;
 }
 
 .main-page-center{

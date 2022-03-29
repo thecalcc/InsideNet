@@ -31,3 +31,4 @@ ops/*.retry
 # IDE
 .idea/
 .vs/
+OnePageNet.App/OnePageNet.db-shm

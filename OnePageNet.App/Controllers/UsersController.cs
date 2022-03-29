@@ -35,7 +35,7 @@ public class UsersController : Controller
     public async Task<ActionResult<UserDto>> Get(string id)
     {
         var entity = await _userService.GetById(id);
-        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
+        if (string.IsNullOrEmpty(entity.Id)) return NotFound("Ti si neshtastnik");
 
         return Ok(_mapper.Map<UserDto>(entity));
     }
@@ -69,5 +69,15 @@ public class UsersController : Controller
 
         await _userService.SaveChangesAsync();
         return Ok();
+    }
+    [Route("get-filtered-users/{search}")]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetFilteredUsers(string search)
+    {
+        var dtos = await _userService.GetFilteredUsers(search);
+
+        if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no users who match the search");
+
+        return Ok(dtos);
     }
 }

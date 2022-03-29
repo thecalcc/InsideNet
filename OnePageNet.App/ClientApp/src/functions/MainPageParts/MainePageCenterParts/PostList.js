@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PostListItem } from "./PostListItem";
-
-export function PostList() {
-  const [users, setUsers] = useState();
+import "../../styles/PostList.css"
+export function PostList({selectPost, users, deletePost}) {
   const [posts, setPosts] = useState();
 
   useEffect(() => {
@@ -21,38 +20,28 @@ export function PostList() {
         .then((data) => setPosts(data));
     };
 
-    const fetchUsers = async () => {
-      const urlUsers = "https://localhost:7231/api/Users/get-all";
-      await fetch(urlUsers, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-        .then((data) => data.json())
-        .then((data) => setUsers(data));
-    };
-
-    fetchUsers();
     fetchPosts();
   }, []);
 
-  const getPosterName = (posterId) => {    
+  const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
   };
 
   return (
-    <ul>
+    <ul className = "post-list">
       {posts?.map((post) => {
         return (
+          <li className="post">
           <PostListItem
-            createdAt={post.createdAt}
+            post={post}
+            selectPost={selectPost}
             poster={getPosterName(post.posterId)}
-            text={post.text}  
+            deletePost = {deletePost}
           />
+          <div>
+            <button onClick={() => selectPost(post, "comments")}>Comments</button>
+          </div>
+        </li>
         );
       })}
     </ul>

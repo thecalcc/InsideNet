@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, NavbarBrand, NavItem, NavLink } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./styles/NavMenu.css";
 import { useHistory } from "react-router-dom";
 
 export function NavMenu({ setToken, token }) {
-  const history = useHistory();
+  const history = useHistory();  
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -14,6 +14,12 @@ export function NavMenu({ setToken, token }) {
     history.push("/");
   };
 
+  useEffect(()=> {
+    return () => {
+      setToken(sessionStorage.getItem("token"));
+    };
+  })
+
   return (
     <header>
       <Navbar className="nav">
@@ -21,37 +27,29 @@ export function NavMenu({ setToken, token }) {
           OnePage
         </NavbarBrand>
         <ul className="menuItems">
-          {token == null ? (
+          {token === null ? (
             <>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/register">
                     Register
                   </NavLink>
                 </NavItem>
-              </li>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/login">
                     LogIn
                   </NavLink>
                 </NavItem>
-              </li>
             </>
           ) : (
             <>
-              <li>
                 <NavItem>
                   <NavLink tag={Link} to="/users">
                     Users
                   </NavLink>
                 </NavItem>
-              </li>
-              <li>
                 <NavItem>
-                  <button onClick={(e) => handleClick(e)}>Log Out</button>
+                  <NavLink tag={Link} onClick={(e) => handleClick(e)}>Log Out</NavLink>
                 </NavItem>
-              </li>
             </>
           )}
         </ul>

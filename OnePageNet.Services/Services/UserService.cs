@@ -74,4 +74,15 @@ public class UserService : IUserService
         _dbContext.Users.Remove(user);
         return true;
     }
+
+    public async Task<List<UserDto>> GetFilteredUsers(string search)
+    {
+        var filteredUsers = _mapper.Map<List<UserDto>>(await _dbContext.Users.Where(x => x.UserName.ToLower().Contains(search.ToLower()) 
+            || x.FirstName.ToLower().Contains(search.ToLower()) 
+            || x.LastName.ToLower().Contains(search.ToLower())
+            || x.Email.ToLower().Contains(search.ToLower()))
+            .ToListAsync());
+        if (filteredUsers.Count > 0) return filteredUsers;
+        else throw new Exception("No users match search");
+    }
 }

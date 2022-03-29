@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
 import { Home } from "./Home";
@@ -11,9 +11,15 @@ import { Users } from "./MainPageParts/Users";
 export function Layout() {
   const { token, setToken } = useToken();
 
+  useEffect(() => {
+    return () => {
+      setToken(sessionStorage.getItem("token"));
+    };
+  }, []);
+
   return (
     <div>
-      {token == null ? (
+      {token === null ? (
         <>
           <Route exact path="/">
             <Home />
@@ -28,9 +34,6 @@ export function Layout() {
       ) : (
         <>
           <NavMenu setToken={setToken} token={token} />
-          <Route exact path="/users">
-            <Users />
-          </Route>
           <Route exact path="/">
             <MainPage />
           </Route>
