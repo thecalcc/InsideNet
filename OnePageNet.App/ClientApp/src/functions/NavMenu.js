@@ -11,6 +11,7 @@ export function NavMenu({ setToken, token }) {
     e.preventDefault();
     setToken(null);
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("currentUserId");  
     history.push("/");
   };
 

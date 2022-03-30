@@ -20,13 +20,15 @@ export function Login({ setToken }) {
       },
       body: JSON.stringify({ email, password }),
     })
-      .then((result) => result.json())
       .then((result) => {
-        console.log(result);
-        setToken(result.generatedToken);
-        // TODO extract userId from generatedToken with atob
-        sessionStorage.setItem("token", result.generatedToken);
-        sessionStorage.setItem("currentUserId", result.id);
+        result.json();
+      })
+      .then((result) => {
+        if (result.ok) {
+          setToken(result.generatedToken);
+          sessionStorage.setItem("token", result.generatedToken);
+          sessionStorage.setItem("currentUserId", result.id);
+        }
       })
       .then(history.push("/"));
   };

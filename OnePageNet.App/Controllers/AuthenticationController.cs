@@ -44,9 +44,9 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
-        
+
         var user = await _userService.GetByEmail(loginDto.Email);
-        
+
         var result =
             await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
@@ -62,7 +62,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(new{ generatedToken, user.Id});
+        return Ok(new {generatedToken, user.Id});
     }
 
     [HttpPost("register")]
@@ -98,7 +98,7 @@ public class AuthenticationController : Controller
         _logger.LogInformation(3, "User account created successfully");
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(generatedToken);
+        return Ok(new {generatedToken, user.Id});
     }
 
     [HttpPost("logoff")]

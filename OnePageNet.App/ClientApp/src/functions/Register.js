@@ -40,14 +40,17 @@ export function Register({ setToken }) {
         phoneNumber,
       }),
     })
-      .then((data) => data.json())
-      .then((data) => setToken(data));
-
-    try {
-      history.push("/");
-    } catch (e) {
-      console.log(e.error);
-    }
+      .then((result) => {
+        result.json();
+        console.log(result);
+      })
+      .then((result) => {
+        if (result.ok) {
+          setToken(result.generatedToken);
+          sessionStorage.setItem("token", result.generatedToken);
+        }
+      })
+      .then(history.push("/"));
   };
 
   return (
@@ -158,7 +161,11 @@ export function Register({ setToken }) {
               Other
             </label>
           </div>
-          <input type="submit" value="Register" />
+          <input
+            type="submit"
+            value="Register"
+            onClick={(e) => handleSubmit(e)}
+          />
         </div>
       </form>
       <Link to="/">Back</Link>
