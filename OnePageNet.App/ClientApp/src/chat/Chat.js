@@ -18,7 +18,7 @@ export function Chat() {
     };
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5231/hubs/chat", { headers: { ...options } })
+      .withUrl("https://localhost:7231/hubs/chat", { headers: { ...options } })
       .withAutomaticReconnect()
       .build();
 
@@ -49,15 +49,13 @@ export function Chat() {
       message: message,
     };
 
-    if (connection.connectionStarted) {
+
       try {
         await connection.send("SendMessage", chatMessage);
       } catch (e) {
+          console.log('error')
         console.log(e);
       }
-    } else {
-      alert("No connection to server yet.");
-    }
   };
 
   return (
