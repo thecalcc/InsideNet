@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../styles/MainPage.css";
-import { PostList } from "./MainePageCenterParts/PostList";
-import { PostListItem } from "./MainePageCenterParts/PostListItem";
-import { CreatePost } from "./MainePageCenterParts/CreatePost";
-import { EditPost } from "./MainePageCenterParts/EditPost";
+import { PostList } from "./mainPageCenterParts/postParts/PostList";
+import { PostListItem } from "./mainPageCenterParts/postParts/PostListItem";
+import { CreatePost } from "./mainPageCenterParts/postParts/CreatePost";
+import { EditPost } from "./mainPageCenterParts/postParts/EditPost";
+import { CommentList } from "./mainPageCenterParts/commentParts/CommentList";
+import { CreateComment } from "./mainPageCenterParts/commentParts/CreateComment";
 
 export function MainPageCenter() {
   const [currentPost, setCurrentPost] = useState();
@@ -80,6 +82,8 @@ export function MainPageCenter() {
             isMyPost={isMyPost(currentPost.posterId)}
             deletePost={deletePost}
           />
+          <CreateComment idOfPost = {currentPost.id}/>
+          <CommentList idOfPost = {currentPost.id}/>
           <button onClick={() => setCurrentPost(null)}>Back</button>
         </div>
       ) : (

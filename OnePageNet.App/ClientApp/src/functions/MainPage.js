@@ -1,7 +1,7 @@
 import React from 'react';
-import { MainPageLeft } from './MainPageParts/MainPageLeft';
-import { MainPageCenter } from './MainPageParts/MainPageCenter';
-import { MainPageRight } from './MainPageParts/MainPageRight';
+import { MainPageLeft } from './mainPageParts/MainPageLeft';
+import { MainPageCenter } from './mainPageParts/MainPageCenter';
+import { MainPageRight } from './mainPageParts/MainPageRight';
 import { Chat } from "./../chat/Chat";
 import "./styles/MainPage.css"
 

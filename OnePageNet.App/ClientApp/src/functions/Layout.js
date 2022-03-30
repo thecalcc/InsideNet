@@ -6,7 +6,7 @@ import { Register } from "./Register";
 import { Login } from "./Login";
 import { MainPage } from "./MainPage";
 import useToken from "./useToken";
-import { Users } from "./MainPageParts/Users";
+import { Users } from "./mainPageParts/Users";
 
 export function Layout() {
   const { token, setToken } = useToken();
