@@ -2,6 +2,7 @@ import React from "react"
 import dateFormat from 'dateformat';
 import { useState } from "react";
 import { EditComment } from "./EditComment";
+import { Link } from "react-router-dom";
 
 export function CommentListItem({ comment, poster, idOfPost}) {
     const [isBeingEdited, setIsBeingEdited] = useState(false);
@@ -27,21 +28,28 @@ export function CommentListItem({ comment, poster, idOfPost}) {
         <EditComment doneWithEdit = {doneWithEdit} comment = {comment} idOfPost = {idOfPost}/>
       ) : (
         <>
-          <div>
-            <div>
+          <div className= "comment-title">
+            <div className = "comment-commenter">
+              <h4>@</h4>
               <h3>{poster}</h3>
-              {comment.applicationUserId == sessionStorage.currentUserId ? (
-                <>
-                  {<button onClick={() => setIsBeingEdited(true)}>Edit</button>}
-                  <button onClick={() => deleteComment(comment.id)}>
-                    Delete
-                  </button>
-                </>
-              ) : null}
             </div>
-            {dateFormat(comment.createdAt, "dddd, mmmm dS, yyyy")}
+            <h6>
+              {dateFormat(comment.createdAt, "dddd, mmmm dS, yyyy")}
+            </h6>
+            <ul className="comment-functions">
+            {comment.applicationUserId == sessionStorage.currentUserId ? (
+              <>
+                <li><Link className="comment-link" onClick={() => setIsBeingEdited(true)}>Edit</Link></li>
+                <li>
+                  <Link className="comment-link" onClick={() => deleteComment(comment.id)}>Delete</Link>
+                  </li>
+              </>
+            ) : null} 
+            </ul>
+            </div>
+          <div>
+            {comment.content}
           </div>
-          <div>{comment.content}</div>
         </>
       )}
     </>

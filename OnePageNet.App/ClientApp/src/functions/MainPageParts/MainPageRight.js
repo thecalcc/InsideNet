@@ -4,6 +4,8 @@ import { Users } from "./Users"
 
 export function MainPageRight(){
     return(
-        <Users/>
+        <div className="main-page-right">
+            <Users/>
+        </div>
     )
 }

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import moment from 'moment';
 
 export function EditPost({ post }) {
     const [text, setText] = useState(post.text);

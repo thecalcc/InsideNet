@@ -1,12 +1,12 @@
 import React from "react"
-import { Chats } from "./Chats"
-import { Groups } from "./Groups"
 import "../styles/MainPage.css"
+import "../../chat/Chat.js"
+import { Chat } from "../../chat/Chat.js"
+
 export function MainPageLeft() {
     return (
         <div className="main-page-left">
-            <Chats />
-            <Groups />
+            <Chat/>
         </div>
     )
 }

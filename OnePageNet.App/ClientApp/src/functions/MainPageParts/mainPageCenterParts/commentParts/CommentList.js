@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CommentListItem } from "./CommentListItem";
+import "../../../styles/CommentList.css"
 export function CommentList({idOfPost}) {
   const [comments, setComments] = useState();
   const [users, setUsers] = useState();
@@ -42,10 +43,10 @@ export function CommentList({idOfPost}) {
   };
 
   return (
-    <ul>
+    <ul className="comment-list">
       {(comments !== null && comments !== undefined && comments !== "There are no such entities in the database.")? comments?.map((comment) => {
         return (
-          <li>
+          <li className="comment">
             <CommentListItem
               comment={comment}
               poster={getPosterName(comment.applicationUserId)}
