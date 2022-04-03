@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
 import { Home } from "./Home";
@@ -10,6 +10,7 @@ import { Users } from "./mainPageParts/Users";
 
 export function Layout() {
   const { token, setToken } = useToken();
+  const [temp, setTemp] = useState();
 
   useEffect(() => {
     return () => {
@@ -33,9 +34,9 @@ export function Layout() {
         </>
       ) : (
         <>
-          <NavMenu setToken={setToken} token={token} />
+          <NavMenu setToken={setToken} token={token} temp = {temp} setTemp = {setTemp}/>
           <Route exact path="/">
-            <MainPage />
+            <MainPage temp = {temp} setTemp = {setTemp}/>
           </Route>
         </>
       )}

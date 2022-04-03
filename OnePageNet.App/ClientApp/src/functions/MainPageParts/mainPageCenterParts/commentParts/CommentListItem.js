@@ -30,8 +30,8 @@ export function CommentListItem({ comment, poster, idOfPost}) {
         <>
           <div className= "comment-title">
             <div className = "comment-commenter">
-              <h4>@</h4>
-              <h3>{poster}</h3>
+              <h6>@</h6>
+              <h5>{poster}</h5>
             </div>
             <h6>
               {dateFormat(comment.createdAt, "dddd, mmmm dS, yyyy")}
@@ -47,7 +47,7 @@ export function CommentListItem({ comment, poster, idOfPost}) {
             ) : null} 
             </ul>
             </div>
-          <div>
+          <div className="comment-content">
             {comment.content}
           </div>
         </>

@@ -7,12 +7,16 @@ import { EditPost } from "./mainPageCenterParts/postParts/EditPost";
 import { CommentList } from "./mainPageCenterParts/commentParts/CommentList";
 import { CreateComment } from "./mainPageCenterParts/commentParts/CreateComment";
 
-export function MainPageCenter() {
+export function MainPageCenter({temp, setTemp}) {
   const [currentPost, setCurrentPost] = useState();
   const [createPost, setCreatePost] = useState();
   const [users, setUsers] = useState();
   const [action, setAction] = useState();
-
+  
+  const setNewTemp = (e) => {
+    setTemp(e);
+    console.log(temp);
+  }
   const selectPost = (post, action) => {
     setCurrentPost(post);
     setAction(action);
@@ -62,6 +66,7 @@ export function MainPageCenter() {
           <div className="main-page-center">
             <button onClick={() => setCreatePost(true)}>Create post</button>
             <PostList
+              setTemp = {setNewTemp}
               selectPost={selectPost}
               users={users}
               deletePost={deletePost}

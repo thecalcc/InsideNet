@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PostListItem } from "./PostListItem";
 import "../../../styles/PostList.css"
-export function PostList({selectPost, users, deletePost}) {
+export function PostList({setTemp, selectPost, users, deletePost}) {
   const [posts, setPosts] = useState();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export function PostList({selectPost, users, deletePost}) {
             deletePost = {deletePost}
           />
           <div>
-            <button onClick={() => selectPost(post, "comments")}>Comments</button>
+            <button onClick={() => {selectPost(post, "comments"); setTemp("post")}}>Comments</button>
           </div>
         </li>
         );

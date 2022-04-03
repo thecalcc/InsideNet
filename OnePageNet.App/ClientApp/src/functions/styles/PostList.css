@@ -27,6 +27,8 @@
     border-bottom-right-radius: inherit;
     padding-left: 10px;
     padding-right: 10px;
+    word-break: break-all;
+    overflow-wrap:break-word;
 }
 
 .post-list{

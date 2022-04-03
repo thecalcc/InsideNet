@@ -45,6 +45,7 @@ export function CommentList({idOfPost}) {
   return (
     <ul className="comment-list">
       {(comments !== null && comments !== undefined && comments !== "There are no such entities in the database.")? comments?.map((comment) => {
+        if(comment.postId == idOfPost)
         return (
           <li className="comment">
             <CommentListItem
