@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./styles/NavMenu.css";
 import { useHistory } from "react-router-dom";
 
-export function NavMenu({ setToken, token, temp, setTemp}) {
+export function NavMenu({ setToken, token, onLayoutChange }) {
   const history = useHistory();  
 
   const handleClick = (e) => {
@@ -43,7 +43,7 @@ export function NavMenu({ setToken, token, temp, setTemp}) {
           ) : (
             <>
                 <NavItem>
-                  <NavLink tag={Link} onClick={() => {setTemp("users"); console.log(temp)}}>
+                  <NavLink tag={Link} onClick={() => onLayoutChange('users')}>
                     Users
                   </NavLink>
                 </NavItem>

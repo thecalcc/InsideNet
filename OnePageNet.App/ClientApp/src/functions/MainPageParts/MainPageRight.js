@@ -3,13 +3,14 @@ import "../styles/MainPage.css"
 import "../styles/PostList.css"
 import { Users } from "./Users"
 
-export function MainPageRight({temp}){
+export function MainPageRight({ layoutState }) {
+    console.log(layoutState);
     return(
         <div className="main-page-right">
             OOF
             {
                 (() => {
-                    switch(temp){
+                    switch(layoutState){
                         case "users":
                             return(
                                 <Users/>
@@ -32,7 +33,7 @@ export function MainPageRight({temp}){
                             )
                     }
                     
-                })
+                })()
             }
         </div>
     )

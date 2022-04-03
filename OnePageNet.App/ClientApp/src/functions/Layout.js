@@ -10,13 +10,17 @@ import { Users } from "./mainPageParts/Users";
 
 export function Layout() {
   const { token, setToken } = useToken();
-  const [temp, setTemp] = useState();
+    const [layoutState, setLayoutState] = useState('');
 
   useEffect(() => {
     return () => {
       setToken(sessionStorage.getItem("token"));
     };
   }, []);
+
+  const onLayoutChange = (layout) => {
+    setLayoutState(layout)
+  }
 
   return (
     <div>
@@ -34,9 +38,9 @@ export function Layout() {
         </>
       ) : (
         <>
-          <NavMenu setToken={setToken} token={token} temp = {temp} setTemp = {setTemp}/>
+        <NavMenu setToken={setToken} token={token} onLayoutChange={onLayoutChange}/>
           <Route exact path="/">
-            <MainPage temp = {temp} setTemp = {setTemp}/>
+            <MainPage currentLayout={layoutState} onLayoutChange={onLayoutChange}/>
           </Route>
         </>
       )}
