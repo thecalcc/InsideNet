@@ -6,11 +6,10 @@ import { Register } from "./Register";
 import { Login } from "./Login";
 import { MainPage } from "./MainPage";
 import useToken from "./useToken";
-import { Users } from "./mainPageParts/Users";
 
 export function Layout() {
   const { token, setToken } = useToken();
-    const [layoutState, setLayoutState] = useState('');
+    const [layoutState, setLayout] = useState('');
 
   useEffect(() => {
     return () => {
@@ -19,7 +18,7 @@ export function Layout() {
   }, []);
 
   const onLayoutChange = (layout) => {
-    setLayoutState(layout)
+    setLayout(layout)
   }
 
   return (

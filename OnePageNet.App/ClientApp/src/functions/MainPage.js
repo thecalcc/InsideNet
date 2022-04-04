@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { MainPageLeft } from './mainPageParts/MainPageLeft';
-import { MainPageCenter } from './mainPageParts/MainPageCenter';
-import { MainPageRight } from './mainPageParts/MainPageRight';
+import { MainPageLeft } from './mainPageParts/MainPageLeft.js';
+import { MainPageCenter } from './mainPageParts/MainPageCenter.js';
+import { MainPageRight } from './mainPageParts/MainPageRight.js';
 import "./styles/MainPage.css"
 
 export function MainPage({ currentLayout, onLayoutChange }) {

@@ -3,6 +3,7 @@ import * as signalR from "@microsoft/signalr";
 
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
+import ChatSelection from "./ChatSelection";
 
 export function Chat() {
   const [connection, setConnection] = useState(null);
@@ -43,12 +44,11 @@ export function Chat() {
     }
   }, [connection]);
 
-  const sendMessage = async (user, message) => {
+  const sendMessage = async (message) => {
     const chatMessage = {
-      user: user,
-      message: message,
+      senderId: sessionStorage.getItem('currentUserId'),
+      content: message,
     };
-
 
       try {
         await connection.send("SendMessage", chatMessage);

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnePageNet.Data.Data;
 using OnePageNet.Data.Data.Entities;
 using OnePageNet.Data.Data.Models;
+using OnePageNet.Helpers.Helpers;
 using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.Services.Services;
@@ -16,6 +17,15 @@ public class UserService : IUserService
     {
         _dbContext = dbContext;
         _mapper = mapper;
+    }
+
+    public async Task<List<UserDto>> GetAllFriends(string userId)
+    {
+        return _mapper.Map<List<UserDto>>(
+            _dbContext.Users.Where(x =>
+                x.CurrentRelationships.Where(x => x.TargetUser.Id == userId)
+                    .Any(x => x.UserRelationship.Name == UserRelationConstants.Friends)
+            ) ?? throw new Exception("No users found"));
     }
 
     public async Task<List<UserDto>> GetAll()
@@ -77,10 +87,11 @@ public class UserService : IUserService
 
     public async Task<List<UserDto>> GetFilteredUsers(string search)
     {
-        var filteredUsers = _mapper.Map<List<UserDto>>(await _dbContext.Users.Where(x => x.UserName.ToLower().Contains(search.ToLower()) 
-            || x.FirstName.ToLower().Contains(search.ToLower()) 
-            || x.LastName.ToLower().Contains(search.ToLower())
-            || x.Email.ToLower().Contains(search.ToLower()))
+        var filteredUsers = _mapper.Map<List<UserDto>>(await _dbContext.Users.Where(x =>
+                x.UserName.ToLower().Contains(search.ToLower())
+                || x.FirstName.ToLower().Contains(search.ToLower())
+                || x.LastName.ToLower().Contains(search.ToLower())
+                || x.Email.ToLower().Contains(search.ToLower()))
             .ToListAsync());
         if (filteredUsers.Count > 0) return filteredUsers;
         else throw new Exception("No users match search");

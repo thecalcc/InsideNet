@@ -5,6 +5,7 @@ namespace OnePageNet.Services.Services.Interfaces;
 
 public interface IUserService
 {
+    Task<List<UserDto>> GetAllFriends(string userId);
     Task<List<UserDto>> GetAll();
     Task<UserDto> GetById(string id);
     Task<UserDto> GetByEmail(string email);
