@@ -7,6 +7,7 @@ import { ChatSelection } from "../../chat/ChatSelection.js";
 export function MainPageLeft() {
     return (
       <div className="main-page-left">
+        
         <Chat />
         <ChatSelection />
       </div>
