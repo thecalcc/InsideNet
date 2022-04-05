@@ -9,6 +9,7 @@ public interface IDatabaseService<T, TG>
 {
     Task<List<TG>> ToListAsync();
     Task<T> FindById(string id);
+    Task<List<TG>> GetAllById(string id);
     Task<bool> AttachUser(TG dto);
     void Update(TG dto);
     Task SaveChangesAsync();

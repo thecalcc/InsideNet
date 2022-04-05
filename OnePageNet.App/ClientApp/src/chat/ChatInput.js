@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 
-export default function ChatInput(props) {
+export default function ChatInput({ sendMessage }) {
   const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isMessageProvided = message && message !== "";
-
-    if (isMessageProvided) {
-      props.sendMessage(message);
+    if (message && message !== "") {
+      sendMessage(message);
     } else {
       alert("Please insert a user and a message.");
     }
@@ -32,7 +30,7 @@ export default function ChatInput(props) {
       />
       <br />
       <br />
-      <button>Submit</button>
+      <button>Send</button>
     </form>
   );
 };
