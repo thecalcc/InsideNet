@@ -10,8 +10,9 @@ namespace OnePageNet.Services.Services.Interfaces
     public interface IUserGroupService
     {
         Task<List<UserGroupDTO>> GetAll(string userId);
-        Task AddAsync(string currUserId, string targetUserId);
-        Task<UserGroupDTO> GetById(string currentUserId, string targetUserId);
-        Task<bool> Delete(string id);
+        Task AddAsync(string groupId, string userId);
+        Task<UserGroupDTO> GetById(string id);
+        Task<bool> DeleteAsync(UserGroupDTO dto);
+        Task<string> GetIdByComposite(string currentUserId, string GroupId);
     }
 }

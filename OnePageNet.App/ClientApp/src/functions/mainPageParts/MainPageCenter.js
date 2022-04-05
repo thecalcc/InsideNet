@@ -57,7 +57,7 @@ export function MainPageCenter({onLayoutChange}) {
 
   const onPostClick = (post) => {
     selectPost(post, "comments");
-    onLayoutChange('post');
+    onLayoutChange("post", "right");
   }
 
 

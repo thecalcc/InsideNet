@@ -23,16 +23,28 @@ namespace OnePageNet.Services.Services
             _mapper = mapper;
         }
 
-        public Task AddAsync(string groupId, string userId)
+        public async Task AddAsync(string groupId, string userId)
         {
-            var user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
-            var group = _dbContext.GroupEntities.FirstOrDefault(x => x.Id == userId);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId) ??
+                           throw new Exception("Current user does not exist.");
+            var group = await _dbContext.GroupEntities.FirstOrDefaultAsync(x => x.Id == groupId) ??
+                           throw new Exception("Current group does not exist.");
+
+            var userGroup = new UserGroupEntity
+            {
+                Users = user,
+                Group = group
+            };
+            
+
+            await _dbContext.UserGroupEntities.AddAsync(userGroup);
+            await _dbContext.SaveChangesAsync();
+
         }
 
-        public async Task<bool> Delete(string id)
+        public async Task<bool> DeleteAsync(UserGroupDTO dto)
         {
-            var entity = await GetById(id);
-            _dbContext.UserGroupEntities.Remove(_mapper.Map<UserGroupEntity>(entity));
+            _dbContext.UserGroupEntities.Remove(_mapper.Map<UserGroupEntity>(dto));
             await _dbContext.SaveChangesAsync();
             return true;
         }
@@ -57,7 +69,7 @@ namespace OnePageNet.Services.Services
                    throw new Exception("No such relation found");
         }
 
-        private async Task<string> GetIdByComposite(string currentUserId, string GroupId) 
+        public async Task<string> GetIdByComposite(string currentUserId, string GroupId) 
         {
             var userGroup = await _dbContext.UserGroupEntities.Include("Users")
                        .Include("Group").FirstOrDefaultAsync(x =>

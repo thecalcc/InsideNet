@@ -26,7 +26,7 @@ export function ChatSelection({selectGroup}) {
   return (
     <ul>
       {groups != "There are no such entities in the database." ? (groups?.map((x) => {
-        return <button onClick={selectGroup(x.id)}>{x.Name}</button>;
+        return <button onClick={() => selectGroup(x.id)}>{x.name}</button>;
       })):<>talk to some bitches</>}
     </ul>
   );

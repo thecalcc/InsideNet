@@ -30,10 +30,8 @@ export function CreateDM() {
     }, []);
 
     useEffect(() => {
-      const createUserGroup = async (userId, groupId) => {
+      const createUserGroup = async (usersId, groupId) => {
         const urlFriends = `https://localhost:7231/api/UserGroups/create`;
-        const GroupId = groupId;
-        const UsersId = userId;
         await fetch(urlFriends, {
           method: "POST",
           mode: "cors",
@@ -43,8 +41,8 @@ export function CreateDM() {
             "Access-Control-Allow-Origin": "*",
           },
           body: JSON.stringify({
-            GroupId,
-            UsersId
+            groupId,
+            usersId
           }),
         })
       };

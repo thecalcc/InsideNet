@@ -14,13 +14,16 @@ export function MainPageLeft() {
   }
     return (
       <div className="main-page-left">
-        {currentGroup == null || currentGroup == undefined ? (
+        {currentGroup === null || currentGroup === undefined ? (
           <>
             <CreateDM />
             <ChatSelection selectGroup={selectGroup} />
           </>
         ) : (
-          <Chat />
+          <>
+            <Chat />
+            <button onClick={() => setCurrentGroup(null)}>Back</button>
+          </>
         )}
       </div>
     );

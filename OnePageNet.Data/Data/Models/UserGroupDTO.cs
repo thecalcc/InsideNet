@@ -9,7 +9,7 @@ namespace OnePageNet.Data.Data.Models
 {
     public class UserGroupDTO : BaseDTO
     {
-        public virtual string GroupId { get; set; }
-        public virtual string UsersId { get; set; }
+        public string GroupId { get; set; }
+        public string UsersId { get; set; }
     }
 }

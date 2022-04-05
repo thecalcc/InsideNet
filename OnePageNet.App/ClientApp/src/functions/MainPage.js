@@ -9,8 +9,8 @@ export function MainPage({ currentLayout, onLayoutChange }) {
         <>
             <div className='main-page'>
                 <MainPageLeft/>
-                <MainPageCenter className='main-page-center' onLayoutChange={onLayoutChange}/>
-                <MainPageRight layoutState={currentLayout}/>
+                <MainPageCenter className='main-page-center' onLayoutChange={onLayoutChange} currentLayout = {currentLayout.center}/>
+                <MainPageRight layoutState={currentLayout.right}/>
             </div>
         </>
     );

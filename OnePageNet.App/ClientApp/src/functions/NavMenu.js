@@ -43,7 +43,7 @@ export function NavMenu({ setToken, token, onLayoutChange }) {
           ) : (
             <>
                 <NavItem>
-                  <NavLink tag={Link} onClick={() => onLayoutChange('users')}>
+                  <NavLink tag={Link} onClick={() => onLayoutChange("users","right")}>
                     Users
                   </NavLink>
                 </NavItem>
