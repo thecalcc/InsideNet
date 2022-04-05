@@ -40,7 +40,6 @@ export function Layout() {
 
   return (
     <div>
-      {console.log("braindamage")}
       {token === null ? (
         <>
           <Route exact path="/">

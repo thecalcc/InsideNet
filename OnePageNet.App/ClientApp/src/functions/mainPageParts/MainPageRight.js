@@ -4,10 +4,8 @@ import "../styles/PostList.css"
 import { Users } from "./Users"
 
 export function MainPageRight({ layoutState }) {
-    console.log(layoutState);
     return(
         <div className="main-page-right">
-            OOF
             {
                 (() => {
                     switch(layoutState){
