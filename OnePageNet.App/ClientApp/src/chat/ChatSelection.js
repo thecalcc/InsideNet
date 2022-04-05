@@ -1,15 +1,14 @@
+import e from "cors";
 import React, { useState, useEffect } from "react";
 
-export function ChatSelection() {
-  const [freinds, setFriends] = useState();
+export function ChatSelection({selectGroup}) {
+  const [groups, setGroups] = useState();
 
   useEffect(() => {
-    const fetchFriends = async () => {
-      const urlFriends = `https://localhost:7231/api/Users/get-all-friends/${sessionStorage.getItem(
-        "currentUserId"
-      )}`;
+    const fetchGroups = async () => {
+      const urlGroups = `https://localhost:7231/api/Groups/get-all`;
 
-      await fetch(urlFriends, {
+      await fetch(urlGroups, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -19,16 +18,16 @@ export function ChatSelection() {
         },
       })
         .then((data) => data.json())
-        .then((data) => setFriends(data));
+        .then((data) => setGroups(data));
     };
-    fetchFriends();
+    fetchGroups();
   }, []);
-
+  
   return (
     <ul>
-      {freinds?.map((x) => {
-        return <button onClick={""}>{x.userName}</button>;
-      })}
+      {groups != "There are no such entities in the database." ? (groups?.map((x) => {
+        return <button onClick={selectGroup(x.id)}>{x.Name}</button>;
+      })):<>talk to some bitches</>}
     </ul>
   );
 }

@@ -47,9 +47,13 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
 
     public async Task AddAsync(TG dto)
     {
-        await _dbContext.Set<T>().AddAsync(_mapper.Map<T>(dto));
+        var entity = _mapper.Map<T>(dto);
+
+        await _dbContext.Set<T>().AddAsync(entity);
 
         await _dbContext.SaveChangesAsync();
+
+        dto.Id = entity.Id;
     }
 
     public bool Remove(T entity)

@@ -16,8 +16,8 @@ export function Register({ setToken }) {
   const [phoneNumber, setPhoneNumber] = useState();
   const history = useHistory();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const url = "https://localhost:7231/api/authentication/register";
 
     await fetch(url, {

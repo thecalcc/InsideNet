@@ -35,10 +35,10 @@ public abstract class BaseController<T, TG> : ControllerBase
     [HttpGet]
     public async Task<ActionResult<TG>> Get(string id)
     {
-        var entity = await _databaseService.FindById(id);
-        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
+        var dto = await _databaseService.FindById(id);
+        if (string.IsNullOrEmpty(dto.Id)) return NotFound();
 
-        return Ok(entity);
+        return Ok(dto);
     }
 
     [Route("update/{id}")]
@@ -65,11 +65,11 @@ public abstract class BaseController<T, TG> : ControllerBase
 
     [Route("create")]
     [HttpPost]
-    public async Task<ActionResult<TG>> Create([FromBody] TG dto)
+    public virtual async Task<ActionResult<TG>> Create([FromBody] TG dto)
     {
         await _databaseService.AttachUser(dto);
         await _databaseService.AddAsync(dto);
-        return CreatedAtAction("Get", new {id = dto.Id}, dto);
+        return CreatedAtAction("Get", dto);
     }
 
     [Route("delete/{id}")]
