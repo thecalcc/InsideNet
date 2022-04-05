@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PostListItem } from "./PostListItem";
-import "../../styles/PostList.css"
-export function PostList({selectPost, users, deletePost}) {
+import "../../../styles/PostList.css"
+export function PostList({onClick, onSelect, users, deletePost}) {
   const [posts, setPosts] = useState();
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export function PostList({selectPost, users, deletePost}) {
           <li className="post">
           <PostListItem
             post={post}
-            selectPost={selectPost}
+            selectPost={onSelect}
             poster={getPosterName(post.posterId)}
             deletePost = {deletePost}
           />
           <div>
-            <button onClick={() => selectPost(post, "comments")}>Comments</button>
+            <button onClick={() => onClick(post)}>Comments</button>
           </div>
         </li>
         );

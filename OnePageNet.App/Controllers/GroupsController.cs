@@ -8,9 +8,9 @@ namespace OnePageNet.App.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GroupEntitiesController : BaseController<GroupEntity, GroupDTO>
+public class GroupsController : BaseController<GroupEntity, GroupDTO>
 {
-    public GroupEntitiesController(IDatabaseService<GroupEntity, GroupDTO> databaseService)
+    public GroupsController(IDatabaseService<GroupEntity, GroupDTO> databaseService)
         : base(databaseService)
     {
     }

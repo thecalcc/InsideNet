@@ -51,6 +51,7 @@ builder.Services.AddCors(c =>
                 .SetIsOriginAllowed((host) => true)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .AllowCredentials()
                 .WithOrigins("https://localhost:44476/"));
     }
 );
@@ -66,7 +67,9 @@ builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEn
 builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRelationsService, UserRelationsService>();
+builder.Services.AddScoped<IUserGroupService, UserGroupService>();
 builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
+
 
 builder.Services.AddMvc();
 

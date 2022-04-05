@@ -3,6 +3,7 @@ import * as signalR from "@microsoft/signalr";
 
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
+import ChatSelection from "./ChatSelection";
 
 export function Chat() {
   const [connection, setConnection] = useState(null);
@@ -18,7 +19,7 @@ export function Chat() {
     };
 
     const newConnection = new signalR.HubConnectionBuilder()
-      .withUrl("http://localhost:5231/hubs/chat", { headers: { ...options } })
+      .withUrl("https://localhost:7231/hubs/chat", { headers: { ...options } })
       .withAutomaticReconnect()
       .build();
 
@@ -43,21 +44,18 @@ export function Chat() {
     }
   }, [connection]);
 
-  const sendMessage = async (user, message) => {
+  const sendMessage = async (message) => {
     const chatMessage = {
-      user: user,
-      message: message,
+      senderId: sessionStorage.getItem('currentUserId'),
+      content: message,
     };
 
-    if (connection.connectionStarted) {
       try {
         await connection.send("SendMessage", chatMessage);
       } catch (e) {
+          console.log('error')
         console.log(e);
       }
-    } else {
-      alert("No connection to server yet.");
-    }
   };
 
   return (

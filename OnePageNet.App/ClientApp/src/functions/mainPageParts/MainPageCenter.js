@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "../styles/MainPage.css";
-import { PostList } from "./MainePageCenterParts/PostList";
-import { PostListItem } from "./MainePageCenterParts/PostListItem";
-import { CreatePost } from "./MainePageCenterParts/CreatePost";
-import { EditPost } from "./MainePageCenterParts/EditPost";
+import { PostList } from "./mainPageCenterParts/postParts/PostList";
+import { PostListItem } from "./mainPageCenterParts/postParts/PostListItem";
+import { CreatePost } from "./mainPageCenterParts/postParts/CreatePost";
+import { EditPost } from "./mainPageCenterParts/postParts/EditPost";
+import { CommentList } from "./mainPageCenterParts/commentParts/CommentList";
+import { CreateComment } from "./mainPageCenterParts/commentParts/CreateComment";
 
-export function MainPageCenter() {
+export function MainPageCenter({onLayoutChange}) {
   const [currentPost, setCurrentPost] = useState();
   const [createPost, setCreatePost] = useState();
   const [users, setUsers] = useState();
   const [action, setAction] = useState();
-
+  
   const selectPost = (post, action) => {
     setCurrentPost(post);
     setAction(action);
@@ -53,6 +55,12 @@ export function MainPageCenter() {
     return users?.find((user) => user.id === posterId).userName;
   };
 
+  const onPostClick = (post) => {
+    selectPost(post, "comments");
+    onLayoutChange("post", "right");
+  }
+
+
   return (
     <>
       {currentPost == null || currentPost == undefined ? (
@@ -60,7 +68,8 @@ export function MainPageCenter() {
           <div className="main-page-center">
             <button onClick={() => setCreatePost(true)}>Create post</button>
             <PostList
-              selectPost={selectPost}
+              onClick={onPostClick}
+              onSelect={selectPost}
               users={users}
               deletePost={deletePost}
             />
@@ -80,6 +89,8 @@ export function MainPageCenter() {
             isMyPost={isMyPost(currentPost.posterId)}
             deletePost={deletePost}
           />
+          <CreateComment idOfPost = {currentPost.id}/>
+          <CommentList idOfPost = {currentPost.id}/>
           <button onClick={() => setCurrentPost(null)}>Back</button>
         </div>
       ) : (

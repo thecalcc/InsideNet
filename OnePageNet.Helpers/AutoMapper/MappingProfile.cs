@@ -16,5 +16,6 @@ public class MappingProfile : Profile
         CreateMap<RelationEntity, RelationDTO>().ReverseMap();
         CreateMap<ApplicationUser, UserDto>().ReverseMap();
         CreateMap<UserRelationEntity, UserRelationsDto>().ReverseMap();
+        CreateMap<UserGroupEntity, UserGroupDTO>().ReverseMap();
     }
 }

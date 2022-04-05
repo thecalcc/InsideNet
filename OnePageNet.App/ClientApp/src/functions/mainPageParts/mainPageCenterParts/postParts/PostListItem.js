@@ -1,6 +1,7 @@
 import React from "react"
 import dateFormat from 'dateformat';
 
+
 export function PostListItem({ post, poster, selectPost, isMyPost, deletePost}) {
   return (
     <>
@@ -17,7 +18,7 @@ export function PostListItem({ post, poster, selectPost, isMyPost, deletePost}) 
         </div>
         {dateFormat(post.createdAt, "dddd, mmmm dS, yyyy")}
       </div>
-      <div className="post-content">{post.text}</div>
+      <div className="post-content">{post.text}</div>     
     </>
   );
 }

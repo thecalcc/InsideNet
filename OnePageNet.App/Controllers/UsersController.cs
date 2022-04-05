@@ -20,13 +20,24 @@ public class UsersController : Controller
     }
 
     [HttpGet]
+    [Route("get-all-friends/{userId}")]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllFriends([FromRoute] string userId)
+    {
+        var dtos = await _userService.GetAllFriends(userId);
+
+        if (!dtos.Any() || dtos?.Count == null) return NotFound("You don't have any friends.");
+
+        return Ok(dtos);
+    }
+
+    [HttpGet]
     [Route("get-all")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
     {
         var dtos = await _userService.GetAll();
 
         if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no users in the database.");
-        
+
         return Ok(dtos);
     }
 
@@ -70,6 +81,7 @@ public class UsersController : Controller
         await _userService.SaveChangesAsync();
         return Ok();
     }
+
     [Route("get-filtered-users/{search}")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetFilteredUsers(string search)
