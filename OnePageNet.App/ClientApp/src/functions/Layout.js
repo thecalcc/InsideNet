@@ -9,7 +9,7 @@ import useToken from "./useToken";
 
 export function Layout() {
   const { token, setToken } = useToken();
-  const [layoutState, setLayout] = useState({left: '', center: 'timeline', right: ''});
+  const [layoutState, setLayout] = useState({left: "", center: "timeline", right: ""});
   const [ rerender, setRerender ] = useState(true);
 
 

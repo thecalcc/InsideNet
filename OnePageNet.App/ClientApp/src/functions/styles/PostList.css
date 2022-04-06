@@ -32,6 +32,8 @@
 }
 
 .post-list{
+    max-height: 70vh;
+    overflow: auto;
     margin: 0;
     padding: 0;
     display: flex;
