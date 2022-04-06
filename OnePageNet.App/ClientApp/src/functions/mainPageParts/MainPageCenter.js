@@ -1,3 +1,4 @@
+import { data } from "jquery";
 import React, { useState, useEffect } from "react";
 import "../styles/MainPage.css";
 import { PostList } from "./mainPageCenterParts/postCenterParts/PostList";
@@ -8,11 +9,14 @@ export function MainPageCenter({
   selectPost,
   currentLayout,
   users,
+  posts
 }) {
+  
   const choosePost = (post) => {
     selectPost(post);
     onLayoutChange("post", "right");
   };
+    
 
   return (
     <>
@@ -25,7 +29,7 @@ export function MainPageCenter({
                 <button onClick={() => onLayoutChange("create", "center")}>
                   Create Post
                 </button>
-                <PostList onSelect={choosePost} users={users} rerenderpls = {currentLayout}/>
+                <PostList onSelect={choosePost} users={users} rerenderpls = {currentLayout} posts={posts}/>
               </ul>
             );
           case "create":

@@ -4,7 +4,7 @@ import { MainPageCenter } from './mainPageParts/MainPageCenter.js';
 import { MainPageRight } from './mainPageParts/MainPageRight.js';
 import "./styles/MainPage.css"
 
-export function MainPage({ currentLayout, onLayoutChange }) {
+export function MainPage({ currentLayout, onLayoutChange, posts }) {
     const [post, setPost] = useState(null)
     const [users, setUsers] = useState();
     const selectPost = (post) =>{
@@ -31,7 +31,7 @@ export function MainPage({ currentLayout, onLayoutChange }) {
         <>
             <div className='main-page'>
                 <MainPageLeft/>
-                <MainPageCenter className='main-page-center' onLayoutChange={onLayoutChange} currentLayout = {currentLayout} selectPost = {selectPost} users={users}/>
+                <MainPageCenter className='main-page-center' onLayoutChange={onLayoutChange} currentLayout = {currentLayout} selectPost = {selectPost} users={users} posts={posts}/>
                 <MainPageRight layoutState={currentLayout.right} post={post} users = {users} onLayoutChange={onLayoutChange} changePost={selectPost} />
             </div>
         </>

@@ -10,7 +10,6 @@ import useToken from "./useToken";
 export function Layout() {
   const { token, setToken } = useToken();
   const [layoutState, setLayout] = useState({left: "", center: "timeline", right: ""});
-  const [ rerender, setRerender ] = useState(true);
 
 
   useEffect(() => {
@@ -20,23 +19,36 @@ export function Layout() {
   }, []);
 
   const onLayoutChange = (layout, root) => {
-    let tmp = layoutState;
     switch(root){
       case "left":
-        tmp.left = layout
-        setLayout(tmp);
+        setLayout({...layoutState,left: layout});
         break;
       case "center":
-        tmp.center = layout
-        setLayout(tmp);
+        setLayout({...layoutState,center: layout});
         break
       case "right":
-        tmp.right = layout
-        setLayout(tmp);
+        setLayout({...layoutState,right: layout});
         break
     }
-    setRerender(!rerender)
+    console.log("stoptrolling")
   }
+  const [posts, setPosts] = useState();
+  useEffect(()=>{const fetchPosts = async () => {
+      const urlPosts = "https://localhost:7231/api/Posts/get-all";
+      await fetch(urlPosts, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then((data) => data.json()).then((data) => setPosts(data));
+
+    }
+    fetchPosts();
+  },[layoutState])
 
   return (
     <div>
@@ -56,7 +68,7 @@ export function Layout() {
         <>
         <NavMenu setToken={setToken} token={token} onLayoutChange={onLayoutChange}/>
           <Route exact path="/">
-            <MainPage currentLayout={layoutState} onLayoutChange={onLayoutChange}/>
+            <MainPage currentLayout={layoutState} onLayoutChange={onLayoutChange} posts={posts}/>
           </Route>
         </>
       )}
