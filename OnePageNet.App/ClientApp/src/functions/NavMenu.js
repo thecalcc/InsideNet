@@ -9,8 +9,12 @@ export function NavMenu({ setToken, token, onLayoutChange }) {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setToken(null);
+    setToken(undefined);
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("currentUserId");
+    onLayoutChange("","center")
+    onLayoutChange("groupSelection","left")
+    onLayoutChange("","right")
     history.push("/");
   };
 

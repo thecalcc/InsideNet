@@ -30,8 +30,10 @@ public class PostEntityDatabaseService : DatabaseService<PostEntity, PostDto>, I
     public async Task<List<PostDto>> GetTimeline(string id)
     {
         var posts = await _dbContext.PostEntities.ToListAsync();
-        var userRelations = await _dbContext.UserRelationEntities.ToListAsync();
-        var timeline = posts.Where(x => userRelations.Where(y => (y.TargetUser.Id == x.PosterId) && (y.CurrentUser.Id == id) && (y.UserRelationship.Name == Helpers.Helpers.UserRelationConstants.Friends)) != null).ToList();
+        var userRelations = await _dbContext.UserRelationEntities.Include(x => x.CurrentUser)
+                .Include(x => x.TargetUser)
+                .Include(x => x.UserRelationship).ToListAsync();
+        var timeline = posts.Where(x => (userRelations.Where(y => (y.TargetUser.Id == x.PosterId) && (y.CurrentUser.Id == id) && (y.UserRelationship.Name == Helpers.Helpers.UserRelationConstants.Friends)).Any() || x.PosterId == id)).ToList();
         return _mapper.Map<List<PostDto>>(timeline);
     }
 }

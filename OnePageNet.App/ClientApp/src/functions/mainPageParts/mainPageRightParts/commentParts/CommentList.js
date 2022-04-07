@@ -11,7 +11,7 @@ export function CommentList({idOfPost}) {
   }
   useEffect(() => {
     const fetchComments = async () => {
-      const urlPosts = "https://localhost:7231/api/Comments/get-all";
+      const urlPosts = `https://localhost:7231/api/Comments/get-by-id/${idOfPost}`;
       await fetch(urlPosts, {
         method: "GET",
         mode: "cors",
@@ -41,7 +41,7 @@ export function CommentList({idOfPost}) {
 
     fetchUsers();
     fetchComments();
-  },[rerender]);
+  },[rerender, idOfPost]);
 
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
@@ -52,7 +52,6 @@ export function CommentList({idOfPost}) {
     <CreateComment idOfPost={idOfPost} onRerender = {onRerender}/>
     <ul className="comment-list">
       {(comments !== null && comments !== undefined && comments !== "There are no such entities in the database.")? comments?.map((comment) => {
-        if(comment.postId == idOfPost)
         return (
           <li className="comment">
             <CommentListItem

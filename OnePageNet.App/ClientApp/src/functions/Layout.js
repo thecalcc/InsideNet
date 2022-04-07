@@ -9,9 +9,13 @@ import useToken from "./useToken";
 
 export function Layout() {
   const { token, setToken } = useToken();
-  const [layoutState, setLayout] = useState({left: "groupSelection", center: "timeline", right: ""});
+  const [layoutState, setLayout] = useState({left: "groupSelection", center: "", right: ""});
+  const shouldHaveUsedRerender = () => {
+    if((sessionStorage.getItem("currentUserId")&& layoutState.center === "")){
+      setLayout({...layoutState,center: "timeline"})}
+  }
 
-
+  shouldHaveUsedRerender();
   useEffect(() => {
     return () => {
       setToken(sessionStorage.getItem("token"));
@@ -44,7 +48,7 @@ export function Layout() {
           "Access-Control-Allow-Origin": "*",
         },
       })
-        .then((data) => data.json()).then((data) => setPosts(data));
+        .then((data) => data.json()).then((data) => setPosts(data.result));
 
     }
     fetchPosts();
@@ -61,7 +65,7 @@ export function Layout() {
             <Register setToken={setToken} />
           </Route>
           <Route exact path="/login">
-            <Login setToken={setToken} />
+            <Login setToken={setToken} onLayoutChange={onLayoutChange}/>
           </Route>
         </>
       ) : (

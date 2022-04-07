@@ -17,8 +17,8 @@ public class PostsController : BaseController<PostEntity, PostDto>
     }
 
     [Route("get-timeline/{id}")]
-    public async Task<ActionResult<List<PostDto>>> GetTimeline([FromRoute] string id)
-    {
+    [HttpGet]
+    public async Task<ActionResult<List<PostDto>>> GetTimeline([FromRoute] string id) {
         var dtos = _postService.GetTimeline(id);
         return Ok(dtos);
     }

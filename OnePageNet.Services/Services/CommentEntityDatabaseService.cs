@@ -8,7 +8,7 @@ using OnePageNet.Services.Services.Interfaces;
 namespace OnePageNet.Services.Services
 {
     public class CommentEntityDatabaseService : DatabaseService<CommentEntity, CommentDto>,
-        IDatabaseService<CommentEntity, CommentDto>
+        ICommentService
     {
         private readonly OnePageNetDbContext _dbContext;
 
@@ -28,6 +28,12 @@ namespace OnePageNet.Services.Services
             _dbContext.Attach(post);
 
             return true;
+        }
+
+        public async Task<List<CommentDto>> GetAllById(string id)
+        {
+            var comments = await _dbContext.CommentEntities.Where(x => x.PostId == id).Include(x => x.ApplicationUser).Include(x => x.Post).ToListAsync();
+            return _mapper.Map<List<CommentDto>>(comments);
         }
     }
 }
