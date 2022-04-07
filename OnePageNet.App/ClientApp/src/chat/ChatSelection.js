@@ -1,12 +1,12 @@
 import e from "cors";
 import React, { useState, useEffect } from "react";
 
-export function ChatSelection({selectGroup}) {
+export function ChatSelection({selectCurrentGroupChat}) {
   const [groups, setGroups] = useState();
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const urlGroups = `https://localhost:7231/api/Groups/get-all`;
+      const urlGroups = `https://localhost:7231/api/UserGroups/get-all/${sessionStorage.getItem('currentUserId')}`;
 
       await fetch(urlGroups, {
         method: "GET",
@@ -25,8 +25,8 @@ export function ChatSelection({selectGroup}) {
   
   return (
     <ul>
-      {groups != "There are no such entities in the database." ? (groups?.map((x) => {
-        return <button onClick={() => selectGroup(x.id)}>{x.name}</button>;
+      {groups !== "There are no such entities in the database." ? (groups?.map((x) => {
+        return <button onClick={() => selectCurrentGroupChat(x.id)}>{x.name}</button>;
       })):<>talk to some bitches</>}
     </ul>
   );

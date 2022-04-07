@@ -26,20 +26,19 @@ namespace OnePageNet.Services.Services
         public async Task AddAsync(string groupId, string userId)
         {
             var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId) ??
-                           throw new Exception("Current user does not exist.");
+                       throw new Exception("Current user does not exist.");
             var group = await _dbContext.GroupEntities.FirstOrDefaultAsync(x => x.Id == groupId) ??
-                           throw new Exception("Current group does not exist.");
+                        throw new Exception("Current group does not exist.");
 
             var userGroup = new UserGroupEntity
             {
                 Users = user,
                 Group = group
             };
-            
+
 
             await _dbContext.UserGroupEntities.AddAsync(userGroup);
             await _dbContext.SaveChangesAsync();
-
         }
 
         public async Task<bool> DeleteAsync(UserGroupDTO dto)
@@ -49,14 +48,14 @@ namespace OnePageNet.Services.Services
             return true;
         }
 
-        public async Task<List<UserGroupDTO>> GetAll(string userId)
+        public List<GroupDTO> GetAllForUser(string userId)
         {
-            var dtos = _mapper.Map<List<UserGroupDTO>>(await _dbContext.UserGroupEntities
-               .Where(x => x.Users.Id == userId)
-               .Include(x => x.Group)
-               .Include(x => x.Users)
-               .ToListAsync());
-
+            var dtos = _mapper.Map<List<GroupDTO>>(_dbContext.UserGroupEntities
+                .Where(x => x.Users.Id == userId)
+                .Include(x => x.Group)
+                .Include(x => x.Users)
+                .Select(x => x.Group));
+            
             return dtos ??
                    throw new Exception("No userGroups found (you are alone)");
         }
@@ -69,15 +68,14 @@ namespace OnePageNet.Services.Services
                    throw new Exception("No such relation found");
         }
 
-        public async Task<string> GetIdByComposite(string currentUserId, string GroupId) 
+        public async Task<string> GetIdByComposite(string currentUserId, string groupId)
         {
             var userGroup = await _dbContext.UserGroupEntities.Include("Users")
-                       .Include("Group").FirstOrDefaultAsync(x =>
-                           x.Users.Id == currentUserId && x.Group.Id == GroupId);
-            return userGroup.Id ??
+                .Include("Group").FirstOrDefaultAsync(x =>
+                    x.Users.Id == currentUserId && x.Group.Id == groupId);
+
+            return userGroup?.Id ??
                    throw new Exception("There's no such entity");
         }
-
-      
     }
 }
