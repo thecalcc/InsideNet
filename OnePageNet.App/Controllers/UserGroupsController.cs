@@ -10,7 +10,7 @@ namespace OnePageNet.App.Controllers
     [ApiController]
     public class UserGroupsController : Controller
     {
-        IUserGroupService _userGroupService;
+        readonly IUserGroupService _userGroupService;
         public UserGroupsController(IUserGroupService userGroupService)
         {
             _userGroupService = userGroupService;
@@ -18,9 +18,9 @@ namespace OnePageNet.App.Controllers
 
         [HttpGet]
         [Route("get-all/{userId}")]
-        public async Task<ActionResult<UserGroupDTO>> GetAll([FromRoute] string userId)
+        public async Task<ActionResult<GroupDTO>> GetAll([FromRoute] string userId)
         {
-            var dtos = await _userGroupService.GetAll(userId);
+            var dtos = _userGroupService.GetAllForUser(userId);
 
             if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
 
@@ -43,7 +43,7 @@ namespace OnePageNet.App.Controllers
         public virtual async Task<ActionResult<UserGroupDTO>> Create([FromBody] UserGroupDTO dto)
         {
             await _userGroupService.AddAsync(dto.GroupId, dto.UsersId);
-            string id = await _userGroupService.GetIdByComposite(dto.UsersId, dto.GroupId);
+            var id = await _userGroupService.GetIdByComposite(dto.UsersId, dto.GroupId);
             return CreatedAtAction("Get", id);
         }
 
@@ -59,6 +59,7 @@ namespace OnePageNet.App.Controllers
             if (deleted) return Ok(deleted);
             return BadRequest("Didn't delete the entity successfully.");
         }
-
+        
+        
     }
 }

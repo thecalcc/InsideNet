@@ -25,6 +25,11 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
         return _mapper.Map<List<TG>>(await _dbContext.Set<T>().ToListAsync());
     }
 
+    public virtual Task<List<TG>> GetAllById(string id)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual async Task<bool> AttachUser(TG dto)
     {
         return false;

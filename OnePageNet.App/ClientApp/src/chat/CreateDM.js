@@ -1,7 +1,5 @@
-import { grep } from 'jquery';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { canConstructReadableStream } from 'workbox-core/_private';
 
 export function CreateDM() {
     const [friends,setFriends] = useState();
@@ -79,10 +77,7 @@ export function CreateDM() {
           
       };
 
-      
-
-      createGroup()
-      
+      createGroup()      
     }
 
     return (

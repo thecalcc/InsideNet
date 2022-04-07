@@ -3,14 +3,34 @@ import * as signalR from "@microsoft/signalr";
 
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
-import ChatSelection from "./ChatSelection";
 
-export function Chat() {
+export function Chat({ group }) {
   const [connection, setConnection] = useState(null);
-  const [chat, setChat] = useState([]);
   const latestChat = useRef(null);
+  const [temp, setTemp] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
 
-  latestChat.current = chat;
+  latestChat.current = chatHistory;
+
+  const getChatHistory = async () => {
+    const url = `https://localhost:7231/api/messages/get-history/${group}`;
+
+    await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((data) => data.json())
+      .then((data) => setChatHistory(data));
+  };
+
+  useEffect(() =>{
+    getChatHistory();
+  }, [temp])
 
   useEffect(() => {
     const options = {
@@ -34,10 +54,10 @@ export function Chat() {
           console.log("Connected!");
 
           connection.on("ReceiveMessage", (message) => {
-            const updatedChat = [...latestChat.current];
-            updatedChat.push(message);
+            const updatedChat = [...chatHistory.current];
 
-            setChat(updatedChat);
+            updatedChat.push(message);
+            setChatHistory(updatedChat);
           });
         })
         .catch((e) => console.log("Connection failed: ", e));
@@ -46,23 +66,28 @@ export function Chat() {
 
   const sendMessage = async (message) => {
     const chatMessage = {
-      senderId: sessionStorage.getItem('currentUserId'),
+      senderId: sessionStorage.getItem("currentUserId"),
       content: message,
+      destinationId: group,
     };
 
-      try {
-        await connection.send("SendMessage", chatMessage);
-      } catch (e) {
-          console.log('error')
-        console.log(e);
-      }
+    try {
+      await connection.send("SendMessage", chatMessage);
+      const updatedChat = [...chatHistory.current];
+      updatedChat.push(message.content);
+      setChatHistory(updatedChat);
+      setTemp(!temp);
+    } catch (e) {
+      console.log("error");
+      console.log(e);
+    }
   };
 
   return (
     <div>
       <ChatInput sendMessage={sendMessage} />
       <hr />
-      <ChatWindow chat={chat} />
+      <ChatWindow chat={chatHistory} />
     </div>
   );
-};
+}
