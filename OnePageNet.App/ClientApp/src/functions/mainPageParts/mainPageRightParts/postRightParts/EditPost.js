@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-export function EditPost({ post }) {
+export function EditPost({ post, onLayoutChange }) {
     const [text, setText] = useState(post.text);
     const posterId = sessionStorage.currentUserId;
     const mediaUri = null;
@@ -12,7 +12,7 @@ export function EditPost({ post }) {
         e.preventDefault();
         const url = `https://localhost:7231/api/posts/update/${post.id}`;
     
-        await fetch(url, {
+        const editPost = async () => { await fetch(url, {
           method: "PUT",
           mode: "cors",
           headers: {
@@ -28,7 +28,9 @@ export function EditPost({ post }) {
             posterId,
             id:post.id,
           }),
-        })
+        }).then(() => onLayoutChange("post", "right"))}
+
+        editPost();
       };
     
       return (

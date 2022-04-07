@@ -10,7 +10,7 @@ export function PostList({ onSelect, users, rerenderpls, posts}) {
 
   return (
     <ul className = "post-list">
-      {posts?.map((post) => {
+      {(posts !== undefined)? posts?.map((post) => {
         return (
           <li className="post">
           <PostListItem
@@ -23,7 +23,7 @@ export function PostList({ onSelect, users, rerenderpls, posts}) {
           </div>
         </li>
         );
-      })}
+      }):null}
     </ul>
   );
 }

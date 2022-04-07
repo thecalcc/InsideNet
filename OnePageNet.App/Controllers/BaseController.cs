@@ -12,7 +12,7 @@ public abstract class BaseController<T, TG> : ControllerBase
     where T : BaseEntity
     where TG : BaseDTO
 {
-    private readonly IDatabaseService<T, TG> _databaseService;
+    protected readonly IDatabaseService<T, TG> _databaseService;
 
     protected BaseController(
         IDatabaseService<T, TG> databaseService)

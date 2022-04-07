@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import "../styles/MainPage.css";
 import "../styles/PostList.css";
-import { Users } from "./Users";
+import { Users } from "./mainPageRightParts/userParts/Users";
 import { PostListItem } from "./mainPageCenterParts/postCenterParts/PostListItem";
 import { CommentList } from "./mainPageRightParts/commentParts/CommentList";
-import { CreateComment } from "./mainPageRightParts/commentParts/CreateComment";
 import { EditPost} from "./mainPageRightParts/postRightParts/EditPost"
 import { useEffect } from "react";
 
@@ -57,7 +56,6 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
                       />
                     </div>
                     <div className="comments-view">
-                      <CreateComment idOfPost={internalPost.id} />
                       <CommentList idOfPost={internalPost.id} />
                     </div>
                   </div>
@@ -71,7 +69,7 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
               <>
                 {post !== null ? (
                   <>
-                    <EditPost post = {internalPost}/>
+                    <EditPost post = {internalPost} onLayoutChange={onLayoutChange}/>
                     <button onClick={() => onLayoutChange("post", "right")}>
                       Back
                     </button>

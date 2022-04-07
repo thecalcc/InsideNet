@@ -9,7 +9,7 @@ import useToken from "./useToken";
 
 export function Layout() {
   const { token, setToken } = useToken();
-  const [layoutState, setLayout] = useState({left: "", center: "timeline", right: ""});
+  const [layoutState, setLayout] = useState({left: "groupSelection", center: "timeline", right: ""});
 
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function Layout() {
   }
   const [posts, setPosts] = useState();
   useEffect(()=>{const fetchPosts = async () => {
-      const urlPosts = "https://localhost:7231/api/Posts/get-all";
+      const urlPosts = `https://localhost:7231/api/Posts/get-timeline/${sessionStorage.getItem("currentUserId")}`;
       await fetch(urlPosts, {
         method: "GET",
         mode: "cors",
