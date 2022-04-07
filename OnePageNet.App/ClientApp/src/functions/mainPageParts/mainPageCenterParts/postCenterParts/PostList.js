@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PostListItem } from "./PostListItem";
-import "../../../styles/PostList.css"
+import "../../../../custom.css";
+
 export function PostList({ onSelect, users, rerenderpls, posts}) {
 
   const getPosterName = (posterId) => {
@@ -18,7 +19,7 @@ export function PostList({ onSelect, users, rerenderpls, posts}) {
             isMyPost={false}
           />
           <div>
-            <button onClick={() => onSelect(post)}>Comments</button>
+            <button className = "custom-btn" onClick={() => onSelect(post)}><img className='btn-img' src= '/resources/comment-icon.png' alt='comment-icon'/> </button>
           </div>
         </li>
         );

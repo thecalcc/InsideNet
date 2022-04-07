@@ -1,6 +1,6 @@
 .post{
     border: 1px solid gray;
-    width: 40vw;
+    width: 90%;
     color: white;
     border-radius: 0.8em;
     margin-top: 0.3em;
@@ -39,11 +39,22 @@
     display: flex;
     flex-direction: column;
     list-style: none;
+    width: 40vw;
 }
-
+.post-list::-webkit-scrollbar{
+    display: none;
+}
 .post-poster{
     display: flex;
     justify-content: flex-start;
     align-items: baseline;
     color: #fab300;
+}
+
+.full-post-view{
+    height:70%;
+    display:flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: center;
 }

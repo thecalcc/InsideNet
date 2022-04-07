@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import "../../../../custom.css"
+import "../../../styles/CommentList.css"
 
-export function CreateComment({idOfPost}) {
-const [content, setContent] = useState();
-const ApplicationUserId = sessionStorage.currentUserId;
-const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const postId = idOfPost;
-const history = useHistory();
+export function CreateComment({ idOfPost }) {
+  const [content, setContent] = useState();
+  const ApplicationUserId = sessionStorage.currentUserId;
+  const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  const postId = idOfPost;
+  const history = useHistory();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = "https://localhost:7231/api/comments/create";
@@ -31,19 +33,17 @@ const history = useHistory();
   };
 
   return (
-    <>
-      <form onSubmit={(e) => handleSubmit(e)}>
-          <label>
-            <b>Text</b>
-          </label>
-          <input
-            name="content"
-            type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <input type="submit" value="post" />
-      </form>
-    </>
+    <form className="comment-form" onSubmit={(e) => handleSubmit(e)}>
+      <input
+        className="text-input"
+        name="content"
+        type="text"
+        value={content}
+        placeholder="Write your comment here..."
+        onChange={(e) => setContent(e.target.value)}
+      />
+      {/*  */}
+      <button className="custom-btn" type="submit"><img className = 'btn-img' src = '/resources/post-icon.png' alt ='post-icon'/> </button>
+    </form>
   );
 }

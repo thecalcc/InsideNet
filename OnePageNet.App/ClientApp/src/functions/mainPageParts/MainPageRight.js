@@ -47,7 +47,7 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
             return (
               <>
                 {internalPost !== null ? (
-                  <>
+                  <div className = "full-post-view">
                     <div className="post">
                       <PostListItem
                         post={internalPost}
@@ -56,11 +56,11 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
                         onLayoutChange={onLayoutChange}
                       />
                     </div>
-                    <div>
+                    <div className="comments-view">
                       <CreateComment idOfPost={internalPost.id} />
                       <CommentList idOfPost={internalPost.id} />
                     </div>
-                  </>
+                  </div>
                 ) : (
                   <>Ran into an error loading the post</>
                 )}

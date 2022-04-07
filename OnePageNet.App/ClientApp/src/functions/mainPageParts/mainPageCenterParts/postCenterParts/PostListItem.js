@@ -1,6 +1,6 @@
 import React from "react"
 import dateFormat from 'dateformat';
-
+import "../../../../custom.css";
 
 export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
   const onDelete = (id) => {
@@ -16,7 +16,6 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
       },
     });
   }
-
   deletePost(id);
   onLayoutChange("", "right");
 }
@@ -28,8 +27,8 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
           <h3>{poster}</h3>
           {isMyPost ? (
             <>
-              <button onClick={() => onLayoutChange("edit", "right")}>Edit</button>
-              <button onClick={() => onDelete(post.id)}>Delete</button> 
+              <button className = 'custom-btn' onClick={() => onLayoutChange("edit", "right")}><img className = 'btn-img' src ='/resources/edit-icon.png' alt = 'edit-icon'/></button>
+              <button className = 'custom-btn' onClick={() => onDelete(post.id)}><img className = 'btn-img' src ='/resources/delete-icon.png' alt = 'delete-icon'/></button> 
             </>
           ) : null}
         </div>

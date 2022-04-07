@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import "../../../../custom.css"
 
-export function EditComment({idOfPost, comment, doneWithEdit}) {
-const [content, setContent] = useState(comment.content);
-const ApplicationUserId = sessionStorage.currentUserId;
-const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const postId = idOfPost;
-const history = useHistory();
+export function EditComment({ idOfPost, comment, doneWithEdit }) {
+  const [content, setContent] = useState(comment.content);
+  const ApplicationUserId = sessionStorage.currentUserId;
+  const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  const postId = idOfPost;
+  const history = useHistory();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = `https://localhost:7231/api/comments/update/${comment.id}`;
@@ -25,29 +26,25 @@ const history = useHistory();
         mediaUri,
         postId,
         ApplicationUserId,
-        id:comment.id
+        id: comment.id
       }),
     })
       .then(() => history.push("/"))
 
-      doneWithEdit()
-      console.log(doneWithEdit)
+    doneWithEdit()
+    console.log(doneWithEdit)
   };
 
   return (
-    <>
-      <form onSubmit={(e) => handleSubmit(e)}>
-          <label>
-            <b>Text</b>
-          </label>
-          <input
-            name="content"
-            type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-          <input type="submit" value="Done" />
-      </form>
-    </>
+    <form className="comment-form" onSubmit={(e) => handleSubmit(e)}>
+      <input
+        className="text-input"
+        name="content"
+        type="text"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
+      <button className="custom-btn" type="submit"><img className = 'btn-img' src ='/resources/post-icon.png' alt = 'post-icon'/></button>
+    </form>
   );
 }
