@@ -6,7 +6,7 @@ export function CommentList({idOfPost}) {
   const [users, setUsers] = useState();
   const [rerender,setRerender] = useState(false);
   const onRerender = () => {
-    console.log("boli me rumen radeviq")
+    setRerender(!rerender);
   }
   useEffect(() => {
     const fetchComments = async () => {
@@ -40,7 +40,7 @@ export function CommentList({idOfPost}) {
 
     fetchUsers();
     fetchComments();
-  },[]);
+  },[rerender]);
 
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
