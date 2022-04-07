@@ -32,3 +32,4 @@ ops/*.retry
 .idea/
 .vs/
 OnePageNet.App/OnePageNet.db-shm
+/OnePageNet.App/OnePageNet.db-shm

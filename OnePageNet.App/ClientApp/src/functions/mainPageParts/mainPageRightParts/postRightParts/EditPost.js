@@ -29,7 +29,6 @@ export function EditPost({ post }) {
             id:post.id,
           }),
         })
-          .then((data) => data.json()).then(() => history.push("/"))
       };
     
       return (

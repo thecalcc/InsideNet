@@ -4,6 +4,10 @@ import "../../../styles/CommentList.css"
 export function CommentList({idOfPost}) {
   const [comments, setComments] = useState();
   const [users, setUsers] = useState();
+  const [rerender,setRerender] = useState(false);
+  const onRerender = () => {
+    console.log("boli me rumen radeviq")
+  }
   useEffect(() => {
     const fetchComments = async () => {
       const urlPosts = "https://localhost:7231/api/Comments/get-all";
@@ -36,7 +40,7 @@ export function CommentList({idOfPost}) {
 
     fetchUsers();
     fetchComments();
-  }, []);
+  },[]);
 
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
@@ -53,6 +57,7 @@ export function CommentList({idOfPost}) {
               poster={getPosterName(comment.applicationUserId)}
               isMyComment = "false"
               idOfPost = {idOfPost}
+              onRerender = {onRerender}
             />
           </li> 
         );

@@ -60,7 +60,7 @@ public abstract class BaseController<T, TG> : ControllerBase
             throw;
         }
 
-        return NoContent();
+        return Ok(dto);
     }
 
     [Route("create")]

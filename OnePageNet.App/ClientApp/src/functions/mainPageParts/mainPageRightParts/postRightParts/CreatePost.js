@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
-export function CreateComment({idOfPost}) {
-const [content, setContent] = useState();
-const ApplicationUserId = sessionStorage.currentUserId;
-const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-const postId = idOfPost;
-const history = useHistory();
+export function CreatePost({onLayoutChange}) {
+const [text, setText] = useState();
+const posterId = sessionStorage.currentUserId;
+const mediaUri = null;
+const commentsIds = null;
+const reactionId = null;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = "https://localhost:7231/api/comments/create";
+    const url = "https://localhost:7231/api/posts/create";
 
     await fetch(url, {
       method: "POST",
@@ -21,13 +19,14 @@ const history = useHistory();
         "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify({
-        content,
+        text,
         mediaUri,
-        postId,
-        ApplicationUserId
+        reactionId,
+        commentsIds,
+        posterId
       }),
     })
-      .then(() => history.push("/"))
+    onLayoutChange("timeline","center")
   };
 
   return (
@@ -37,10 +36,10 @@ const history = useHistory();
             <b>Text</b>
           </label>
           <input
-            name="content"
+            name="text"
             type="text"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
           <input type="submit" value="post" />
       </form>
