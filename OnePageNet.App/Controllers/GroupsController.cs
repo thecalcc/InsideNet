@@ -10,8 +10,19 @@ namespace OnePageNet.App.Controllers;
 [ApiController]
 public class GroupsController : BaseController<GroupEntity, GroupDTO>
 {
-    public GroupsController(IDatabaseService<GroupEntity, GroupDTO> databaseService)
+    IGroupService _databaseService;
+    public GroupsController(IGroupService databaseService)
         : base(databaseService)
     {
+        _databaseService = databaseService;
+    }
+
+    [Route("create/{creatorId}/{targetId}")]
+    [HttpPost]
+    public virtual async Task<ActionResult<GroupDTO>> Create([FromBody] GroupDTO dto, [FromRoute] string creatorId, [FromRoute] string targetId)
+    {
+        await _databaseService.AttachUser(dto);
+        await _databaseService.AddAsync(dto, creatorId, targetId);
+        return CreatedAtAction("Get", dto);
     }
 }

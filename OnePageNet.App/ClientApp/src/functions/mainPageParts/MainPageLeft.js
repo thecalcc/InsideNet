@@ -8,13 +8,18 @@ import { CreateDM } from "./mainPageLeftParts/groupParts/CreateDM";
 export function MainPageLeft({ layoutState, onLayoutChange }) {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [rerender, setRerender] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
+  const onChangeChatHistory = (history) => {
+    setChatHistory(history)
+  }
+  
   const onRerender = () => {
     setRerender(!rerender);
   };
 
   const selectCurrentGroupChat = (prop) => {
     setCurrentGroup(prop);
-    onLayoutChange("chat", "left");
+    onLayoutChange("chat-display", "left");
   };
 
   const onBack = () => {
@@ -41,8 +46,25 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         .then((data) => data.json())
         .then((data) => setGroups(data));
     };
+    const getChatHistory = async () => {
+      const url = `https://localhost:7231/api/messages/get-history/${currentGroup.id}`;
+
+      await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then((data) => data.json())
+        .then((data) => setChatHistory(data));
+    };
+    getChatHistory();
     fetchGroups();
   }, [rerender]);
+
 
   return (
     <div className="main-page-left">
@@ -58,10 +80,16 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
                 />
               </>
             );
-          case "chat":
+          case "chat-display":
             return (
               <>
-                <Chat group={currentGroup} onBack = {onBack} />
+                <Chat group={currentGroup} onBack = {onBack} layoutState={layoutState} onLayoutChange={onLayoutChange} onRerender={onRerender} chatHistory={chatHistory} onChangeChatHistory = {onChangeChatHistory}/>
+              </>
+            );
+          case "chat-edit":
+            return (
+              <>
+                <Chat group={currentGroup} onBack = {onBack} layoutState={layoutState}  onLayoutChange={onLayoutChange} onRerender={onRerender} chatHistory={chatHistory} onChangeChatHistory = {onChangeChatHistory}/>
               </>
             );
         }

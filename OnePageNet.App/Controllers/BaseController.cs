@@ -74,6 +74,7 @@ public abstract class BaseController<T, TG> : ControllerBase
 
     [Route("delete/{id}")]
     [HttpDelete]
+    //TO DO: don't be autistic, fix remove in service
     public async Task<IActionResult> Delete(string id)
     {
         var entity = await _databaseService.FindById(id);

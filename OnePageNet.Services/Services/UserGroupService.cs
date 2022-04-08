@@ -42,9 +42,20 @@ namespace OnePageNet.Services.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<bool> DeleteAsync(UserGroupDTO dto)
+        public async Task<bool> DeleteAsync(string id)
         {
-            _dbContext.UserGroupEntities.Remove(_mapper.Map<UserGroupEntity>(dto));
+            var userGroup = await _dbContext.UserGroupEntities.FirstOrDefaultAsync(x => x.Id == id);
+            var group = userGroup?.Group;
+            _dbContext.UserGroupEntities.Remove(await _dbContext.UserGroupEntities.FirstOrDefaultAsync(x =>
+                           x.Id == id) ??
+                   throw new Exception("No such relation found"));           
+            var groupMembers = await _dbContext.UserGroupEntities.Where(x => x.Group == group).ToListAsync();
+            if (groupMembers.Count() < 1) 
+            {
+                _dbContext.GroupEntities.Remove(group);
+                await _dbContext.SaveChangesAsync();
+
+            }
             await _dbContext.SaveChangesAsync();
             return true;
         }

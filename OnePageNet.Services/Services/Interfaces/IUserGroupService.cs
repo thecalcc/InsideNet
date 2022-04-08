@@ -12,7 +12,7 @@ namespace OnePageNet.Services.Services.Interfaces
         List<GroupDTO> GetAllForUser(string userId);
         Task AddAsync(string groupId, string userId);
         Task<UserGroupDTO> GetById(string id);
-        Task<bool> DeleteAsync(UserGroupDTO dto);
+        Task<bool> DeleteAsync(string id);
         Task<string> GetIdByComposite(string currentUserId, string groupId);
     }
 }
