@@ -1,4 +1,4 @@
-.register-form{
+.login-form{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,21 +7,11 @@
     margin-bottom: 1vh;
 }
 
-.register-form fieldset{
+.login-fieldset{
     width: inherit;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-bottom: 1vh;
-}
-
-.register-form fieldset>*{
-    margin: 0;
-}
-
-.gender{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-around;
 }
