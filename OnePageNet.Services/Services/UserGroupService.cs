@@ -50,10 +50,9 @@ namespace OnePageNet.Services.Services
                            x.Id == id) ??
                    throw new Exception("No such relation found"));           
             var groupMembers = await _dbContext.UserGroupEntities.Where(x => x.Group == group).ToListAsync();
-            if (groupMembers.Count() < 1) 
+            if (groupMembers.Count() <= 2) 
             {
                 _dbContext.GroupEntities.Remove(group);
-                await _dbContext.SaveChangesAsync();
 
             }
             await _dbContext.SaveChangesAsync();
