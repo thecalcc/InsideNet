@@ -40,7 +40,7 @@ namespace OnePageNet.App.Controllers
 
         [Route("create")]
         [HttpPost]
-        public virtual async Task<ActionResult<UserGroupDTO>> Create([FromBody] UserGroupDTO dto)
+        public async Task<ActionResult<UserGroupDTO>> Create([FromBody] UserGroupDTO dto)
         {
             await _userGroupService.AddAsync(dto.GroupId, dto.UsersId);
             var id = await _userGroupService.GetIdByComposite(dto.UsersId, dto.GroupId);
@@ -51,15 +51,34 @@ namespace OnePageNet.App.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
-            var entity = await _userGroupService.GetById(id);
-            if (string.IsNullOrEmpty(entity.Id)) return NotFound();
 
-            var deleted = await _userGroupService.DeleteAsync(entity);
+            var deleted = await _userGroupService.DeleteAsync(id);
 
             if (deleted) return Ok(deleted);
             return BadRequest("Didn't delete the entity successfully.");
         }
-        
-        
+        [Route("delete/{groupId}/{userId}")]
+        [HttpDelete]
+        public async Task<IActionResult> Delete(string groupId, string userId)
+        {
+            var id = await _userGroupService.GetIdByComposite(userId, groupId);
+            if (string.IsNullOrEmpty(id)) return NotFound();
+
+
+            var deleted = await _userGroupService.DeleteAsync(id);
+
+            if (deleted) return Ok(deleted);
+            return BadRequest("Didn't delete the entity successfully.");
+        }
+
+        [Route("get/{groupId}/{userId}")]
+        [HttpGet]
+        public async Task<ActionResult<string>> Get(string groupId, string userId)
+        {
+            var id = await _userGroupService.GetIdByComposite(userId, groupId);
+            if (string.IsNullOrEmpty(id)) return NotFound();
+
+            return Ok(id);
+        }
     }
 }

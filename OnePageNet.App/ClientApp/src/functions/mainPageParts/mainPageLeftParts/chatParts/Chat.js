@@ -4,34 +4,31 @@ import * as signalR from "@microsoft/signalr";
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
 
-import '../../../styles/Chat.css'
+import "../../../styles/Chat.css";
+import { EditComment } from "../../mainPageRightParts/commentParts/EditComment";
+import { EditGroup } from "../groupParts/EditGroup";
+import { data } from "jquery";
 
-export function Chat({ group, onBack }) {
+export function Chat({
+  group,
+  onBack,
+  layoutState,
+  onLayoutChange,
+  onRerender,
+  chatHistory,
+  onChangeChatHistory,
+}) {
   const [connection, setConnection] = useState(null);
   const latestChat = useRef(null);
-  const [rerender, setRerender] = useState(false);
-  const [chatHistory, setChatHistory] = useState([]);
 
   latestChat.current = chatHistory;
 
-  useEffect(() => {
-    const getChatHistory = async () => {
-      const url = `https://localhost:7231/api/messages/get-history/${group.id}`;
-
-      await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-        .then((data) => data.json())
-        .then((data) => setChatHistory(data));
-    };
-    getChatHistory();
-  }, [rerender]);
+  const onEdit = () => {
+    onLayoutChange("chat-edit", "left");
+  };
+  const onEditCompleation = () => {
+    onLayoutChange("chat-display", "left");
+  };
 
   useEffect(() => {
     const options = {
@@ -58,7 +55,7 @@ export function Chat({ group, onBack }) {
             const updatedChat = [...chatHistory.current];
 
             updatedChat.push(message);
-            setChatHistory(updatedChat);
+            onChangeChatHistory(updatedChat);
           });
         })
         .catch((e) => console.log("Connection failed: ", e));
@@ -74,22 +71,56 @@ export function Chat({ group, onBack }) {
 
     try {
       await connection.send("SendMessage", chatMessage);
-      setRerender(!rerender);
+      onRerender();
       const updatedChat = [...chatHistory];
       console.log(...chatHistory);
       updatedChat.push(message);
-      setChatHistory(updatedChat);
-      
+      onChangeChatHistory(updatedChat);
     } catch (e) {
       console.log("error");
       console.log(e);
     }
   };
 
+
+  const leaveGroup = async () =>{
+    const url = `https://localhost:7231/api/UserGroups/delete/${group.id}/${sessionStorage.currentUserId}`;
+    await fetch(url, {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+
+  }
+
   return (
-    <div className = 'chat'>
-      <ChatWindow chat={chatHistory} group = {group}/>
-      <ChatInput sendMessage={sendMessage} onBack = {onBack}/>
+    <div className="chat">
+      {(() => {
+        switch (layoutState) {
+          case "chat-display":
+            return (
+              <div>
+                {group.name}
+                <button onClick={() => onEdit()}>rename</button>
+                <button className="custom-btn" onClick={() => leaveGroup()}><img className='btn-img' src='/resources/delete-icon.png' alt='delete-icon' /></button>
+              </div>
+            );
+          case "chat-edit":
+            return (
+              <EditGroup
+                onRerender={onRerender}
+                group={group}
+                onEditCompleation={onEditCompleation}
+              />
+            );
+        }
+      })()}
+      <ChatWindow chat={chatHistory} group={group} />
+      <ChatInput sendMessage={sendMessage} onBack={onBack} />
     </div>
   );
 }

@@ -6,9 +6,6 @@ import '../../../styles/Chat.css';
 export default function ChatWindow({ chat, group }) {
   return (
     <>
-      <div>
-        {group.name}
-      </div>
       <ul className='chat-window'>
         {chat.map((m) => (
           <div className='msg'>

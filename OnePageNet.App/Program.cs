@@ -65,6 +65,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IMessageEntityDatabaseService, MessageEntityDatabaseService>();
 builder.Services.AddScoped<IPostService, PostEntityDatabaseService>();
 builder.Services.AddScoped<ICommentService, CommentEntityDatabaseService>();
+builder.Services.AddScoped<IGroupService, GroupService>();
 builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityDatabaseService>();
 builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityDatabaseService>();
 builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();

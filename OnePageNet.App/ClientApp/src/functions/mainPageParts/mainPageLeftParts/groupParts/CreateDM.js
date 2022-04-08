@@ -1,3 +1,4 @@
+import { data } from 'jquery';
 import React from 'react';
 import { useState, useEffect } from 'react';
 
@@ -42,21 +43,24 @@ export function CreateDM({onRerender}) {
             groupId,
             usersId
           }),
-        }).then(() => onRerender())
+        }).then((data) => data.json()).then((data) => console.log(data)).then(()=>onRerender());
       };
       const setUserGroups = (group) => {
         createUserGroup(sessionStorage.getItem("currentUserId"), group.id);
         createUserGroup(secondUserId, group.id);
+
       }
       if(group != null){setUserGroups(group)};
-
+      
     },[group])
 
     const handleClick = (event) =>{
       
       setSecondUserId(event.id);
       const createGroup = async () => {
-        const urlGroups = `https://localhost:7231/api/Groups/create`;
+        const urlGroups = `https://localhost:7231/api/Groups/create/${sessionStorage.getItem(
+          "currentUserId"
+        )}/${event.id}`;
         const Name = event.userName;
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         
