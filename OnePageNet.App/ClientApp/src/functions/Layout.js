@@ -63,13 +63,7 @@ export function Layout() {
       {token === null ? (
         <>
           <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/register">
-            <Register setToken={setToken} />
-          </Route>
-          <Route exact path="/login">
-            <Login setToken={setToken} onLayoutChange={onLayoutChange}/>
+            <Home setToken={setToken} onLayoutChange={onLayoutChange}/>
           </Route>
         </>
       ) : (

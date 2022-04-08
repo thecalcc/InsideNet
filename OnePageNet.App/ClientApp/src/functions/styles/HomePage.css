@@ -1,0 +1,38 @@
+.home{
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.login-register-container{
+    border-radius: 5%;
+    background-color: orange;
+    width: fit-content;
+    margin-bottom: auto;
+    margin-top: 20vh;
+}
+.buttons{
+    display: flex;
+    height: 5vh;
+    width: 100%;
+}
+
+.button{
+    height: inherit;
+    width: 50%;
+    background-color: #ff5900;
+    color:white;
+    padding: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-color: rgb(113, 50, 4);
+}
+.button:hover{
+    background-color: #9a3600;
+}
+
+.button:active{
+    background-color: #872f00;
+}
