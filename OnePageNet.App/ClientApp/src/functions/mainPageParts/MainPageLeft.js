@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable default-case */
 import React from "react";
 import "../styles/MainPage.css";
 import { Chat } from "./mainPageLeftParts/chatParts/Chat";
@@ -10,9 +12,9 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   const [rerender, setRerender] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
   const onChangeChatHistory = (history) => {
-    setChatHistory(history)
-  }
-  
+    setChatHistory(history);
+  };
+
   const onRerender = () => {
     setRerender(!rerender);
   };
@@ -23,8 +25,8 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   };
 
   const onBack = () => {
-    onLayoutChange("groupSelection", "left")
-  }
+    onLayoutChange("groupSelection", "left");
+  };
 
   const [groups, setGroups] = useState();
 
@@ -46,6 +48,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         .then((data) => data.json())
         .then((data) => setGroups(data));
     };
+
     const getChatHistory = async () => {
       const url = `https://localhost:7231/api/messages/get-history/${currentGroup.id}`;
 
@@ -65,7 +68,6 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
     fetchGroups();
   }, [rerender]);
 
-
   return (
     <div className="main-page-left">
       {(() => {
@@ -73,7 +75,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "groupSelection":
             return (
               <>
-                <CreateDM onRerender={onRerender}/>
+                <CreateDM onRerender={onRerender} />
                 <ChatSelection
                   selectCurrentGroupChat={selectCurrentGroupChat}
                   groups={groups}
@@ -83,13 +85,29 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "chat-display":
             return (
               <>
-                <Chat group={currentGroup} onBack = {onBack} layoutState={layoutState} onLayoutChange={onLayoutChange} onRerender={onRerender} chatHistory={chatHistory} onChangeChatHistory = {onChangeChatHistory}/>
+                <Chat
+                  group={currentGroup}
+                  onBack={onBack}
+                  layoutState={layoutState}
+                  onLayoutChange={onLayoutChange}
+                  onRerender={onRerender}
+                  chatHistory={chatHistory}
+                  onChangeChatHistory={onChangeChatHistory}
+                />
               </>
             );
           case "chat-edit":
             return (
               <>
-                <Chat group={currentGroup} onBack = {onBack} layoutState={layoutState}  onLayoutChange={onLayoutChange} onRerender={onRerender} chatHistory={chatHistory} onChangeChatHistory = {onChangeChatHistory}/>
+                <Chat
+                  group={currentGroup}
+                  onBack={onBack}
+                  layoutState={layoutState}
+                  onLayoutChange={onLayoutChange}
+                  onRerender={onRerender}
+                  chatHistory={chatHistory}
+                  onChangeChatHistory={onChangeChatHistory}
+                />
               </>
             );
         }

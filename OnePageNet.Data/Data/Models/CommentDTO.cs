@@ -6,7 +6,7 @@ public class CommentDto : BaseDTO
 {
     [Required] public string Content { get; set; }
 
-    [Required] public string MediaUri { get; set; }
+    public string? MediaUri { get; set; }
 
     [Required] public string ApplicationUserId { get; set; }
 

@@ -1,9 +1,4 @@
 ﻿using OnePageNet.Data.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnePageNet.Services.Services.Interfaces
 {
@@ -12,7 +7,7 @@ namespace OnePageNet.Services.Services.Interfaces
         List<GroupDTO> GetAllForUser(string userId);
         Task AddAsync(string groupId, string userId);
         Task<UserGroupDTO> GetById(string id);
-        Task<bool> DeleteAsync(string id);
+        Task<bool> RemoveAsync(string id);
         Task<string> GetIdByComposite(string currentUserId, string groupId);
     }
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import "../../../../custom.css"
 import "../../../styles/CommentList.css"
@@ -31,6 +30,7 @@ export function CreateComment({ idOfPost, onRerender }) {
     })
       .then(() => history.push("/"))
       onRerender();
+      setContent("");
   };
 
   return (

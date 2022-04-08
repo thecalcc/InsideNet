@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnePageNet.Data.Data.Entities;
 using OnePageNet.Data.Data.Models;
-using OnePageNet.Services.Services;
 using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers;
@@ -23,6 +22,11 @@ public class MessagesController : BaseController<MessageEntity, MessageDto>
     public async Task<ActionResult<List<MessageDto>>> GetGroupHistory([FromRoute] string group)
     {
         var dto = await _databaseService.GetAllById(group);
+
+        if (dto.First().Id == null)
+        {
+            return BadRequest(group);
+        }
 
         return Ok(dto);
     }

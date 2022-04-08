@@ -78,7 +78,7 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<bool> Remove(string id)
+    public async Task<bool> RemoveAsync(string id)
     {
         var user = await _dbContext.Users.SingleAsync(x => x.Id == id);
         _dbContext.Users.Remove(user);

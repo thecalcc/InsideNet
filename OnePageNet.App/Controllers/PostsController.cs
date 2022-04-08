@@ -10,6 +10,7 @@ namespace OnePageNet.App.Controllers;
 public class PostsController : BaseController<PostEntity, PostDto>
 {
     private readonly IPostService _postService;
+
     public PostsController(IPostService databaseService)
         : base(databaseService)
     {
@@ -18,8 +19,17 @@ public class PostsController : BaseController<PostEntity, PostDto>
 
     [Route("get-timeline/{id}")]
     [HttpGet]
-    public async Task<ActionResult<List<PostDto>>> GetTimeline([FromRoute] string id) {
-        var dtos = _postService.GetTimeline(id);
-        return Ok(dtos);
+    public async Task<ActionResult<List<PostDto>>> GetTimeline([FromRoute] string id)
+    {
+        try
+        {
+            var dtos = await _postService.GetTimeline(id);
+            if (dtos.First().Id == null) return BadRequest(id);
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

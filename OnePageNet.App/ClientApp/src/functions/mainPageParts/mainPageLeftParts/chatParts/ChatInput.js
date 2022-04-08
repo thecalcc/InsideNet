@@ -9,8 +9,10 @@ export default function ChatInput({ sendMessage, onBack }) {
   const onSubmit = (e) => {
     e.preventDefault();
 
+
     if (message && message !== "") {
       sendMessage(message);
+      setMessage("");
     } else {
       alert("Please insert a user and a message.");
     }
@@ -21,22 +23,30 @@ export default function ChatInput({ sendMessage, onBack }) {
   };
 
   return (
-    <form className='chat-form' onSubmit={onSubmit}>
-      <div className='chat-input'>
+    <form className="chat-form" onSubmit={onSubmit}>
+      <div className="chat-input">
         <input
-          className='text-input'
+          className="text-input"
           type="text"
           id="message"
           name="message"
           value={message}
-          placeholder='Message'
-          onChange={onMessageUpdate}
+          placeholder="Message"
+          onChange={onMessageUpdate}  
         />
-        <button className='custom-btn' type='submit'>
-          <img className='btn-img' src='/resources/post-icon.png' alt='post-icon' />
+        <button className="custom-btn" type="submit">
+          <img
+            className="btn-img"
+            src="/resources/post-icon.png"
+            alt="post-icon"
+          />
         </button>
-        <button className = 'custom-btn' onClick={() => onBack()}>
-          <img className='btn-img' src='/resources/back-arrow-icon.png' alt='back-arrow-icon' />
+        <button className="custom-btn" onClick={() => onBack()}>
+          <img
+            className="btn-img"
+            src="/resources/back-arrow-icon.png"
+            alt="back-arrow-icon"
+          />
         </button>
       </div>
     </form>

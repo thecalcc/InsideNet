@@ -1,4 +1,3 @@
-import { data } from 'jquery';
 import React from 'react';
 import { useState, useEffect } from 'react';
 
@@ -29,7 +28,7 @@ export function CreateDM({onRerender}) {
     }, []);
 
     useEffect(() => {
-      const createUserGroup = async (usersId, groupId) => {
+      const createUserGroup = async (userId, groupId) => {
         const urlFriends = `https://localhost:7231/api/UserGroups/create`;
         await fetch(urlFriends, {
           method: "POST",
@@ -41,9 +40,12 @@ export function CreateDM({onRerender}) {
           },
           body: JSON.stringify({
             groupId,
-            usersId
+            userId,
           }),
-        }).then((data) => data.json()).then((data) => console.log(data)).then(()=>onRerender());
+        })
+          .then((data) => data.json())
+          .then((data) => console.log(data))
+          .then(() => onRerender());
       };
       const setUserGroups = (group) => {
         createUserGroup(sessionStorage.getItem("currentUserId"), group.id);
@@ -86,9 +88,13 @@ export function CreateDM({onRerender}) {
 
     return (
       <ul>
-        {friends != "You don't have any friends." ? (
+        {friends !== "You don't have any friends." ? (
           friends?.map((x) => {
-            return <button onClick={() => handleClick(x)}>{x.userName}</button>;
+            return (
+              <button key={x.id} onClick={() => handleClick(x)}>
+                {x.userName}
+              </button>
+            );
           })
         ) : (
           <>get some bitches</>
