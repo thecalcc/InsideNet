@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { CommentListItem } from "./CommentListItem";
+import { CreateComment } from "./CreateComment";
 import "../../../styles/CommentList.css"
 export function CommentList({idOfPost}) {
   const [comments, setComments] = useState();
   const [users, setUsers] = useState();
   const [rerender,setRerender] = useState(false);
   const onRerender = () => {
-    console.log("boli me rumen radeviq")
+    setRerender(!rerender);
   }
   useEffect(() => {
     const fetchComments = async () => {
-      const urlPosts = "https://localhost:7231/api/Comments/get-all";
+      const urlPosts = `https://localhost:7231/api/Comments/get-by-id/${idOfPost}`;
       await fetch(urlPosts, {
         method: "GET",
         mode: "cors",
@@ -40,16 +41,17 @@ export function CommentList({idOfPost}) {
 
     fetchUsers();
     fetchComments();
-  },[]);
+  },[rerender, idOfPost]);
 
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
   };
 
   return (
+    <>
+    <CreateComment idOfPost={idOfPost} onRerender = {onRerender}/>
     <ul className="comment-list">
       {(comments !== null && comments !== undefined && comments !== "There are no such entities in the database.")? comments?.map((comment) => {
-        if(comment.postId == idOfPost)
         return (
           <li className="comment">
             <CommentListItem
@@ -64,5 +66,6 @@ export function CommentList({idOfPost}) {
       }) :
       <li>No comments yet</li>}
     </ul>
+    </>
   );
 }

@@ -19,18 +19,18 @@ export function MainPageCenter({
     
 
   return (
-    <>
+    <div>
 
       {(() => {
         switch (currentLayout.center) {
           case "timeline":
             return (
-              <ul>
+              <div>
                 <button onClick={() => onLayoutChange("create", "center")}>
                   Create Post
                 </button>
                 <PostList onSelect={choosePost} users={users} rerenderpls = {currentLayout} posts={posts}/>
-              </ul>
+              </div>
             );
           case "create":
             return (
@@ -44,6 +44,6 @@ export function MainPageCenter({
             );
         }
       })()}
-    </>
+    </div>
   );
 }

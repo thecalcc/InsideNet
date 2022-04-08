@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-export function CreateDM() {
+export function CreateDM({onRerender}) {
     const [friends,setFriends] = useState();
     const [group, setGroup] = useState();
     const [secondUserId, setSecondUserId] =  useState();
@@ -42,11 +42,11 @@ export function CreateDM() {
             groupId,
             usersId
           }),
-        })
+        }).then(() => onRerender())
       };
       const setUserGroups = (group) => {
-        createUserGroup(secondUserId, group.id)
         createUserGroup(sessionStorage.getItem("currentUserId"), group.id);
+        createUserGroup(secondUserId, group.id);
       }
       if(group != null){setUserGroups(group)};
 
@@ -59,6 +59,7 @@ export function CreateDM() {
         const urlGroups = `https://localhost:7231/api/Groups/create`;
         const Name = event.userName;
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        
         await fetch(urlGroups, {
           method: "POST",
           mode: "cors",
@@ -74,7 +75,6 @@ export function CreateDM() {
         })
           .then((data) => data.json())
           .then((data) => setGroup(data));
-          
       };
 
       createGroup()      

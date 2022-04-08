@@ -14,10 +14,9 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
         Accept: "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    });
+    }).then(() => onLayoutChange("", "right"));
   }
   deletePost(id);
-  onLayoutChange("", "right");
 }
   return (
     <>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-export function Login({ setToken }) {
+export function Login({ setToken, onLayoutChange}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -27,7 +27,7 @@ export function Login({ setToken }) {
         // TODO extract userId from generatedToken with atob
         sessionStorage.setItem("token", result.generatedToken);
         sessionStorage.setItem("currentUserId", result.id);
-      })
+      }).then(() => onLayoutChange("timeline","center"))
       .then(history.push("/"));
   };
 

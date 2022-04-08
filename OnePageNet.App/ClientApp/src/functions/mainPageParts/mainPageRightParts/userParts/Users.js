@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AcceptInvite, PendingInvite, Friend, Blocked } from "./UserRelationConstants";
 import {Dropdown, DropdownButton, ButtonGroup}  from 'react-bootstrap'
-import "../styles/Users.css";
+import "../../../styles/Users.css";
 
 export function Users() {
   const badRes = "There are no userRelationEntities in the database.";

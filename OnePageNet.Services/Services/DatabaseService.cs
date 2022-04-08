@@ -11,8 +11,8 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
     where T : BaseEntity
     where TG : BaseDTO
 {
-    private readonly OnePageNetDbContext _dbContext;
-    private readonly IMapper _mapper;
+    protected readonly OnePageNetDbContext _dbContext;
+    protected readonly IMapper _mapper;
 
     public DatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
     {

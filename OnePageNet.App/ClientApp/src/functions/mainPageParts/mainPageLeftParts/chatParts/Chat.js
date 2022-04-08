@@ -4,33 +4,34 @@ import * as signalR from "@microsoft/signalr";
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
 
-export function Chat({ group }) {
+import '../../../styles/Chat.css'
+
+export function Chat({ group, onBack }) {
   const [connection, setConnection] = useState(null);
   const latestChat = useRef(null);
-  const [temp, setTemp] = useState(false);
+  const [rerender, setRerender] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
 
   latestChat.current = chatHistory;
 
-  const getChatHistory = async () => {
-    const url = `https://localhost:7231/api/messages/get-history/${group}`;
+  useEffect(() => {
+    const getChatHistory = async () => {
+      const url = `https://localhost:7231/api/messages/get-history/${group.id}`;
 
-    await fetch(url, {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((data) => data.json())
-      .then((data) => setChatHistory(data));
-  };
-
-  useEffect(() =>{
+      await fetch(url, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then((data) => data.json())
+        .then((data) => setChatHistory(data));
+    };
     getChatHistory();
-  }, [temp])
+  }, [rerender]);
 
   useEffect(() => {
     const options = {
@@ -68,15 +69,17 @@ export function Chat({ group }) {
     const chatMessage = {
       senderId: sessionStorage.getItem("currentUserId"),
       content: message,
-      destinationId: group,
+      destinationId: group.id,
     };
 
     try {
       await connection.send("SendMessage", chatMessage);
-      const updatedChat = [...chatHistory.current];
-      updatedChat.push(message.content);
+      setRerender(!rerender);
+      const updatedChat = [...chatHistory];
+      console.log(...chatHistory);
+      updatedChat.push(message);
       setChatHistory(updatedChat);
-      setTemp(!temp);
+      
     } catch (e) {
       console.log("error");
       console.log(e);
@@ -84,10 +87,9 @@ export function Chat({ group }) {
   };
 
   return (
-    <div>
-      <ChatInput sendMessage={sendMessage} />
-      <hr />
-      <ChatWindow chat={chatHistory} />
+    <div className = 'chat'>
+      <ChatWindow chat={chatHistory} group = {group}/>
+      <ChatInput sendMessage={sendMessage} onBack = {onBack}/>
     </div>
   );
 }

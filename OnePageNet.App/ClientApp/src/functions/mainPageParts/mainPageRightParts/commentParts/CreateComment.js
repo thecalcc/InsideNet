@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import "../../../../custom.css"
 import "../../../styles/CommentList.css"
 
-export function CreateComment({ idOfPost }) {
+export function CreateComment({ idOfPost, onRerender }) {
   const [content, setContent] = useState();
   const ApplicationUserId = sessionStorage.currentUserId;
   const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
@@ -30,6 +30,7 @@ export function CreateComment({ idOfPost }) {
       }),
     })
       .then(() => history.push("/"))
+      onRerender();
   };
 
   return (
