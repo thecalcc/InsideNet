@@ -50,8 +50,6 @@ export function Chat({
       connection
         .start()
         .then((result) => {
-          console.log("Connected!");
-
           connection.on("ReceiveMessage", (message) => {
             const updatedChat = [...chatHistory.current];
 
@@ -71,10 +69,10 @@ export function Chat({
     };
 
     try {
-      await connection.send("SendMessage", chatMessage);
-      onRerender();
+      await connection
+        .send("SendMessage", chatMessage)
+        .then(() => onRerender());
       const updatedChat = [...chatHistory];
-      console.log(...chatHistory);
       updatedChat.push(message);
       onChangeChatHistory(updatedChat);
     } catch (e) {
@@ -82,6 +80,7 @@ export function Chat({
       console.log(e);
     }
   };
+
 
   const leaveGroup = async () =>{
     const url = `https://localhost:7231/api/UserGroups/delete/${group.id}/${sessionStorage.currentUserId}`;
@@ -106,7 +105,13 @@ export function Chat({
               <div>
                 {group.name}
                 <button onClick={() => onEdit()}>rename</button>
-                <button className="custom-btn" onClick={() => leaveGroup()}><img className='btn-img' src='/resources/delete-icon.png' alt='delete-icon' /></button>
+                <button className="custom-btn" onClick={() => leaveGroup()}>
+                  <img
+                    className="btn-img"
+                    src="/resources/delete-icon.png"
+                    alt="delete-icon"
+                  />
+                </button>
               </div>
             );
           case "chat-edit":

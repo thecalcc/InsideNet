@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnePageNet.Data.Data.Entities;
 using OnePageNet.Data.Data.Models;
-using OnePageNet.Services.Services;
 using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers;
@@ -10,18 +9,28 @@ namespace OnePageNet.App.Controllers;
 [ApiController]
 public class CommentsController : BaseController<CommentEntity, CommentDto>
 {
-    private ICommentService _IDatabaseService;
-    public CommentsController(ICommentService databaseService)
-        : base(databaseService)
+    private readonly ICommentService _commentService;
+
+    public CommentsController(ICommentService commentService)
+        : base(commentService)
     {
-        _IDatabaseService = databaseService;
+        _commentService = commentService;
     }
 
     [HttpGet]
     [Route("get-by-id/{id}")]
-    public async Task<ActionResult<List<CommentDto>>> GetById(string id) 
+    public async Task<ActionResult<List<CommentDto>>> GetById(string id)
     {
-        var dtos = await _IDatabaseService.GetAllById(id);
-        return Ok(dtos);    
+        try
+        {
+            var dtos = await _commentService.GetAllById(id);
+            if (dtos.First().Id == null)
+                return BadRequest(id);
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

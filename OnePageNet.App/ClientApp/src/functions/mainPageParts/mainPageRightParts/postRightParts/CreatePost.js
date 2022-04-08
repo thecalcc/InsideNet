@@ -23,10 +23,10 @@ const reactionId = null;
         mediaUri,
         reactionId,
         commentsIds,
-        posterId
+        posterId,
       }),
-    })
-    onLayoutChange("timeline","center")
+    });
+    onLayoutChange("timeline", "center");
   };
 
   return (

@@ -46,9 +46,9 @@ public class UsersController : Controller
     public async Task<ActionResult<UserDto>> Get(string id)
     {
         var entity = await _userService.GetById(id);
-        if (string.IsNullOrEmpty(entity.Id)) return NotFound("Ti si neshtastnik");
+        if (string.IsNullOrEmpty(entity.Id)) return NotFound("The is no such NPC in the database.");
 
-        return Ok(_mapper.Map<UserDto>(entity));
+        return Ok(entity);
     }
 
     [Route("update/{id}")]
@@ -76,7 +76,7 @@ public class UsersController : Controller
     [HttpDelete]
     public async Task<IActionResult> Delete(string id)
     {
-        if (!await _userService.Remove(id)) return NotFound();
+        if (!await _userService.RemoveAsync(id)) return NotFound();
 
         await _userService.SaveChangesAsync();
         return Ok();

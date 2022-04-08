@@ -35,9 +35,9 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
         return false;
     }
 
-    public async Task<T> FindById(string? id)
+    public async Task<TG> FindById(string? id)
     {
-        return await _dbContext.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        return _mapper.Map<TG>(await _dbContext.Set<T>().FirstAsync(x => x.Id == id));
     }
 
     public void Update(TG dto)
@@ -61,14 +61,17 @@ public class DatabaseService<T, TG> : IDatabaseService<T, TG>
         dto.Id = entity.Id;
     }
 
-    public bool Remove(T entity)
+    public async Task<bool> Remove(string id)
     {
+        var entity = await _dbContext.Set<T>().FirstAsync(x => x.Id == id);
         var deleted = _dbContext.Set<T>().Remove(entity);
-        return deleted.State == EntityState.Deleted;
+        if (deleted.State != EntityState.Deleted) return false;
+        await _dbContext.SaveChangesAsync();
+        return true;
     }
 
     public bool Exists(string id)
     {
-        return Queryable.Any<T>(_dbContext.Set<T>(), e => e.Id.ToString() == id);
+        return _dbContext.Set<T>().Any(e => e.Id.ToString() == id);
     }
 }

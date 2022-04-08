@@ -1,5 +1,5 @@
-import { data } from "jquery";
-import React, { useState, useEffect } from "react";
+/* eslint-disable default-case */
+import React from "react";
 import "../styles/MainPage.css";
 import { PostList } from "./mainPageCenterParts/postCenterParts/PostList";
 import { CreatePost } from "./mainPageRightParts/postRightParts/CreatePost";

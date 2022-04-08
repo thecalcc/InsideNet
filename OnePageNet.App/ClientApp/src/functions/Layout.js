@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable default-case */
 import React, { useEffect, useState } from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
@@ -47,10 +49,13 @@ export function Layout() {
           "Access-Control-Allow-Origin": "*",
         },
       })
-        .then((data) => data.json()).then((data) => setPosts(data.result));
-
+        .then((data) => data.json())
+        .then((data) => setPosts(data));
     }
-    fetchPosts();
+
+    if (token !== undefined && token !== null) {
+      fetchPosts();
+    }
   },[layoutState])
 
   return (

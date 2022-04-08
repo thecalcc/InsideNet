@@ -14,7 +14,6 @@ export function Register({ setToken }) {
   const [DoB, setDoB] = useState();
   const [gender, setGender] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
-  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,14 +39,17 @@ export function Register({ setToken }) {
         phoneNumber,
       }),
     })
-      .then((data) => data.json())
-      .then((data) => setToken(data));
-
-    try {
-      history.push("/");
-    } catch (e) {
-      console.log(e.error);
-    }
+      .then((response) => response.json())
+      .then((data) => {
+        setToken(data);
+        sessionStorage.setItem("token", data);
+      })
+      .then((data) => {
+        if (!data.ok) {
+          throw new Error("Ooopsie...");
+        }
+      })
+      .catch((e) => console.log(e));
   };
 
   return (
@@ -65,6 +67,7 @@ export function Register({ setToken }) {
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
+            required
           />
 
           <label>
@@ -75,6 +78,7 @@ export function Register({ setToken }) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
 
           <label>
@@ -85,6 +89,7 @@ export function Register({ setToken }) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           <label>
@@ -95,6 +100,7 @@ export function Register({ setToken }) {
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
 
           <label>
@@ -105,6 +111,7 @@ export function Register({ setToken }) {
             type="date"
             value={DoB}
             onChange={(e) => setDoB(e.target.value)}
+            required
           />
 
           <label>
@@ -115,6 +122,7 @@ export function Register({ setToken }) {
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            required
           />
 
           <label>
@@ -125,6 +133,18 @@ export function Register({ setToken }) {
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+
+          <label>
+            <b>Phone</b>
+          </label>
+          <input
+            name="phone"
+            type="tel"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
           />
           <label>
             <b>Gender</b>
@@ -136,6 +156,7 @@ export function Register({ setToken }) {
                 value="Male"
                 checked={gender === "Male"}
                 onChange={(e) => setGender(e.target.value)}
+                required
               />
               Male
             </label>
@@ -145,6 +166,7 @@ export function Register({ setToken }) {
                 value="Female"
                 checked={gender === "Female"}
                 onChange={(e) => setGender(e.target.value)}
+                required
               />
               Female
             </label>
@@ -154,6 +176,7 @@ export function Register({ setToken }) {
                 value="Other"
                 checked={gender === "Other"}
                 onChange={(e) => setGender(e.target.value)}
+                required
               />
               Other
             </label>

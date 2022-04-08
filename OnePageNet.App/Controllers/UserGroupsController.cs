@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OnePageNet.Data.Data.Entities;
 using OnePageNet.Data.Data.Models;
-using OnePageNet.Services.Services;
 using OnePageNet.Services.Services.Interfaces;
 
 namespace OnePageNet.App.Controllers
@@ -10,7 +8,8 @@ namespace OnePageNet.App.Controllers
     [ApiController]
     public class UserGroupsController : Controller
     {
-        readonly IUserGroupService _userGroupService;
+        private readonly IUserGroupService _userGroupService;
+
         public UserGroupsController(IUserGroupService userGroupService)
         {
             _userGroupService = userGroupService;
@@ -18,7 +17,7 @@ namespace OnePageNet.App.Controllers
 
         [HttpGet]
         [Route("get-all/{userId}")]
-        public async Task<ActionResult<GroupDTO>> GetAll([FromRoute] string userId)
+        public ActionResult<GroupDTO> GetAll([FromRoute] string userId)
         {
             var dtos = _userGroupService.GetAllForUser(userId);
 
@@ -32,6 +31,7 @@ namespace OnePageNet.App.Controllers
         public async Task<ActionResult<UserGroupDTO>> Get(string id)
         {
             var dto = await _userGroupService.GetById(id);
+
             if (string.IsNullOrEmpty(dto.Id)) return NotFound();
 
             return Ok(dto);
@@ -42,8 +42,14 @@ namespace OnePageNet.App.Controllers
         [HttpPost]
         public async Task<ActionResult<UserGroupDTO>> Create([FromBody] UserGroupDTO dto)
         {
-            await _userGroupService.AddAsync(dto.GroupId, dto.UsersId);
-            var id = await _userGroupService.GetIdByComposite(dto.UsersId, dto.GroupId);
+            await _userGroupService.AddAsync(dto.GroupId, dto.UserId);
+            var id = await _userGroupService.GetIdByComposite(dto.UserId, dto.GroupId);
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(dto);
+            }
+
             return CreatedAtAction("Get", id);
         }
 
@@ -51,12 +57,12 @@ namespace OnePageNet.App.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
-
-            var deleted = await _userGroupService.DeleteAsync(id);
+            var deleted = await _userGroupService.RemoveAsync(id);
 
             if (deleted) return Ok(deleted);
             return BadRequest("Didn't delete the entity successfully.");
         }
+
         [Route("delete/{groupId}/{userId}")]
         [HttpDelete]
         public async Task<IActionResult> Delete(string groupId, string userId)
@@ -64,8 +70,7 @@ namespace OnePageNet.App.Controllers
             var id = await _userGroupService.GetIdByComposite(userId, groupId);
             if (string.IsNullOrEmpty(id)) return NotFound();
 
-
-            var deleted = await _userGroupService.DeleteAsync(id);
+            var deleted = await _userGroupService.RemoveAsync(id);
 
             if (deleted) return Ok(deleted);
             return BadRequest("Didn't delete the entity successfully.");

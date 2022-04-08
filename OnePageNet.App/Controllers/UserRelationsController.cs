@@ -40,7 +40,14 @@ namespace OnePageNet.App.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<IEnumerable<UserRelationEntity>>> Create([FromBody] CreateUserRelationsDTO dto)
         {
-            await _userRelationsService.AddAsync(dto.CurrentUserId, dto.TargetUserId);
+            try
+            {
+                await _userRelationsService.AddAsync(dto.CurrentUserId, dto.TargetUserId);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
 
             return Ok();
         }

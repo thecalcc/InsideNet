@@ -19,10 +19,16 @@ public class ChatHub : Hub
 
     public async Task SendMessage(MessageDto message)
     {
-        await Clients.All.SendAsync("ReceiveMessage", message);
-
-        await _dbContext.MessageEntities.AddAsync(_mapper.Map<MessageEntity>(message));
-
-        await _dbContext.SaveChangesAsync();
+        try
+        {
+            await Clients.All.SendAsync("ReceiveMessage", message);
+            await _dbContext.MessageEntities.AddAsync(_mapper.Map<MessageEntity>(message));
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

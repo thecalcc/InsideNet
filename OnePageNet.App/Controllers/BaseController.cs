@@ -12,7 +12,7 @@ public abstract class BaseController<T, TG> : ControllerBase
     where T : BaseEntity
     where TG : BaseDTO
 {
-    protected readonly IDatabaseService<T, TG> _databaseService;
+    private readonly IDatabaseService<T, TG> _databaseService;
 
     protected BaseController(
         IDatabaseService<T, TG> databaseService)
@@ -24,21 +24,33 @@ public abstract class BaseController<T, TG> : ControllerBase
     [Route("get-all")]
     public async Task<ActionResult<IEnumerable<TG>>> GetAll()
     {
-        var dtos = await _databaseService.ToListAsync();
-
-        if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
-
-        return Ok(dtos);
+        try
+        {
+            var dtos = await _databaseService.ToListAsync();
+            if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 
     [Route("get/{id}")]
     [HttpGet]
     public async Task<ActionResult<TG>> Get(string id)
     {
-        var dto = await _databaseService.FindById(id);
-        if (string.IsNullOrEmpty(dto.Id)) return NotFound();
+        try
+        {
+            var dto = await _databaseService.FindById(id);
+            if (string.IsNullOrEmpty(dto.Id)) return NotFound();
 
-        return Ok(dto);
+            return Ok(dto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 
     [Route("update/{id}")]
@@ -67,23 +79,32 @@ public abstract class BaseController<T, TG> : ControllerBase
     [HttpPost]
     public virtual async Task<ActionResult<TG>> Create([FromBody] TG dto)
     {
-        await _databaseService.AttachUser(dto);
-        await _databaseService.AddAsync(dto);
-        return CreatedAtAction("Get", dto);
+        try
+        {
+            await _databaseService.AttachUser(dto);
+            await _databaseService.AddAsync(dto);
+            return CreatedAtAction("Get", dto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 
     [Route("delete/{id}")]
     [HttpDelete]
-    //TO DO: don't be autistic, fix remove in service
     public async Task<IActionResult> Delete(string id)
     {
-        var entity = await _databaseService.FindById(id);
-        if (string.IsNullOrEmpty(entity.Id)) return NotFound();
+        try
+        {
+            var deleted = await _databaseService.Remove(id);
+            if (deleted) return Ok(deleted);
 
-        var deleted = _databaseService.Remove(entity);
-        await _databaseService.SaveChangesAsync();
-
-        if (deleted) return Ok(deleted);
-        return BadRequest("Didn't delete the entity successfully.");
+            return BadRequest("Didn't delete the entity successfully.");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
+        }
     }
 }

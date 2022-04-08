@@ -44,9 +44,9 @@ public class AuthenticationController : Controller
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid) return UnprocessableEntity(loginDto);
-        
+
         var user = await _userService.GetByEmail(loginDto.Email);
-        
+
         var result =
             await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
@@ -62,7 +62,7 @@ public class AuthenticationController : Controller
         if (string.IsNullOrEmpty(generatedToken)) return BadRequest(loginDto);
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(new{ generatedToken, user.Id});
+        return Ok(new {generatedToken, user.Id});
     }
 
     [HttpPost("register")]
@@ -82,7 +82,12 @@ public class AuthenticationController : Controller
             Gender = registerDto.Gender
         };
 
-        await _userManager.CreateAsync(user, registerDto.Password);
+        var created = await _userManager.CreateAsync(user, registerDto.Password);
+
+        if (!created.Succeeded)
+        {
+            return BadRequest(created.Errors);
+        }
 
         var registeredUser = await _userService.GetByEmail(registerDto.Email);
 
@@ -127,7 +132,10 @@ public class AuthenticationController : Controller
     public async Task<ActionResult<ForgotPasswordDto>> ForgotPassword(ForgotPasswordDto forgotPasswordDto)
     {
         if (!ModelState.IsValid) return forgotPasswordDto;
+
         var user = await _userManager.FindByEmailAsync(forgotPasswordDto.Email);
+
+        if (user == null) return NotFound(forgotPasswordDto.Email);
 
         Url.Action("ResetPassword", "Authentication",
             new {userId = user.Id}, HttpContext.Request.Scheme);

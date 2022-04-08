@@ -27,7 +27,7 @@ public class OnePageNetDbContext : ApiAuthorizationDbContext<ApplicationUser>
         UpdateDateColumns();
         return base.SaveChangesAsync(cancellationToken);
     }
-    
+
     public override int SaveChanges()
     {
         UpdateDateColumns();

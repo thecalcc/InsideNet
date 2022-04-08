@@ -32,7 +32,12 @@ namespace OnePageNet.Services.Services
 
         public async Task<List<CommentDto>> GetAllById(string id)
         {
-            var comments = await _dbContext.CommentEntities.Where(x => x.PostId == id).Include(x => x.ApplicationUser).Include(x => x.Post).ToListAsync();
+            var comments = await _dbContext.CommentEntities
+                .Where(x => x.PostId == id)
+                .Include(x => x.ApplicationUser)
+                .Include(x => x.Post)
+                .ToListAsync();
+            
             return _mapper.Map<List<CommentDto>>(comments);
         }
     }
