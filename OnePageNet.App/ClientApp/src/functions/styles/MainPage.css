@@ -11,8 +11,8 @@
 .main-page-center{
     display:flex;
     flex-direction: column;
-    justify-content:left;
-    align-items: flex-start;
+    justify-content:center;
+    align-items:center;
     width: 40vw;
     height: inherit;
 }
@@ -22,7 +22,7 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width: 30vw;
+    width: 25vw;
     height: inherit;
 }
 
@@ -31,6 +31,6 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    width: 30vw;
+    width: 35vw;
     height: inherit;
 }

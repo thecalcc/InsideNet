@@ -45,8 +45,8 @@ export function CreateDM({onRerender}) {
         }).then(() => onRerender())
       };
       const setUserGroups = (group) => {
-        createUserGroup(secondUserId, group.id)
         createUserGroup(sessionStorage.getItem("currentUserId"), group.id);
+        createUserGroup(secondUserId, group.id);
       }
       if(group != null){setUserGroups(group)};
 
@@ -59,6 +59,7 @@ export function CreateDM({onRerender}) {
         const urlGroups = `https://localhost:7231/api/Groups/create`;
         const Name = event.userName;
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+        
         await fetch(urlGroups, {
           method: "POST",
           mode: "cors",
@@ -74,7 +75,6 @@ export function CreateDM({onRerender}) {
         })
           .then((data) => data.json())
           .then((data) => setGroup(data));
-          
       };
 
       createGroup()      

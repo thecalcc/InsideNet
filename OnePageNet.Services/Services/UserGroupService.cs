@@ -30,12 +30,13 @@ namespace OnePageNet.Services.Services
             var group = await _dbContext.GroupEntities.FirstOrDefaultAsync(x => x.Id == groupId) ??
                         throw new Exception("Current group does not exist.");
 
+            
+
             var userGroup = new UserGroupEntity
             {
                 Users = user,
                 Group = group
             };
-
 
             await _dbContext.UserGroupEntities.AddAsync(userGroup);
             await _dbContext.SaveChangesAsync();

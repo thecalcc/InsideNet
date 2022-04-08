@@ -4,7 +4,9 @@ import * as signalR from "@microsoft/signalr";
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
 
-export function Chat({ group }) {
+import '../../../styles/Chat.css'
+
+export function Chat({ group, onBack }) {
   const [connection, setConnection] = useState(null);
   const latestChat = useRef(null);
   const [rerender, setRerender] = useState(false);
@@ -14,7 +16,7 @@ export function Chat({ group }) {
 
   useEffect(() => {
     const getChatHistory = async () => {
-      const url = `https://localhost:7231/api/messages/get-history/${group}`;
+      const url = `https://localhost:7231/api/messages/get-history/${group.id}`;
 
       await fetch(url, {
         method: "GET",
@@ -67,14 +69,15 @@ export function Chat({ group }) {
     const chatMessage = {
       senderId: sessionStorage.getItem("currentUserId"),
       content: message,
-      destinationId: group,
+      destinationId: group.id,
     };
 
     try {
       await connection.send("SendMessage", chatMessage);
-      setRerender(!rerender);      
+      setRerender(!rerender);
+      const updatedChat = [...chatHistory];
+      console.log(...chatHistory);
       updatedChat.push(message);
-      const updatedChat = [...chatHistory.current];
       setChatHistory(updatedChat);
       
     } catch (e) {
@@ -84,10 +87,9 @@ export function Chat({ group }) {
   };
 
   return (
-    <div>
-      <ChatInput sendMessage={sendMessage} />
-      <hr />
-      <ChatWindow chat={chatHistory} />
+    <div className = 'chat'>
+      <ChatWindow chat={chatHistory} group = {group}/>
+      <ChatInput sendMessage={sendMessage} onBack = {onBack}/>
     </div>
   );
 }

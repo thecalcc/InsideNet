@@ -17,6 +17,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
     onLayoutChange("chat", "left");
   };
 
+  const onBack = () => {
+    onLayoutChange("groupSelection", "left")
+  }
+
   const [groups, setGroups] = useState();
 
   useEffect(() => {
@@ -57,12 +61,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "chat":
             return (
               <>
-                <Chat group={currentGroup} />
-                <button
-                  onClick={() => onLayoutChange("groupSelection", "left")}
-                >
-                  Back
-                </button>
+                <Chat group={currentGroup} onBack = {onBack} />
               </>
             );
         }

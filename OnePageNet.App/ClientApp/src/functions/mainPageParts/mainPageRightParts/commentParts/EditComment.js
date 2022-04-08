@@ -28,11 +28,9 @@ export function EditComment({ idOfPost, comment, doneWithEdit }) {
         ApplicationUserId,
         id: comment.id
       }),
-    })
-      .then(() => history.push("/"))
+    });
 
-    doneWithEdit()
-    console.log(doneWithEdit)
+    doneWithEdit();
   };
 
   return (

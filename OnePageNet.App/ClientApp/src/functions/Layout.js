@@ -34,10 +34,9 @@ export function Layout() {
         setLayout({...layoutState,right: layout});
         break
     }
-    console.log("stoptrolling")
   }
   const [posts, setPosts] = useState();
-  useEffect(()=>{const fetchPosts = async () => {
+  useEffect(()=>{ const fetchPosts = async () => {
       const urlPosts = `https://localhost:7231/api/Posts/get-timeline/${sessionStorage.getItem("currentUserId")}`;
       await fetch(urlPosts, {
         method: "GET",

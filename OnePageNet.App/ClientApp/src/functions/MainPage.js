@@ -31,7 +31,7 @@ export function MainPage({ currentLayout, onLayoutChange, posts }) {
         <>
             <div className='main-page'>
                 <MainPageLeft layoutState={currentLayout.left} onLayoutChange={onLayoutChange}/>
-                <MainPageCenter className='main-page-center' onLayoutChange={onLayoutChange} currentLayout = {currentLayout} selectPost = {selectPost} users={users} posts={posts}/>
+                <MainPageCenter onLayoutChange={onLayoutChange} currentLayout = {currentLayout} selectPost = {selectPost} users={users} posts={posts}/>
                 <MainPageRight layoutState={currentLayout.right} post={post} users = {users} onLayoutChange={onLayoutChange} changePost={selectPost} />
             </div>
         </>

@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import '../../../../custom.css'
+import '../../../styles/Chat.css'
 
-export default function ChatInput({ sendMessage }) {
+
+export default function ChatInput({ sendMessage, onBack }) {
   const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
@@ -18,19 +21,24 @@ export default function ChatInput({ sendMessage }) {
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <label htmlFor="message">Message:</label>
-      <br />
-      <input
-        type="text"
-        id="message"
-        name="message"
-        value={message}
-        onChange={onMessageUpdate}
-      />
-      <br />
-      <br />
-      <button>Send</button>
+    <form className='chat-form' onSubmit={onSubmit}>
+      <div className='chat-input'>
+        <input
+          className='text-input'
+          type="text"
+          id="message"
+          name="message"
+          value={message}
+          placeholder='Message'
+          onChange={onMessageUpdate}
+        />
+        <button className='custom-btn' type='submit'>
+          <img className='btn-img' src='/resources/post-icon.png' alt='post-icon' />
+        </button>
+        <button className = 'custom-btn' onClick={() => onBack()}>
+          <img className='btn-img' src='/resources/back-arrow-icon.png' alt='back-arrow-icon' />
+        </button>
+      </div>
     </form>
   );
 };
