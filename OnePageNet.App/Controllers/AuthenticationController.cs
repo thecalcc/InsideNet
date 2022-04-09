@@ -104,13 +104,14 @@ public class AuthenticationController : Controller
         return Ok(generatedToken);
     }
 
-    [HttpPost("logoff")]
-    public async Task<IActionResult> LogOff()
-    {
-        await _signInManager.SignOutAsync();
-        _logger.LogInformation(4, "User logged out");
-        return Ok();
-    }
+    // TODO Rework
+    // [HttpPost("logoff")]
+    // public async Task<IActionResult> LogOff()
+    // {
+    //     await _signInManager.SignOutAsync();
+    //     _logger.LogInformation(4, "User logged out");
+    //     return Ok();
+    // }
 
     [HttpGet("confirm-email")]
     public async Task<IActionResult> ConfirmEmail(string userId, string code)
