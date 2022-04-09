@@ -22,7 +22,8 @@ public class GroupsController : BaseController<GroupEntity, GroupDTO>
     public virtual async Task<ActionResult<GroupDTO>> Create([FromBody] GroupDTO dto, [FromRoute] string creatorId, [FromRoute] string targetId)
     {
         await _databaseService.AttachUser(dto);
-        await _databaseService.AddAsync(dto, creatorId, targetId);
-        return CreatedAtAction("Get", dto);
+        var check = await _databaseService.AddAsync(dto, creatorId, targetId);
+        if(check) return CreatedAtAction("Get", dto);
+        return BadRequest("This group already exists.");
     }
 }

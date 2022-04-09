@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-export function EditGroup({ onRerender, group, onEditCompleation }) {
+export function EditGroup({ group, onChangeGroup }) {
   const [name, setName] = useState(group.name);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,13 +21,14 @@ export function EditGroup({ onRerender, group, onEditCompleation }) {
         MediaUri,
         id: group.id,
       }),
-    });
-    onEditCompleation();
+    })
+    .then((data) => data.json())
+    .then((data) => onChangeGroup(data));
   };
 
   return (
     <>
-      <form className="comment-form" onSubmit={(e) => handleSubmit(e)}>
+      <form className="edit-form" onSubmit={(e) => handleSubmit(e)}>
         <input
           className="text-input"
           name="name"

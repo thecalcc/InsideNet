@@ -1,10 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import '../../../styles/Chat.css'
 
-export function CreateDM({onRerender}) {
+export function CreateDM({onNewGroup}) {
     const [friends,setFriends] = useState();
-    const [group, setGroup] = useState();
-    const [secondUserId, setSecondUserId] =  useState();
 
     useEffect(() => {
       const fetchFriends = async () => {
@@ -27,38 +26,8 @@ export function CreateDM({onRerender}) {
       fetchFriends();
     }, []);
 
-    useEffect(() => {
-      const createUserGroup = async (userId, groupId) => {
-        const urlFriends = `https://localhost:7231/api/UserGroups/create`;
-        await fetch(urlFriends, {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            groupId,
-            userId,
-          }),
-        })
-          .then((data) => data.json())
-          .then((data) => console.log(data))
-          .then(() => onRerender());
-      };
-      const setUserGroups = (group) => {
-        createUserGroup(sessionStorage.getItem("currentUserId"), group.id);
-        createUserGroup(secondUserId, group.id);
-
-      }
-      if(group != null){setUserGroups(group)};
-      
-    },[group])
-
     const handleClick = (event) =>{
       
-      setSecondUserId(event.id);
       const createGroup = async () => {
         const urlGroups = `https://localhost:7231/api/Groups/create/${sessionStorage.getItem(
           "currentUserId"
@@ -66,7 +35,7 @@ export function CreateDM({onRerender}) {
         const Name = event.userName;
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         
-        await fetch(urlGroups, {
+        fetch(urlGroups, {
           method: "POST",
           mode: "cors",
           headers: {
@@ -80,18 +49,19 @@ export function CreateDM({onRerender}) {
           }),
         })
           .then((data) => data.json())
-          .then((data) => setGroup(data));
+          .then((data) => onNewGroup(data))
+          ;
       };
 
       createGroup()      
     }
 
     return (
-      <ul>
+      <ul className = 'friends-list'>
         {friends !== "You don't have any friends." ? (
           friends?.map((x) => {
             return (
-              <button key={x.id} onClick={() => handleClick(x)}>
+              <button className='chat-selection-btn' key={x.id} onClick={() => handleClick(x)}>
                 {x.userName}
               </button>
             );

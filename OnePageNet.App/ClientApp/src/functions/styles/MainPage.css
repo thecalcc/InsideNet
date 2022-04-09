@@ -20,7 +20,7 @@
 .main-page-left{
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     width: 25vw;
     height: inherit;

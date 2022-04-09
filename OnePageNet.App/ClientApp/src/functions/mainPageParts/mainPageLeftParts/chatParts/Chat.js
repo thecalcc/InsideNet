@@ -14,6 +14,7 @@ export function Chat({
   onRerender,
   chatHistory,
   onChangeChatHistory,
+  onChangeGroup
 }) {
   const [connection, setConnection] = useState(null);
   const latestChat = useRef(null);
@@ -23,10 +24,6 @@ export function Chat({
   const onEdit = () => {
     onLayoutChange("chat-edit", "left");
   };
-  const onEditCompleation = () => {
-    onLayoutChange("chat-display", "left");
-  };
-
   useEffect(() => {
     const options = {
       logger: signalR.LogLevel.Trace,
@@ -81,7 +78,7 @@ export function Chat({
 
   const leaveGroup = async () =>{
     const url = `https://localhost:7231/api/UserGroups/delete/${group.id}/${sessionStorage.currentUserId}`;
-    await fetch(url, {
+    fetch(url, {
         method: "DELETE",
         mode: "cors",
         headers: {
@@ -89,7 +86,7 @@ export function Chat({
           Accept: "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-      })
+      }).then(() => onChangeGroup(null));
 
   }
 
@@ -99,23 +96,22 @@ export function Chat({
         switch (layoutState) {
           case "chat-display":
             return (
-              <div>
-                {group.name}
-                <button onClick={() => onEdit()}>rename</button>
+              <div className = 'chat-settings'>
+                <div className = 'chat-name'>{group.name}</div>
+                <button className = 'custom-btn' onClick={() => onEdit()}><img className = 'btn-img' src = '/resources/edit-icon.png' alt = 'edit-icon'></img></button>
                 <button className="custom-btn" onClick={() => leaveGroup()}><img className='btn-img' src='/resources/delete-icon.png' alt='delete-icon' /></button>
               </div>
             );
           case "chat-edit":
             return (
               <EditGroup
-                onRerender={onRerender}
                 group={group}
-                onEditCompleation={onEditCompleation}
+                onChangeGroup = {onChangeGroup}
               />
             );
         }
       })()}
-      <ChatWindow chat={chatHistory} group={group} />
+      <ChatWindow chat={chatHistory} group = {group}/>
       <ChatInput sendMessage={sendMessage} onBack={onBack} />
     </div>
   );

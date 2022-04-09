@@ -11,6 +11,8 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [rerender, setRerender] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
+  const [groups, setGroups] = useState();
+
   const onChangeChatHistory = (history) => {
     setChatHistory(history);
   };
@@ -18,7 +20,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   const onRerender = () => {
     setRerender(!rerender);
   };
-
+  const onNewGroup = (group) =>{
+    if(group !== 'This group already exists.')
+    setGroups([...groups, group]);
+  }
   const selectCurrentGroupChat = (prop) => {
     setCurrentGroup(prop);
     onLayoutChange("chat-display", "left");
@@ -28,10 +33,14 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
     onLayoutChange("groupSelection", "left");
   };
 
-  const [groups, setGroups] = useState();
+  const onChangeGroup = (group) => {
+    if(group !== null) onLayoutChange("chat-display", "left");
+    else onBack()
+    setCurrentGroup(group);
+  }
 
   useEffect(() => {
-    const fetchGroups = async () => {
+    const fetchUserGroups = async () => {
       const urlGroups = `https://localhost:7231/api/UserGroups/get-all/${sessionStorage.getItem(
         "currentUserId"
       )}`;
@@ -64,9 +73,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         .then((data) => data.json())
         .then((data) => setChatHistory(data));
     };
+
     getChatHistory();
-    fetchGroups();
-  }, [rerender]);
+    fetchUserGroups();
+  }, [rerender, currentGroup]);
 
   return (
     <div className="main-page-left">
@@ -75,7 +85,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "groupSelection":
             return (
               <>
-                <CreateDM onRerender={onRerender} />
+                <CreateDM onNewGroup={onNewGroup}/>
                 <ChatSelection
                   selectCurrentGroupChat={selectCurrentGroupChat}
                   groups={groups}
@@ -83,19 +93,6 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
               </>
             );
           case "chat-display":
-            return (
-              <>
-                <Chat
-                  group={currentGroup}
-                  onBack={onBack}
-                  layoutState={layoutState}
-                  onLayoutChange={onLayoutChange}
-                  onRerender={onRerender}
-                  chatHistory={chatHistory}
-                  onChangeChatHistory={onChangeChatHistory}
-                />
-              </>
-            );
           case "chat-edit":
             return (
               <>
@@ -107,6 +104,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
                   onRerender={onRerender}
                   chatHistory={chatHistory}
                   onChangeChatHistory={onChangeChatHistory}
+                  onChangeGroup = {onChangeGroup}
                 />
               </>
             );

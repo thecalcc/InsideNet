@@ -13,7 +13,7 @@ namespace OnePageNet.Services.Services
         {
         }
 
-        public async Task AddAsync(GroupDTO dto, string creatorId, string targetId)
+        public async Task<bool> AddAsync(GroupDTO dto, string creatorId, string targetId)
         {
             var entity = _mapper.Map<GroupEntity>(dto);
             var groupEntities = await _dbContext.GroupEntities.Where(x =>
@@ -25,11 +25,36 @@ namespace OnePageNet.Services.Services
             if (!groupEntities.Any())
             {
                 await _dbContext.Set<GroupEntity>().AddAsync(entity);
-
+                
                 await _dbContext.SaveChangesAsync();
 
                 dto.Id = entity.Id;
+                
+                await AddUserGroup(dto.Id, creatorId);
+                await AddUserGroup(dto.Id, targetId);
+
+                await _dbContext.SaveChangesAsync();
+
+                return true;
             }
+            return false;
+        }
+
+        private async Task AddUserGroup(string groupId, string userId)
+        {
+            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId) ??
+                       throw new Exception("Current user does not exist.");
+            var group = await _dbContext.GroupEntities.FirstOrDefaultAsync(x => x.Id == groupId) ??
+                        throw new Exception("Current group does not exist.");
+
+
+            var userGroup = new UserGroupEntity
+            {
+                User = user,
+                Group = group
+            };
+
+            await _dbContext.UserGroupEntities.AddAsync(userGroup);
         }
     }
 }

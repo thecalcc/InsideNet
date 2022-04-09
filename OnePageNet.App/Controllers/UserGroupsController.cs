@@ -17,7 +17,7 @@ namespace OnePageNet.App.Controllers
 
         [HttpGet]
         [Route("get-all/{userId}")]
-        public ActionResult<GroupDTO> GetAll([FromRoute] string userId)
+        public ActionResult<List<GroupDTO>> GetAll([FromRoute] string userId)
         {
             var dtos = _userGroupService.GetAllForUser(userId);
 
@@ -35,22 +35,6 @@ namespace OnePageNet.App.Controllers
             if (string.IsNullOrEmpty(dto.Id)) return NotFound();
 
             return Ok(dto);
-        }
-
-
-        [Route("create")]
-        [HttpPost]
-        public async Task<ActionResult<UserGroupDTO>> Create([FromBody] UserGroupDTO dto)
-        {
-            await _userGroupService.AddAsync(dto.GroupId, dto.UserId);
-            var id = await _userGroupService.GetIdByComposite(dto.UserId, dto.GroupId);
-
-            if (string.IsNullOrEmpty(id))
-            {
-                return BadRequest(dto);
-            }
-
-            return CreatedAtAction("Get", id);
         }
 
         [Route("delete/{id}")]
@@ -85,5 +69,17 @@ namespace OnePageNet.App.Controllers
 
             return Ok(id);
         }
+
+        [HttpGet]
+        [Route("get-group-participants/{groupId}")]
+        public async Task<ActionResult<List<UserDto>>> GetGroupParticipants([FromRoute] string groupId)
+        {
+            var dtos = await _userGroupService.GetGroupParticipants(groupId);
+
+            if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
+
+            return Ok(dtos);
+        }
+
     }
 }

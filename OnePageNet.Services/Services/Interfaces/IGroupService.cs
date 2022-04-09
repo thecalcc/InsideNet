@@ -5,6 +5,6 @@ namespace OnePageNet.Services.Services.Interfaces
 {
     public interface IGroupService: IDatabaseService<GroupEntity,GroupDTO>
     {
-        Task AddAsync(GroupDTO dto, string creatorId, string targetId);
+        Task<bool> AddAsync(GroupDTO dto, string creatorId, string targetId);
     }
 }
