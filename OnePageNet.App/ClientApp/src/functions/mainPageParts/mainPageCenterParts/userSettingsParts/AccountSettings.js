@@ -1,8 +1,10 @@
-export function AccountSettings({user}) {
+export function AccountSettings({accountSettings}) {
 
     return (
-      <>
-        <h1>Account Settings</h1>
-      </>
+      <ul>
+      <li><h2>Username: {accountSettings.userName}</h2></li>
+      <li><h2>E-mail: {accountSettings.email}</h2></li>
+      <li><h2>Password: ********</h2></li>
+    </ul>
     );
 }
