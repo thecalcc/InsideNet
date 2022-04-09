@@ -6,7 +6,6 @@ export function PostList({ onSelect, users, rerenderpls, posts }) {
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
   };
-
   return (
     <ul className="post-list">
       {posts !== undefined
