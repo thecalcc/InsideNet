@@ -15,4 +15,5 @@ public class ApplicationUser : IdentityUser
     public string LastName { get; set; }
     public DateTime DoB { get; set; }
     public string? Gender { get; set; }
+    // public string? PlaceOfBirth { get; 
 }

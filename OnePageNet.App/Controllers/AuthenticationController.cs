@@ -77,8 +77,6 @@ public class AuthenticationController : Controller
             FirstName = registerDto.FirstName,
             LastName = registerDto.LastName,
             DoB = registerDto.DoB,
-            MediaURI = registerDto.MediaURI,
-            PhoneNumber = registerDto.PhoneNumber,
             Gender = registerDto.Gender
         };
 

@@ -42,6 +42,15 @@ export function NavMenu({ setToken, token, onLayoutChange }) {
               </NavLink>
             </NavItem>
             <NavItem>
+              <NavLink
+                to="/"
+                tag={Link}
+                onClick={() => onLayoutChange("settings-about", "center")}
+              >
+                Settings
+              </NavLink>
+            </NavItem>
+            <NavItem>
               <NavLink to="/" tag={Link} onClick={(e) => handleClick(e)}>
                 Log Out
               </NavLink>

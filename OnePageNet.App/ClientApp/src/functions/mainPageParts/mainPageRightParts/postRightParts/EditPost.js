@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
 
 export function EditPost({ post, onLayoutChange }) {
     const [text, setText] = useState(post.text);
@@ -7,7 +6,6 @@ export function EditPost({ post, onLayoutChange }) {
     const mediaUri = null;
     const commentsIds = null;
     const reactionId = null;
-    const history = useHistory();
       const handleSubmit = async (e) => {
         e.preventDefault();
         const url = `https://localhost:7231/api/posts/update/${post.id}`;
