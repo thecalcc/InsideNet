@@ -1,4 +1,6 @@
 import { useState } from "react";
+import '../../../styles/UserSettings.css';
+
 export function AccountSettingsEdit({ user }) {
   const stars = "********";
   const [email, setEmail] = useState(user.email);
@@ -29,50 +31,65 @@ export function AccountSettingsEdit({ user }) {
 
   return (
     <>
-      <form className="form" onSubmit={(e) => handleSubmit(e)}>
-        <div className="cont">
+      <form className="edit-form" onSubmit={(e) => handleSubmit(e)}>
+        <fieldset>
           <label>
             <b>Username</b>
           </label>
           <input
+            className='text-input'
             name="userName"
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
+        </fieldset>
+
+
+        <fieldset>
 
           <label>
             <b>Email</b>
           </label>
           <input
+            className='text-input'
             name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+        </fieldset>
 
+
+
+        <fieldset>
           <label>
             <b>Old Password</b>
           </label>
           <input
+            className='text-input'
             name="oldPass"
             type="text"
             value={oldPassword}
             onChange={(e) => setOldPass(e.target.value)}
             required
           />
+        </fieldset>
+
+        <fieldset>
 
           <label>
             <b>New Password</b>
           </label>
           <input
+            className='text-input'
             name="newPass"
             type="text"
             value={newPassword}
             onChange={(e) => setNewPass(e.target.value)}
             required
           />
-        </div>
+        </fieldset>
         <button type="submit">Done</button>
       </form>
     </>

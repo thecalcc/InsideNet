@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace OnePageNet.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,6 +28,11 @@ namespace OnePageNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaURI = table.Column<string>(type: "TEXT", nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    DoB = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Gender = table.Column<string>(type: "TEXT", nullable: true),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -71,7 +77,7 @@ namespace OnePageNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -120,7 +126,7 @@ namespace OnePageNet.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RelationEntity",
+                name: "RelationEntities",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
@@ -130,7 +136,7 @@ namespace OnePageNet.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RelationEntity", x => x.Id);
+                    table.PrimaryKey("PK_RelationEntities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -245,7 +251,8 @@ namespace OnePageNet.Data.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Text = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: true),
                     PosterId = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
@@ -271,7 +278,7 @@ namespace OnePageNet.Data.Migrations
                     SenderId = table.Column<string>(type: "TEXT", nullable: false),
                     DestinationId = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -298,7 +305,7 @@ namespace OnePageNet.Data.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     GroupId = table.Column<string>(type: "TEXT", nullable: false),
-                    UsersId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
@@ -306,8 +313,8 @@ namespace OnePageNet.Data.Migrations
                 {
                     table.PrimaryKey("PK_UserGroupEntities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserGroupEntities_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_UserGroupEntities_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -323,7 +330,7 @@ namespace OnePageNet.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
-                    UserRelationshipId = table.Column<string>(type: "TEXT", nullable: true),
+                    UserRelationshipId = table.Column<string>(type: "TEXT", nullable: false),
                     CurrentUserId = table.Column<string>(type: "TEXT", nullable: false),
                     TargetUserId = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -345,10 +352,11 @@ namespace OnePageNet.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRelationEntities_RelationEntity_UserRelationshipId",
+                        name: "FK_UserRelationEntities_RelationEntities_UserRelationshipId",
                         column: x => x.UserRelationshipId,
-                        principalTable: "RelationEntity",
-                        principalColumn: "Id");
+                        principalTable: "RelationEntities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -357,7 +365,7 @@ namespace OnePageNet.Data.Migrations
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: false),
-                    MediaUri = table.Column<string>(type: "TEXT", nullable: false),
+                    MediaUri = table.Column<string>(type: "TEXT", nullable: true),
                     ApplicationUserId = table.Column<string>(type: "TEXT", nullable: false),
                     PostId = table.Column<string>(type: "TEXT", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -534,9 +542,9 @@ namespace OnePageNet.Data.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroupEntities_UsersId",
+                name: "IX_UserGroupEntities_UserId",
                 table: "UserGroupEntities",
-                column: "UsersId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserReactionEntities_ApplicationUserId",
@@ -615,7 +623,7 @@ namespace OnePageNet.Data.Migrations
                 name: "ReactionEntity");
 
             migrationBuilder.DropTable(
-                name: "RelationEntity");
+                name: "RelationEntities");
 
             migrationBuilder.DropTable(
                 name: "PostEntities");

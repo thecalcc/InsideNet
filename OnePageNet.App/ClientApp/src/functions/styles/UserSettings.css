@@ -1,0 +1,83 @@
+.user-settings{
+    height: inherit;
+    width:inherit;
+}
+
+.options{
+    display: flex;
+    flex-direction: row;
+    height: 6vh;
+}
+
+.option-btn{
+    width: 33%;
+    height: 4vh;
+    color: rgb(57, 57, 57);
+    font-weight: bold;
+    background-color: orange;
+}
+
+.option-btn:hover{
+    background-color: chocolate;
+    height: 6vh;
+    color: white;
+    transition: height 0.2s ease-in-out;
+}
+
+.option-btn:active{
+    height: 6vh;
+    color: white;
+    background-color: saddlebrown;
+}
+
+.option-btn:focus{
+    height: 6vh;
+    color: white;
+    background-color: saddlebrown;
+}
+
+.settings{
+    width: 38vw;
+    height: 90%;
+}
+.settings-list{
+    width: inherit;
+    height: fit-content;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 0;
+    padding: 0;
+    background-color: #222222;
+}
+
+.settings-list li{
+    background-color:coral;
+    width: fit-content;
+    min-width: 33%;
+    margin-bottom: 0.5vh;
+    padding: 0.5%;
+    font-weight: bold;
+    color: rgb(57, 57, 57);
+    border: 2px solid #373737;
+}
+
+.edit-form{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: coral;
+    margin: auto;
+}
+
+.edit-form fieldset{
+    width: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1vh;
+}

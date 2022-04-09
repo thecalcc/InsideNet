@@ -1,9 +1,15 @@
-export function ContactSettings({user, onLayoutChange}) {
+
+
+export function ContactSettings({ user, onLayoutChange }) {
   return (
-    <ul>
-      <li><h2>E-mail: {user.email}</h2></li>
-      <li><h2>phone number: {(user.phoneNumber)?user.phoneNumber:"add phone number"}</h2></li>
-      <button onClick={()=>onLayoutChange("settings-about-edit","center")}>Edit</button>
-    </ul>
+    <div className='settings'>
+      <ul className='settings-list'>
+        <li>E-mail: {user.email}</li>
+        <li>phone number: {(user.phoneNumber) ? user.phoneNumber : "No phone number"}</li>
+      </ul>
+      <button className = 'custom-btn'onClick={() => onLayoutChange('settings-about-edit', 'center')}>
+        <img className='btn-img' src='/resources/edit-icon.png' alt = 'edit-icon'/>
+      </button>
+    </div>
   );
 }

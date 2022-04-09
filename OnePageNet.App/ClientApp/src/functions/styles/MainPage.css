@@ -2,16 +2,16 @@
     display:flex;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background-color: #1b1b1b;
     color: white;
     padding:0%;
-    height: 93vh;
+    height: 92vh;
 }
 
 .main-page-center{
     display:flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content:flex-start;
     align-items:center;
     width: 40vw;
     height: inherit;
@@ -32,5 +32,13 @@
     justify-content: space-around;
     align-items: center;
     width: 35vw;
+    height: inherit;
+}
+.main-page-center-posts{
+    display:flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items:center;
+    width: 40vw;
     height: inherit;
 }

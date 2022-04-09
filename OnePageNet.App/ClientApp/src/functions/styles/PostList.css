@@ -5,7 +5,7 @@
     border-radius: 0.8em;
     margin-top: 0.3em;
 }
-.post-title{
+.post-header{
     display:flex;
     flex-direction: row;
     align-items: baseline;
@@ -30,7 +30,15 @@
     word-break: break-all;
     overflow-wrap:break-word;
 }
-
+.post-title{
+    background-color: rgb(42, 42, 42);
+    border-bottom: 1px solid #18191a;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 0.3vw;
+    word-wrap: break-word;
+}
 .post-list{
     max-height: 70vh;
     overflow: auto;
@@ -59,4 +67,10 @@
     flex-direction: column;
     justify-content:flex-start;
     align-items: center;
+}
+
+.create-post-form{
+    display: flex;
+    width: 30vw;
+    margin-top: 0.5vh;
 }

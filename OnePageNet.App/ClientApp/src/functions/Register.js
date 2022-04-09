@@ -60,7 +60,6 @@ export function Register({ setToken }) {
   };
 
   return (
-    <>
       <form className='register-form' onSubmit={(e) => handleSubmit(e)}>
         <fieldset>
           <h1>Register</h1>
@@ -207,6 +206,5 @@ export function Register({ setToken }) {
         </fieldset>
         <button className='custom-btn' type="submit">Register</button>
       </form>
-    </>
   );
 }

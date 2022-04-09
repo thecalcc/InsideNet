@@ -1,12 +1,18 @@
-export function PersonalInfoSettings({ user,  onLayoutChange}) {
+import dateFormat from 'dateformat';
+import '../../../styles/UserSettings.css';
+export function PersonalInfoSettings({ user, onLayoutChange }) {
 
   return (
-    <ul>
-      <li><h2>First name: {user.firstName}</h2></li>
-      <li><h2>Last name: {user.lastName}</h2></li>
-      <li><h2>Birth day: {user.doB}</h2></li>
-      <li><h2>Gender: {(user.gender)?user.gender:"specify gender"}</h2></li>
-      <button onClick={()=>onLayoutChange("settings-personal-info-edit","center")}>Edit</button>
-    </ul>
+    <div className='settings'>
+      <ul className='settings-list'>
+        <li>First name: {user.firstName}</li>
+        <li>Last name: {user.lastName}</li>
+        <li>Birth day: {dateFormat(user.doB, "dddd, mmmm dS, yyyy")}</li>
+        <li>Gender: {user.gender ? user.gender : 'unspecified'}</li>
+      </ul>
+      <button className = 'custom-btn'onClick={() => onLayoutChange('settings-personal-info-edit', 'center')}>
+        <img className='btn-img' src='/resources/edit-icon.png' alt = 'edit-icon'/>
+      </button>
+    </div>
   );
 }

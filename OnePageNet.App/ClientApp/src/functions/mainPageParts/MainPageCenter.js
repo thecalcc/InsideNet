@@ -1,10 +1,11 @@
 /* eslint-disable default-case */
 import React, { useState } from "react";
-import "../styles/MainPage.css";
 import { PostList } from "./mainPageCenterParts/postCenterParts/PostList";
 import { CreatePost } from "./mainPageRightParts/postRightParts/CreatePost";
 import { UserSettings } from "../../functions/mainPageParts/mainPageCenterParts/userSettingsParts/UserSettings";
 import { useEffect } from "react";
+
+import "../styles/MainPage.css";
 
 export function MainPageCenter({
   onLayoutChange,
@@ -58,27 +59,15 @@ export function MainPageCenter({
   }, [layoutState]);
     
     return (
-    <div>
+    <div className='main-page-center'>
       {(() => {
         switch (layoutState) {
           case "timeline":
             return (
-              <div>
-                <button onClick={() => onLayoutChange("create", "center")}>
-                  Create Post
-                </button>
+              <div className='main-page-center-posts'>
+                <CreatePost onLayoutChange={onLayoutChange}/>
                 <PostList onSelect={choosePost} users={users} posts={posts} />
               </div>
-            );
-          case "create":
-            return (
-              <>
-                <CreatePost onLayoutChange={onLayoutChange} />
-
-                <button onClick={() => onLayoutChange("timeline", "center")}>
-                  Back
-                </button>
-              </>
             );
           case "settings-personal-info-edit":
           case "settings-account-edit":
