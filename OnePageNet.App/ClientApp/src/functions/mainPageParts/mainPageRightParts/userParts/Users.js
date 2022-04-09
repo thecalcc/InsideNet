@@ -10,6 +10,7 @@ export function Users() {
   const [search, setSearch] = useState();
   const currentUserId = sessionStorage.currentUserId;
 
+  
   const fetchUsers = async () => {
     const url = "https://localhost:7231/api/Users/get-all";
     const res = await fetch(url, {
@@ -29,37 +30,41 @@ export function Users() {
     }
   };
 
+  const fetchUserRelations = async () => {
+    const url = `https://localhost:7231/api/UserRelations/get-all/${currentUserId}`;
+    const res = await fetch(url, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    const json = await res.json();
+    if (json === badRes) {
+      setUserRelations(undefined);
+    } else {
+      setUserRelations(json);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
-  }, [setUsers]);
+  }, [users]);
 
   useEffect(() => {
-    const fetchUserRelation = async () => {
-      const url = `https://localhost:7231/api/UserRelations/get-all/${currentUserId}`;
-      const res = await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      });
-      const json = await res.json();
-      if (json === badRes) {
-        setUserRelations(undefined);
-      } else {
-        setUserRelations(json);
-      }
-    };
-    fetchUserRelation();
-  }, [setUserRelations]);
+    fetchUserRelations();  
+  }, []);
 
+  const onUserRelationsChange = () => {
+    fetchUserRelations();
+  }
   const handleNewRelation = async (targetUserId) => {
-    // TODO Get currentUser and pass it to the post request
+    
     const url = "https://localhost:7231/api/userrelations/create";
 
-    const res = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -72,14 +77,13 @@ export function Users() {
         targetUserId
       }),
     });
-
-    const jsonRes = await res.json();
+    onUserRelationsChange();
   };
 
   const handleClick = async (targetUserId, command) => {
     const url = "https://localhost:7231/api/userrelations/update";
 
-    const res = await fetch(url, {
+    await fetch(url, {
       method: "POST",
       mode: "cors",
       headers: {
@@ -93,6 +97,7 @@ export function Users() {
         command,
       }),
     });
+    onUserRelationsChange();
   };
 
   const handleSubmit = async (e) => {
@@ -170,7 +175,6 @@ export function Users() {
                                         <Dropdown.Menu>
                                           <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Accept Invite')}>Accept Invite</Dropdown.Item>
                                           <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Decline Invite')}>Decline Invite</Dropdown.Item>
-                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
                                         </Dropdown.Menu>
                                       </Dropdown>)
                                     case PendingInvite:
@@ -183,7 +187,6 @@ export function Users() {
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu variant="dark">
                                           <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Abandon Invite')}>Stop Invite</Dropdown.Item>
-                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
                                         </Dropdown.Menu>
                                       </Dropdown>)
                                     case Friend:
@@ -197,7 +200,6 @@ export function Users() {
                                           </Dropdown.Toggle>
                                           <Dropdown.Menu variant='dark'>
                                             <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Unfriend')}>Unfriend</Dropdown.Item>
-                                            <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
                                           </Dropdown.Menu>
                                         </Dropdown>
                                       )
@@ -222,7 +224,6 @@ export function Users() {
                                   </Dropdown.Toggle>
                                   <Dropdown.Menu variant = 'dark'>
                                     <Dropdown.Item as="button" onClick={() => handleNewRelation(targetUser.id)}>Add Friend</Dropdown.Item>
-                                    <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
                                   </Dropdown.Menu>
                                 </Dropdown>
                               </td>
