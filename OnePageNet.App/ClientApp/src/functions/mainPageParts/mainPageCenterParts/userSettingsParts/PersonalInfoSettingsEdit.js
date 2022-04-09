@@ -9,6 +9,8 @@ export function PersonalInfoSettingsEdit({ user }) {
 
   const userName = user.userName;
   const email = user.email;
+  const phoneNumber = user.phoneNumber;
+  const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,9 @@ export function PersonalInfoSettingsEdit({ user }) {
         lastName,
         dob,
         id: user.id,
+        phoneNumber,
+        gender,
+        mediaUri
       }),
     });
   };
@@ -51,7 +56,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="date"
           value={dob}
           onChange={(e) => setDob(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -65,7 +70,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -80,7 +85,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -95,7 +100,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Male"
                 checked={gender === "Male"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Male
             </label>
@@ -105,7 +110,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Female"
                 checked={gender === "Female"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Female
             </label>
@@ -115,7 +120,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Other"
                 checked={gender === "Other"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Other
             </label>

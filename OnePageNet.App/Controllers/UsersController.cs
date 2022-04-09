@@ -57,11 +57,9 @@ public class UsersController : Controller
     {
         if (id != dto.Id) return BadRequest();
 
-        _userService.Update(dto);
-
         try
         {
-            await _userService.SaveChangesAsync();
+            _userService.Update(dto);
         }
         catch (DbUpdateConcurrencyException)
         {

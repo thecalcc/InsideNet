@@ -3,7 +3,6 @@ import '../../../styles/UserSettings.css';
 
 export function AccountSettingsEdit({ user, onLayoutChange }) {
   const stars = "********";
-  const [email, setEmail] = useState(user.email);
   const [userName, setUserName] = useState(user.userName);
   const [newPassword, setNewPass] = useState(stars);
   const [oldPassword, setOldPass] = useState(stars);
@@ -21,7 +20,7 @@ export function AccountSettingsEdit({ user, onLayoutChange }) {
       },
       body: JSON.stringify({
         userName,
-        email,
+        email: user.email,
         id: user.id,
         oldPassword,
         newPassword,
@@ -45,23 +44,6 @@ export function AccountSettingsEdit({ user, onLayoutChange }) {
             onChange={(e) => setUserName(e.target.value)}
           />
         </fieldset>
-
-
-        <fieldset>
-
-          <label>
-            <b>Email</b>
-          </label>
-          <input
-            className='text-input'
-            name="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </fieldset>
-
-
 
         <fieldset>
           <label>
