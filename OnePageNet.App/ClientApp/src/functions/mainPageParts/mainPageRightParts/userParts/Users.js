@@ -121,16 +121,17 @@ export function Users() {
   }
 
   return (
-    <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
+    <div className = 'users'>
+      <form className = 'search-form' onSubmit={(e) => handleSubmit(e)}>
         <input
           className='text-input'
           name="search"
           type="text"
+          placeholder="Search for user here..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className='custom-btn' type="submit"></button>
+        <button className='custom-btn' type="submit"><img className = 'btn-img' src='/resources/search-icon.png' alt = 'search-icon'></img></button>
       </form>
       <div className='table-wrapper'>
         <div className='table-scroll'>

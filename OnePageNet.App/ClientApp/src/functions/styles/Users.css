@@ -1,3 +1,7 @@
+.users{
+    width: inherit
+}
+
 .dropdown-list{
     display: flex;
     width:inherit;
@@ -25,11 +29,18 @@
 .table-wrapper table {
     width:100%; 
   }
+
 .table-wrapper table thead th .text {
     position:absolute;   
     top:-20px;
     z-index:2;
     height:20px;
-    width:35%;
+    width:25%;
     border:1px solid orangered;
+  }
+
+  .search-form{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
   }

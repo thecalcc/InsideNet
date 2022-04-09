@@ -18,23 +18,7 @@ namespace OnePageNet.Services.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(string groupId, string userId)
-        {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId) ??
-                       throw new Exception("Current user does not exist.");
-            var group = await _dbContext.GroupEntities.FirstOrDefaultAsync(x => x.Id == groupId) ??
-                        throw new Exception("Current group does not exist.");
-
-
-            var userGroup = new UserGroupEntity
-            {
-                User = user,
-                Group = group
-            };
-
-            await _dbContext.UserGroupEntities.AddAsync(userGroup);
-            await _dbContext.SaveChangesAsync();
-        }
+        
 
         public async Task<bool> RemoveAsync(string id)
         {
@@ -82,6 +66,13 @@ namespace OnePageNet.Services.Services
 
             return userGroup?.Id ??
                    throw new Exception("There's no such entity");
+        }
+
+        public async Task<List<UserDto>> GetGroupParticipants(string groupId)
+        {
+            var userGroups = await _dbContext.UserGroupEntities.Where(userGroup => userGroup.Group.Id == groupId).Include(x => x.Group).Include(x => x.User).ToListAsync();
+            var users = _mapper.Map<List<UserDto>>(userGroups.Select(x => x.User).ToList());
+            return users;
         }
     }
 }

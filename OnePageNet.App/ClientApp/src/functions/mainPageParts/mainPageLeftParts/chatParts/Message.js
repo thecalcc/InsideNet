@@ -1,11 +1,13 @@
 import React from 'react';
-import { useEffect } from 'react';
-
-export function Message(props) {
+import '../../../styles/Chat.css'
+  export function Message(props) {
 
 
   return (
-    <div>
+    <div className = 'msg-internal'>
+      <div className='msg-username'>
+        {props.userName}
+      </div>
       {props.message.content}
     </div>
   );
