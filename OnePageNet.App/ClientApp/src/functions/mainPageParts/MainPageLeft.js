@@ -20,13 +20,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   const onRerender = () => {
     setRerender(!rerender);
   };
-
-  const onNewGroup = (group) => {
-    if (group !== "This group already exists.") {
-      setGroups([...groups, group]);
-    }
-  };
-
+  const onNewGroup = (group) =>{
+    if(group !== 'This group already exists.')
+    setGroups([...groups, group]);
+  }
   const selectCurrentGroupChat = (prop) => {
     setCurrentGroup(prop);
     onLayoutChange("chat-display", "left");
@@ -37,10 +34,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   };
 
   const onChangeGroup = (group) => {
-    if (group !== null) onLayoutChange("chat-display", "left");
-    else onBack();
+    if(group !== null) onLayoutChange("chat-display", "left");
+    else onBack()
     setCurrentGroup(group);
-  };
+  }
 
   useEffect(() => {
     const fetchUserGroups = async () => {
@@ -58,13 +55,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         },
       })
         .then((data) => data.json())
-        .then((data) => {
-          if (data !== "There are no such entities in the database.") {
-            setGroups(data);
-          } else {
-            setGroups([]);
-          }
-        });
+        .then((data) => setGroups(data));
     };
 
     const getChatHistory = async () => {
@@ -96,7 +87,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "groupSelection":
             return (
               <>
-                <CreateDM onNewGroup={onNewGroup} />
+                <CreateDM onNewGroup={onNewGroup}/>
                 <ChatSelection
                   selectCurrentGroupChat={selectCurrentGroupChat}
                   groups={groups}
@@ -115,7 +106,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
                   onRerender={onRerender}
                   chatHistory={chatHistory}
                   onChangeChatHistory={onChangeChatHistory}
-                  onChangeGroup={onChangeGroup}
+                  onChangeGroup = {onChangeGroup}
                 />
               </>
             );
