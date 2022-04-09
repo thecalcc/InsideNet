@@ -80,6 +80,9 @@ export function MainPageCenter({
                 </button>
               </>
             );
+          case "settings-personal-info-edit":
+          case "settings-account-edit":
+          case "settings-about-edit":
           case "settings-personal-info":
           case "settings-account":
           case "settings-about":

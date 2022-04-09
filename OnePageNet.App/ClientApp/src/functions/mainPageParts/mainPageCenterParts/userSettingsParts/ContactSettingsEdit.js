@@ -1,4 +1,4 @@
-export function ContactEdit({user}) {
+export function ContactSettingsEdit({user}) {
 
     return (
     <ul>
