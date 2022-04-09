@@ -45,7 +45,7 @@ export function NavMenu({ setToken, onLayoutChange }) {
               <NavLink
                 to="/"
                 tag={Link}
-                onClick={() => onLayoutChange("settings-about", "center")}
+                onClick={() => onLayoutChange("settings-account", "center")}
               >
                 Settings
               </NavLink>

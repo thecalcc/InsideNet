@@ -9,6 +9,8 @@ export function PersonalInfoSettingsEdit({ user }) {
 
   const userName = user.userName;
   const email = user.email;
+  const phoneNumber = user.phoneNumber;
+  const mediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,9 @@ export function PersonalInfoSettingsEdit({ user }) {
         lastName,
         dob,
         id: user.id,
+        phoneNumber,
+        gender,
+        mediaUri
       }),
     });
   };

@@ -71,10 +71,10 @@ export function MainPageCenter({
             );
           case "settings-personal-info-edit":
           case "settings-account-edit":
-          case "settings-about-edit":
+          case "settings-contacts-edit":
           case "settings-personal-info":
           case "settings-account":
-          case "settings-about":
+          case "settings-contacts":
             return (
               <>
                 <UserSettings

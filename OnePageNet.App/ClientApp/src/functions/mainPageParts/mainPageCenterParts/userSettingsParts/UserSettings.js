@@ -21,8 +21,8 @@ export function UserSettings({
         <button className ='option-btn' onClick={() => onLayoutChange("settings-personal-info", "center")}>
           Personal Info
         </button>
-        <button className ='option-btn' onClick={() => onLayoutChange("settings-about", "center")}>
-          About
+        <button className ='option-btn' onClick={() => onLayoutChange("settings-contacts", "center")}>
+          Contacts
         </button>
         <button className ='option-btn' onClick={() => onLayoutChange("settings-account", "center")}>
           Account
@@ -37,7 +37,7 @@ export function UserSettings({
                 onLayoutChange={onLayoutChange}
               />
             );
-          case "settings-about":
+          case "settings-contacts":
             return (
               <ContactSettings user={user} onLayoutChange={onLayoutChange} />
             );
@@ -62,7 +62,7 @@ export function UserSettings({
                 onLayoutChange={onLayoutChange}
               />
             );
-          case "settings-about-edit":
+          case "settings-contacts-edit":
             return (
               <ContactSettingsEdit
                 user={user}

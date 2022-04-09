@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.Data.Data;
 using OnePageNet.Data.Data.Entities;
@@ -12,11 +13,13 @@ public class UserService : IUserService
 {
     private readonly OnePageNetDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserService(OnePageNetDbContext dbContext, IMapper mapper)
+    public UserService(OnePageNetDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<List<UserDto>> GetAllFriends(string userId)
@@ -54,7 +57,9 @@ public class UserService : IUserService
 
     public async void Update(UserDto userDto)
     {
-        _dbContext.Entry(_mapper.Map<ApplicationUser>(userDto)).State = EntityState.Modified;
+        var user = _mapper.Map<ApplicationUser>(userDto);
+        _dbContext.Attach(user);
+        await _userManager.UpdateAsync(user);
     }
 
     public async Task SaveChangesAsync()
