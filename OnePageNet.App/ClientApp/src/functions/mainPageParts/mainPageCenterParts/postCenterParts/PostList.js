@@ -2,7 +2,7 @@ import React from "react";
 import { PostListItem } from "./PostListItem";
 import "../../../../custom.css";
 
-export function PostList({ onSelect, users, rerenderpls, posts }) {
+export function PostList({ onSelect, users, posts }) {
   const getPosterName = (posterId) => {
     return users?.find((user) => user.id === posterId).userName;
   };

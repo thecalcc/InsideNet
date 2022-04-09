@@ -11,13 +11,13 @@ import useToken from "./useToken";
 
 export function Layout() {
   const { token, setToken } = useToken();
-  const [layoutState, setLayout] = useState({left: "groupSelection", center: "", right: ""});
-  const shouldHaveUsedRerender = () => {
-    if((sessionStorage.getItem("currentUserId")&& layoutState.center === "")){
-      setLayout({...layoutState,center: "timeline"})}
-  }
-
-  shouldHaveUsedRerender();
+  const [posts, setPosts] = useState();
+  const [layoutState, setLayout] = useState({
+    left: "groupSelection",
+    center: "timeline",
+    right: "",
+  });
+  
   useEffect(() => {
     return () => {
       setToken(sessionStorage.getItem("token"));
@@ -25,21 +25,24 @@ export function Layout() {
   }, []);
 
   const onLayoutChange = (layout, root) => {
-    switch(root){
+    switch (root) {
       case "left":
-        setLayout({...layoutState,left: layout});
+        setLayout({ ...layoutState, left: layout });
         break;
       case "center":
-        setLayout({...layoutState,center: layout});
-        break
+        setLayout({ ...layoutState, center: layout });
+        break;
       case "right":
-        setLayout({...layoutState,right: layout});
-        break
+        setLayout({ ...layoutState, right: layout });
+        break;
     }
-  }
-  const [posts, setPosts] = useState();
-  useEffect(()=>{ const fetchPosts = async () => {
-      const urlPosts = `https://localhost:7231/api/Posts/get-timeline/${sessionStorage.getItem("currentUserId")}`;
+  };
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const urlPosts = `https://localhost:7231/api/Posts/get-timeline/${sessionStorage.getItem(
+        "currentUserId"
+      )}`;
       await fetch(urlPosts, {
         method: "GET",
         mode: "cors",
@@ -51,12 +54,12 @@ export function Layout() {
       })
         .then((data) => data.json())
         .then((data) => setPosts(data));
-    }
+    };
 
     if (token !== undefined && token !== null) {
       fetchPosts();
     }
-  },[layoutState])
+  }, [layoutState]);
 
   return (
     <div>
@@ -68,9 +71,17 @@ export function Layout() {
         </>
       ) : (
         <>
-        <NavMenu setToken={setToken} token={token} onLayoutChange={onLayoutChange}/>
+          <NavMenu
+            setToken={setToken}
+            token={token}
+            onLayoutChange={onLayoutChange}
+          />
           <Route exact path="/">
-            <MainPage currentLayout={layoutState} onLayoutChange={onLayoutChange} posts={posts}/>
+            <MainPage
+              currentLayout={layoutState}
+              onLayoutChange={onLayoutChange}
+              posts={posts}
+            />
           </Route>
         </>
       )}

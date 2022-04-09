@@ -1,14 +1,10 @@
 /* eslint-disable default-case */
 import React, { useState, useEffect, useRef } from "react";
 import * as signalR from "@microsoft/signalr";
-
 import ChatWindow from "./ChatWindow";
 import ChatInput from "./ChatInput";
-
 import "../../../styles/Chat.css";
-import { EditComment } from "../../mainPageRightParts/commentParts/EditComment";
 import { EditGroup } from "../groupParts/EditGroup";
-import { data } from "jquery";
 
 export function Chat({
   group,

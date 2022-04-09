@@ -40,8 +40,10 @@ export function Register({ setToken }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        setToken(data);
-        sessionStorage.setItem("token", data);
+        if (data.include("ey")) {
+          setToken(data);
+          sessionStorage.setItem("token", data);
+        } 
       })
       .then((data) => {
         if (!data.ok) {
