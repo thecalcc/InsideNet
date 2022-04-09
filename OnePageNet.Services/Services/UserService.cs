@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnePageNet.Data.Data;
 using OnePageNet.Data.Data.Entities;
@@ -12,11 +13,13 @@ public class UserService : IUserService
 {
     private readonly OnePageNetDbContext _dbContext;
     private readonly IMapper _mapper;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserService(OnePageNetDbContext dbContext, IMapper mapper)
+    public UserService(OnePageNetDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;
+        _userManager = userManager;
     }
 
     public async Task<List<UserDto>> GetAllFriends(string userId)
@@ -54,7 +57,46 @@ public class UserService : IUserService
 
     public async void Update(UserDto userDto)
     {
-        _dbContext.Entry(_mapper.Map<ApplicationUser>(userDto)).State = EntityState.Modified;
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userDto.Id);
+
+        if (user.FirstName != userDto.FirstName)
+        {
+            user.FirstName = userDto.FirstName;
+        }
+
+        if (user.LastName != userDto.LastName)
+        {
+            user.LastName = userDto.LastName;
+        }
+
+        if (user.Gender != userDto.Gender)
+        {
+            user.Gender = userDto.Gender;
+        }
+
+        if (user.DoB != userDto.DoB)
+        {
+            user.DoB = userDto.DoB;
+        }
+
+        if (user.UserName != userDto.UserName)
+        {
+            user.UserName = userDto.UserName;
+        }
+
+        if (user.Email != userDto.Email)
+        {
+            user.Email = userDto.Email;
+            user.NormalizedEmail = user.Email.ToUpper();
+        }
+
+        if (user.PhoneNumber != userDto.PhoneNumber)
+        {
+            user.PhoneNumber = userDto.PhoneNumber;
+        }
+
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()
