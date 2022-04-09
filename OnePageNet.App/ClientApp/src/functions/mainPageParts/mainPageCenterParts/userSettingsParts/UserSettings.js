@@ -3,47 +3,13 @@
 import { ContactSettings } from "./ContactSettings";
 import { PersonalInfoSettings } from "./PersonalInfoSettings";
 import { AccountSettings } from "./AccountSettings";
-import { useEffect, useState } from "react";
 
-export function UserSettings({layoutState, onLayoutChange, }) {
-  const [user, setUser] = useState();
-  const [accountSettings, setAccountSettings] = useState();
-
-  useEffect(() => {
-    const fetchAccountSettings = async () => {
-      const url = `https://localhost:7231/api/AccountSettings/get/${sessionStorage.currentUserId}`;
-      
-      await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-        .then((x) => x.json())
-        .then((x) => setAccountSettings(x));
-    };
-    fetchAccountSettings();
-    const fetchUser = async () => {
-      const url = `https://localhost:7231/api/users/get/${sessionStorage.currentUserId}`;
-      
-      await fetch(url, {
-        method: "GET",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      })
-        .then((x) => x.json())
-        .then((x) => setUser(x));
-    };
-    fetchUser();
-  }, []);
-
+export function UserSettings({
+  layoutState,
+  onLayoutChange,
+  user,
+  accountSettings,
+}) {
   return (
     <>
       <button
