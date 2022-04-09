@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 
-export function CreateDM({onRerender}) {
+export function CreateDM({onRerender, onNewGroup}) {
     const [friends,setFriends] = useState();
     const [group, setGroup] = useState();
     const [secondUserId, setSecondUserId] =  useState();
@@ -30,7 +30,7 @@ export function CreateDM({onRerender}) {
     useEffect(() => {
       const createUserGroup = async (userId, groupId) => {
         const urlFriends = `https://localhost:7231/api/UserGroups/create`;
-        await fetch(urlFriends, {
+        fetch(urlFriends, {
           method: "POST",
           mode: "cors",
           headers: {
@@ -66,7 +66,7 @@ export function CreateDM({onRerender}) {
         const Name = event.userName;
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         
-        await fetch(urlGroups, {
+        fetch(urlGroups, {
           method: "POST",
           mode: "cors",
           headers: {
@@ -80,7 +80,7 @@ export function CreateDM({onRerender}) {
           }),
         })
           .then((data) => data.json())
-          .then((data) => setGroup(data));
+          .then((data) => onNewGroup(data));
       };
 
       createGroup()      

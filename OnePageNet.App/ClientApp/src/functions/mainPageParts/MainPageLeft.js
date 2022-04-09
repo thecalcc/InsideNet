@@ -11,6 +11,8 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
   const [currentGroup, setCurrentGroup] = useState(null);
   const [rerender, setRerender] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
+  const [groups, setGroups] = useState();
+  
   const onChangeChatHistory = (history) => {
     setChatHistory(history);
   };
@@ -19,6 +21,9 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
     setRerender(!rerender);
   };
 
+  const onNewGroup = (group) =>{
+    setGroups([...groups, group]);
+  }
   const selectCurrentGroupChat = (prop) => {
     setCurrentGroup(prop);
     onLayoutChange("chat-display", "left");
@@ -28,7 +33,6 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
     onLayoutChange("groupSelection", "left");
   };
 
-  const [groups, setGroups] = useState();
 
   useEffect(() => {
     const fetchGroups = async () => {
@@ -75,7 +79,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
           case "groupSelection":
             return (
               <>
-                <CreateDM onRerender={onRerender} />
+                <CreateDM onRerender={onRerender} onNewGroup={onNewGroup}/>
                 <ChatSelection
                   selectCurrentGroupChat={selectCurrentGroupChat}
                   groups={groups}

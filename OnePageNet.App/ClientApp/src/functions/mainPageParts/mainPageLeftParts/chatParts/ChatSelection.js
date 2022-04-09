@@ -1,7 +1,8 @@
 import React from "react";
 import "../../../styles/Chat.css";
 
-export function ChatSelection({ selectCurrentGroupChat, groups }) {
+export function ChatSelection({ selectCurrentGroupChat, groups}) {
+  
   return (
     <ul className="chat-selection">
       {groups !== "There are no such entities in the database." ? (

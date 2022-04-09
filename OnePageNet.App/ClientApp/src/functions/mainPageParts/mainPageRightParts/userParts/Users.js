@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { AcceptInvite, PendingInvite, Friend, Blocked } from "./UserRelationConstants";
-import {Dropdown, DropdownButton, ButtonGroup}  from 'react-bootstrap'
+import { AcceptInvite, PendingInvite, Friend } from "./UserRelationConstants";
+import { Dropdown, DropdownButton } from 'react-bootstrap'
 import "../../../styles/Users.css";
+import { DropdownItem, DropdownMenu } from "reactstrap";
 
 export function Users() {
   const badRes = "There are no userRelationEntities in the database.";
@@ -95,7 +96,7 @@ export function Users() {
     });
   };
 
-  const handleSubmit = async (e) =>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const fetchFilteredUsers = async () => {
       const url = `https://localhost:7231/api/Users/get-filtered-users/${search}`;
@@ -110,113 +111,133 @@ export function Users() {
       });
       const json = await res.json();
       if (json === badRes) {
-          setUsers(undefined);
-        } else {
-          setUsers(json);
-        }
+        setUsers(undefined);
+      } else {
+        setUsers(json);
+      }
     };
-    if(search != "" && search != null && search != undefined) fetchFilteredUsers();
+    if (search != "" && search != null && search != undefined) fetchFilteredUsers();
     else fetchUsers();
   }
 
   return (
-    <div className="container">
-
-      <h3 className="p-3 text-center">Users List</h3>
+    <div>
       <form onSubmit={(e) => handleSubmit(e)}>
-      <input
-            name="search"
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        <input type="submit" value ="Search"/>
+        <input
+          className='text-input'
+          name="search"
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <button className='custom-btn' type="submit"></button>
       </form>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users &&
-            users.map((targetUser) =>{
-              let hasRelation = false;
-              return targetUser.id !== currentUserId ? (
-                <tr key={targetUser.id}>
-                  <td>
-                    {targetUser.firstName} {targetUser.lastName}
-                  </td>
-                  <td>{targetUser.userName}</td>
-                  {userRelations &&
-                    userRelations.map((userRelation) => {
-                      if (targetUser.id === userRelation.targetUserId) {
-                        return(
-                        <>
-                          <td>{userRelation.userRelationship}</td>
-                          {(() => {
-                            switch (userRelation.userRelationship){
-                              case AcceptInvite:
-                                hasRelation = true;
-                                return (<DropdownButton key='Accept Invite' title='User Actions'>
-                                        <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Accept Invite')}>Accept Invite</Dropdown.Item>
-                                        <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Decline Invite')}>Decline Invite</Dropdown.Item>
-                                        <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
-                                      </DropdownButton>)
-                              case PendingInvite:
-                                  hasRelation = true;
-                                  return (<DropdownButton
-                                    key='Pending Invite'
-                                    title='User Actions'
-                                  >
-                                    <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Abandon Invite')}>Stop Invite</Dropdown.Item>
+      <div className='table-wrapper'>
+        <div className='table-scroll'>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users &&
+                users.map((targetUser) => {
+                  let hasRelation = false;
+                  return targetUser.id !== currentUserId ? (
+                    <tr key={targetUser.id}>
+                      <td>
+                        {targetUser.firstName} {targetUser.lastName}
+                      </td>
+                      <td>{targetUser.userName}</td>
+                      {userRelations &&
+                        userRelations.map((userRelation) => {
+                          if (targetUser.id === userRelation.targetUserId) {
+                            return (
+                              <>
+                                <td>{userRelation.userRelationship}</td>
+                                {(() => {
+                                  switch (userRelation.userRelationship) {
+                                    case AcceptInvite:
+                                      hasRelation = true;
+                                      return (<Dropdown key='Accept Invite' >
+                                        <Dropdown.Toggle id="dropdown-button-dark-example1" variant="warning">
+                                          User Actions
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Accept Invite')}>Accept Invite</Dropdown.Item>
+                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Decline Invite')}>Decline Invite</Dropdown.Item>
+                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                      </Dropdown>)
+                                    case PendingInvite:
+                                      hasRelation = true;
+                                      return (<Dropdown
+                                        key='Pending Invite'
+                                      >
+                                        <Dropdown.Toggle id="dropdown-button-dark-example1" variant="warning">
+                                          User Actions
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu variant="dark">
+                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Abandon Invite')}>Stop Invite</Dropdown.Item>
+                                          <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
+                                        </Dropdown.Menu>
+                                      </Dropdown>)
+                                    case Friend:
+                                      hasRelation = true;
+                                      return (
+                                        <Dropdown
+                                          key='Friend'
+                                        >
+                                          <Dropdown.Toggle id="dropdown-button-dark-example1" variant="warning">
+                                            User Actions
+                                          </Dropdown.Toggle>
+                                          <Dropdown.Menu variant='dark'>
+                                            <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Unfriend')}>Unfriend</Dropdown.Item>
+                                            <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
+                                          </Dropdown.Menu>
+                                        </Dropdown>
+                                      )
+                                    default:
+                                      return null
+                                  }
+                                })()}
+                              </>
+                            )
+                          }
+                        })}
+                      {
+                        hasRelation != true ?
+                          (
+                            <>
+                              <td>None</td>
+                              <td>
+                                <Dropdown
+                                  key='Friend'>
+                                  <Dropdown.Toggle id="dropdown-button-dark-example1" variant="warning">
+                                    User Actions
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu variant = 'dark'>
+                                    <Dropdown.Item as="button" onClick={() => handleNewRelation(targetUser.id)}>Add Friend</Dropdown.Item>
                                     <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
-                                  </DropdownButton>)
-                              case Friend:
-                                hasRelation = true;
-                                return(
-                                  <DropdownButton
-                                  key='Friend'
-                                  title='User Actions'
-                                  >
-                                <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Unfriend')}>Unfriend</Dropdown.Item>
-                                <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
-                              </DropdownButton>
-                                  )
-                                default:
-                                  return null
-                            }
-                          })()}
-                        </>
-                        )
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </>
+                          ) : null
                       }
-                    })}
-                    {
-                      hasRelation != true ?
-                      (
-                        <>
-                    <td>None</td>
-                    <td>
-                    <DropdownButton
-                                  key='Friend'
-                                  title='User Actions'>
-                      <Dropdown.Item as="button" onClick={() => handleNewRelation(targetUser.id)}>Add Friend</Dropdown.Item>
-                      <Dropdown.Item as="button" onClick={() => handleClick(targetUser.id, 'Block')}> Block </Dropdown.Item>
-                    </DropdownButton>
-                    </td>
-                        </>
-                      ):null
-                    }
                     </tr>
-              ) : (
-                <></>
-              )
-            })}
-        </tbody>
-      </table>
+                  ) : (
+                    <></>
+                  )
+                })}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

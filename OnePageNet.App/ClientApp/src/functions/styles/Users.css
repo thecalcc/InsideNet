@@ -2,3 +2,34 @@
     display: flex;
     width:inherit;
 }
+
+.user-table{
+    width: inherit;
+    height: fit-content;
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+.table-wrapper{
+  position:relative;
+}
+.table-scroll{
+  height: 70vh;
+  overflow:auto;  
+  margin-top:20px;
+  margin-right: 0.2vw;
+}
+.table-scroll::-webkit-scrollbar{
+    display: none;
+}
+
+.table-wrapper table {
+    width:100%; 
+  }
+.table-wrapper table thead th .text {
+    position:absolute;   
+    top:-20px;
+    z-index:2;
+    height:20px;
+    width:35%;
+    border:1px solid orangered;
+  }
