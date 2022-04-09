@@ -11,18 +11,13 @@ import useToken from "./useToken";
 
 export function Layout() {
   const { token, setToken } = useToken();
+  const [posts, setPosts] = useState();
   const [layoutState, setLayout] = useState({
     left: "groupSelection",
-    center: "",
+    center: "timeline",
     right: "",
   });
-  const shouldHaveUsedRerender = () => {
-    if (sessionStorage.getItem("currentUserId") && layoutState.center === "") {
-      setLayout({ ...layoutState, center: "timeline" });
-    }
-  };
-
-  shouldHaveUsedRerender();
+  
   useEffect(() => {
     return () => {
       setToken(sessionStorage.getItem("token"));
@@ -42,7 +37,7 @@ export function Layout() {
         break;
     }
   };
-  const [posts, setPosts] = useState();
+  
   useEffect(() => {
     const fetchPosts = async () => {
       const urlPosts = `https://localhost:7231/api/Posts/get-timeline/${sessionStorage.getItem(

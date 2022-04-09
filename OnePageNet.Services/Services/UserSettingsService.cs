@@ -19,16 +19,45 @@ public class UserSettingsService : IUserSettingsService
 
     public async Task<bool> UpdateSettings(UpdateSettingsDTO dto)
     {
-        var passUpdate = await UpdatePassword(dto.Id, dto.OldPassword, dto.NewPassword);
-        var emailUpdate = await UpdateEmail(dto.Id, dto.Email);
-        var updateUsername = await UpdateUsername(dto.Id, dto.Username);
+        try
+        {
+            var user = await FetchUser(dto.Id);
 
-        return passUpdate && emailUpdate && updateUsername;
+            if (user.UserName != dto.Username)
+            {
+                await UpdateUsername(user, dto.Username);
+            }
+
+            if (user.Email != dto.Email)
+            {
+                await UpdateEmail(user, dto.Email);
+            }
+
+            if (!VerifyPassword(user, dto.NewPassword) &&
+                dto.OldPassword != "********")
+            {
+                if (dto.NewPassword != "********")
+                {
+                    await UpdatePassword(user, dto.OldPassword, dto.NewPassword);
+                }
+            }
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
-    public async Task<bool> UpdateUsername(string userId, string userName)
+    private bool VerifyPassword(ApplicationUser user, string newPassword)
     {
-        var user = await FetchUser(userId);
+        return _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, newPassword) ==
+               PasswordVerificationResult.Success;
+    }
+
+    private async Task<bool> UpdateUsername(ApplicationUser user, string userName)
+    {
         var updated = await _userManager.SetUserNameAsync(user, userName);
 
         return updated.Succeeded;
@@ -40,18 +69,14 @@ public class UserSettingsService : IUserSettingsService
         return user ?? throw new NullReferenceException("User not found");
     }
 
-    public async Task<bool> UpdatePassword(string userId, string oldPassword, string newPassword)
+    private async Task<bool> UpdatePassword(ApplicationUser user, string oldPassword, string newPassword)
     {
-        var user = await FetchUser(userId);
-
         var changed = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
         return changed.Succeeded;
     }
 
-    public async Task<bool> UpdateEmail(string userId, string newEmail)
+    private async Task<bool> UpdateEmail(ApplicationUser user, string newEmail)
     {
-        var user = await FetchUser(userId);
-
         //TODO Token should be sent to the old email through SMTP and the user should input it in a new endpoint call
         // only if the token is valid should the email be changed
         var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);

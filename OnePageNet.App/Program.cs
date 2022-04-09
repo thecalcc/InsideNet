@@ -62,6 +62,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
 builder.Services.AddScoped<IMessageEntityDatabaseService, MessageEntityDatabaseService>();
 builder.Services.AddScoped<IPostService, PostEntityDatabaseService>();
 builder.Services.AddScoped<ICommentService, CommentEntityDatabaseService>();

@@ -87,7 +87,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           required
         />
       </div>
-      <button type="submit">asdasd</button>
+      <button type="submit">Done</button>
     </form>
   );
 }

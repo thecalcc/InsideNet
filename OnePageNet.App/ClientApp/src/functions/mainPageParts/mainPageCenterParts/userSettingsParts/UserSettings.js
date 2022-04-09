@@ -29,17 +29,45 @@ export function UserSettings({
       {(() => {
         switch (layoutState) {
           case "settings-personal-info":
-            return <PersonalInfoSettings user={user} onLayoutChange={onLayoutChange}/>;
+            return (
+              <PersonalInfoSettings
+                user={user}
+                onLayoutChange={onLayoutChange}
+              />
+            );
           case "settings-account":
-            return <ContactSettings user={user} onLayoutChange={onLayoutChange}/>;
+            return (
+              <ContactSettings user={user} onLayoutChange={onLayoutChange} />
+            );
           case "settings-about":
-            return <AccountSettings accountSettings={accountSettings} onLayoutChange={onLayoutChange}/>;
+            return (
+              <AccountSettings
+                accountSettings={accountSettings}
+                onLayoutChange={onLayoutChange}
+              />
+            );
           case "settings-personal-info-edit":
-            return <PersonalInfoSettingsEdit user={user} onLayoutChange={onLayoutChange}/>;
+            return (
+              <PersonalInfoSettingsEdit
+                user={user}
+                onLayoutChange={onLayoutChange}
+              />
+            );
           case "settings-account-edit":
-            return <ContactSettingsEdit user={user} onLayoutChange={onLayoutChange}/>;
+            return (
+              <ContactSettingsEdit
+                user={user}
+                onLayoutChange={onLayoutChange}
+              />
+            );
           case "settings-about-edit":
-            return <AccountSettingsEdit accountSettings={accountSettings} onLayoutChange={onLayoutChange}/>;
+            return (
+              <AccountSettingsEdit
+                user={user}
+                accountSettings={accountSettings}
+                onLayoutChange={onLayoutChange}
+              />
+            );
         }
       })()}
     </>

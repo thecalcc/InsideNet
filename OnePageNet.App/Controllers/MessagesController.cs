@@ -21,13 +21,13 @@ public class MessagesController : BaseController<MessageEntity, MessageDto>
     [HttpGet]
     public async Task<ActionResult<List<MessageDto>>> GetGroupHistory([FromRoute] string group)
     {
-        var dto = await _databaseService.GetAllById(group);
-
-        if (dto.First().Id == null)
+        try
         {
-            return BadRequest(group);
+            return Ok(await _databaseService.GetAllById(group));
         }
-
-        return Ok(dto);
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }
