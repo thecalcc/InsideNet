@@ -5,6 +5,7 @@ namespace OnePageNet.Data.Data.Entities;
 public class PostEntity : BaseEntity
 {
     public string Text { get; set; }
+    public string Title { get; set; }
     public string? MediaUri { get; set; }
     [Required] public string PosterId { get; set; }
     public virtual ApplicationUser Poster { get; set; }

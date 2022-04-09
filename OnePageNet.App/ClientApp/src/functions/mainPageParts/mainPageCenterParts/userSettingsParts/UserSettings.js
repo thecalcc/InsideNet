@@ -7,6 +7,8 @@ import { ContactSettingsEdit } from "./ContactSettingsEdit";
 import { PersonalInfoSettingsEdit } from "./PersonalInfoSettingsEdit";
 import { AccountSettingsEdit } from "./AccountSettingsEdit";
 
+import '../../../styles/UserSettings.css'
+
 export function UserSettings({
   layoutState,
   onLayoutChange,
@@ -14,18 +16,18 @@ export function UserSettings({
   accountSettings,
 }) {
   return (
-    <>
-      <button
-        onClick={() => onLayoutChange("settings-personal-info", "center")}
-      >
-        Personal Info
-      </button>
-      <button onClick={() => onLayoutChange("settings-about", "center")}>
-        About Settings
-      </button>
-      <button onClick={() => onLayoutChange("settings-account", "center")}>
-        Account Settings
-      </button>
+    <div className='user-settings'>
+      <div className='options'>
+        <button className ='option-btn' onClick={() => onLayoutChange("settings-personal-info", "center")}>
+          Personal Info
+        </button>
+        <button className ='option-btn' onClick={() => onLayoutChange("settings-about", "center")}>
+          About
+        </button>
+        <button className ='option-btn' onClick={() => onLayoutChange("settings-account", "center")}>
+          Account
+        </button>
+      </div>
       {(() => {
         switch (layoutState) {
           case "settings-personal-info":
@@ -35,11 +37,11 @@ export function UserSettings({
                 onLayoutChange={onLayoutChange}
               />
             );
-          case "settings-account":
+          case "settings-about":
             return (
               <ContactSettings user={user} onLayoutChange={onLayoutChange} />
             );
-          case "settings-about":
+          case "settings-account":
             return (
               <AccountSettings
                 accountSettings={accountSettings}
@@ -55,14 +57,14 @@ export function UserSettings({
             );
           case "settings-account-edit":
             return (
-              <ContactSettingsEdit
+              <AccountSettingsEdit
                 user={user}
                 onLayoutChange={onLayoutChange}
               />
             );
           case "settings-about-edit":
             return (
-              <AccountSettingsEdit
+              <ContactSettingsEdit
                 user={user}
                 accountSettings={accountSettings}
                 onLayoutChange={onLayoutChange}
@@ -70,6 +72,6 @@ export function UserSettings({
             );
         }
       })()}
-    </>
+    </div>
   );
 }

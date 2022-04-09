@@ -20,10 +20,10 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
 }
   return (
     <>
-      <div className="post-title">
+      <div className="post-header">
         <div className="post-poster">
           <h6>@</h6>
-          <h3>{poster}</h3>
+          <h2>{poster}</h2>
           {isMyPost ? (
             <>
               <button className = 'custom-btn' onClick={() => onLayoutChange("edit", "right")}><img className = 'btn-img' src ='/resources/edit-icon.png' alt = 'edit-icon'/></button>
@@ -33,6 +33,7 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
         </div>
         {dateFormat(post.createdAt, "dddd, mmmm dS, yyyy")}
       </div>
+      <div className = 'post-title'>{post.title}</div>
       <div className="post-content">{post.text}</div>
     </>
   );

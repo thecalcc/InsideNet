@@ -28,6 +28,8 @@
 
 .table-wrapper table {
     width:100%; 
+    color: white;
+    background-color: #222222;
   }
 
 .table-wrapper table thead th .text {

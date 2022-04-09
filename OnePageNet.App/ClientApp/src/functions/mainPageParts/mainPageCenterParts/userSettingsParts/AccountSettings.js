@@ -1,11 +1,17 @@
-export function AccountSettings({accountSettings, onLayoutChange}) {
+import '../../../styles/UserSettings.css';
 
-    return (
-      <ul>
-      <li><h2>Username: {accountSettings.userName}</h2></li>
-      <li><h2>E-mail: {accountSettings.email}</h2></li>
-      <li><h2>Password: ********</h2></li>
-      <button onClick={()=>onLayoutChange("settings-account-edit","center")}>Edit</button>
-    </ul>
-    );
+export function AccountSettings({ accountSettings, onLayoutChange }) {
+
+  return (
+    <div className='settings'>
+      <ul className='settings-list'>
+        <li>Username: {accountSettings.userName}</li>
+        <li>E-mail: {accountSettings.email}</li>
+        <li>Password: ********</li>
+      </ul>
+      <button className = 'custom-btn'onClick={() => onLayoutChange('settings-account-edit', 'center')}>
+        <img className='btn-img' src='/resources/edit-icon.png' alt = 'edit-icon'/>
+      </button>
+    </div>
+  );
 }
