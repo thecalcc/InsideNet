@@ -6,7 +6,6 @@ export function AccountSettings({ accountSettings, onLayoutChange }) {
     <div className='settings'>
       <ul className='settings-list'>
         <li>Username: {accountSettings.userName}</li>
-        <li>E-mail: {accountSettings.email}</li>
         <li>Password: ********</li>
       </ul>
       <button className = 'custom-btn'onClick={() => onLayoutChange('settings-account-edit', 'center')}>

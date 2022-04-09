@@ -57,9 +57,46 @@ public class UserService : IUserService
 
     public async void Update(UserDto userDto)
     {
-        var user = _mapper.Map<ApplicationUser>(userDto);
-        _dbContext.Attach(user);
-        await _userManager.UpdateAsync(user);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == userDto.Id);
+
+        if (user.FirstName != userDto.FirstName)
+        {
+            user.FirstName = userDto.FirstName;
+        }
+
+        if (user.LastName != userDto.LastName)
+        {
+            user.LastName = userDto.LastName;
+        }
+
+        if (user.Gender != userDto.Gender)
+        {
+            user.Gender = userDto.Gender;
+        }
+
+        if (user.DoB != userDto.DoB)
+        {
+            user.DoB = userDto.DoB;
+        }
+
+        if (user.UserName != userDto.UserName)
+        {
+            user.UserName = userDto.UserName;
+        }
+
+        if (user.Email != userDto.Email)
+        {
+            user.Email = userDto.Email;
+            user.NormalizedEmail = user.Email.ToUpper();
+        }
+
+        if (user.PhoneNumber != userDto.PhoneNumber)
+        {
+            user.PhoneNumber = userDto.PhoneNumber;
+        }
+
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task SaveChangesAsync()

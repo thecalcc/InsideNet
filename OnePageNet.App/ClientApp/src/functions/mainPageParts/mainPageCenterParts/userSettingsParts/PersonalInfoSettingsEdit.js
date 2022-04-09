@@ -56,7 +56,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="date"
           value={dob}
           onChange={(e) => setDob(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -70,7 +70,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="text"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -85,7 +85,7 @@ export function PersonalInfoSettingsEdit({ user }) {
           type="text"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          required
+          
         />
       </fieldset>
 
@@ -100,7 +100,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Male"
                 checked={gender === "Male"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Male
             </label>
@@ -110,7 +110,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Female"
                 checked={gender === "Female"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Female
             </label>
@@ -120,7 +120,7 @@ export function PersonalInfoSettingsEdit({ user }) {
                 value="Other"
                 checked={gender === "Other"}
                 onChange={(e) => setGender(e.target.value)}
-                required
+                
               />
               Other
             </label>
