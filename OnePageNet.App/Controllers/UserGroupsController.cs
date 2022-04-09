@@ -21,7 +21,8 @@ namespace OnePageNet.App.Controllers
         {
             var dtos = _userGroupService.GetAllForUser(userId);
 
-            if (!dtos.Any() || dtos?.Count == null) return NotFound("There are no such entities in the database.");
+            if (!dtos.Any() || dtos?.Count == null)
+                return NotFound("There are no such entities in the database.");
 
             return Ok(dtos);
         }
@@ -80,6 +81,5 @@ namespace OnePageNet.App.Controllers
 
             return Ok(dtos);
         }
-
     }
 }

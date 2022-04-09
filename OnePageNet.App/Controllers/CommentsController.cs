@@ -24,8 +24,6 @@ public class CommentsController : BaseController<CommentEntity, CommentDto>
         try
         {
             var dtos = await _commentService.GetAllById(id);
-            if (dtos.First().Id == null)
-                return BadRequest(id);
             return Ok(dtos);
         }
         catch (Exception e)

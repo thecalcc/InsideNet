@@ -45,12 +45,11 @@ export function CreateDM({onNewGroup}) {
           },
           body: JSON.stringify({
             Name,
-            MediaUri
+            MediaUri,
           }),
         })
           .then((data) => data.json())
-          .then((data) => onNewGroup(data))
-          ;
+          .then((data) => onNewGroup(data));
       };
 
       createGroup()      

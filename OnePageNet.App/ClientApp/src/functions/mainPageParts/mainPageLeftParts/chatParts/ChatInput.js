@@ -14,7 +14,6 @@ export default function ChatInput({ sendMessage, onBack }) {
       sendMessage(message);
       setMessage("");
     } else {
-      alert("Please insert a user and a message.");
     }
   };
 

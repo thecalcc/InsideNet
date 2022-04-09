@@ -14,7 +14,6 @@ export function Chat({
   onRerender,
   chatHistory,
   onChangeChatHistory,
-  onChangeGroup
 }) {
   const [connection, setConnection] = useState(null);
   const latestChat = useRef(null);
@@ -24,6 +23,10 @@ export function Chat({
   const onEdit = () => {
     onLayoutChange("chat-edit", "left");
   };
+  const onEditCompleation = () => {
+    onLayoutChange("chat-display", "left");
+  };
+
   useEffect(() => {
     const options = {
       logger: signalR.LogLevel.Trace,
@@ -42,11 +45,10 @@ export function Chat({
     if (connection) {
       connection
         .start()
-        .then((result) => {
-          console.log("Connected!");
-
+        .then(() => {
           connection.on("ReceiveMessage", (message) => {
-            const updatedChat = [...chatHistory.current];
+            const updatedChat = [...chatHistory.current, message];
+            // latestChat.current = [...chatHistory.current, message];
 
             updatedChat.push(message);
             onChangeChatHistory(updatedChat);
@@ -64,31 +66,33 @@ export function Chat({
     };
 
     try {
-      await connection.send("SendMessage", chatMessage);
-      onRerender();
-      const updatedChat = [...chatHistory];
-      console.log(...chatHistory);
-      updatedChat.push(message);
-      onChangeChatHistory(updatedChat);
+      await connection
+        .send("SendMessage", chatMessage)
+        .then(() => onRerender());
+      connection.on("ReceiveMessage", (message) => {
+        const updatedChat = [...chatHistory.current, message];
+        // latestChat.current = [...chatHistory.current, message];
+        updatedChat.push(message);
+        onChangeChatHistory(updatedChat);
+      });
     } catch (e) {
       console.log("error");
       console.log(e);
     }
   };
 
-  const leaveGroup = async () =>{
+  const leaveGroup = async () => {
     const url = `https://localhost:7231/api/UserGroups/delete/${group.id}/${sessionStorage.currentUserId}`;
-    fetch(url, {
-        method: "DELETE",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-      }).then(() => onChangeGroup(null));
-
-  }
+    await fetch(url, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+  };
 
   return (
     <div className="chat">
@@ -96,22 +100,29 @@ export function Chat({
         switch (layoutState) {
           case "chat-display":
             return (
-              <div className = 'chat-settings'>
-                <div className = 'chat-name'>{group.name}</div>
-                <button className = 'custom-btn' onClick={() => onEdit()}><img className = 'btn-img' src = '/resources/edit-icon.png' alt = 'edit-icon'></img></button>
-                <button className="custom-btn" onClick={() => leaveGroup()}><img className='btn-img' src='/resources/delete-icon.png' alt='delete-icon' /></button>
+              <div>
+                {group.name}
+                <button onClick={() => onEdit()}>rename</button>
+                <button className="custom-btn" onClick={() => leaveGroup()}>
+                  <img
+                    className="btn-img"
+                    src="/resources/delete-icon.png"
+                    alt="delete-icon"
+                  />
+                </button>
               </div>
             );
           case "chat-edit":
             return (
               <EditGroup
+                onRerender={onRerender}
                 group={group}
-                onChangeGroup = {onChangeGroup}
+                onEditCompleation={onEditCompleation}
               />
             );
         }
       })()}
-      <ChatWindow chat={chatHistory} group = {group}/>
+      <ChatWindow chat={chatHistory} group={group} />
       <ChatInput sendMessage={sendMessage} onBack={onBack} />
     </div>
   );
