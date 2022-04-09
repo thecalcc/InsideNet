@@ -5,6 +5,29 @@ import '../../../styles/Chat.css'
 export function CreateDM({onNewGroup}) {
     const [friends,setFriends] = useState();
 
+    const [user, setUser] = useState();
+    
+    useEffect(() => {
+      const fetchUser = async () => {
+        const urlUser = `https://localhost:7231/api/Users/get/${sessionStorage.getItem(
+          "currentUserId"
+        )}`;
+
+        await fetch(urlUser, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+          .then((data) => data.json())
+          .then((data) => setUser(data));
+      };
+      fetchUser();
+    }, []);
+
     useEffect(() => {
       const fetchFriends = async () => {
         const urlFriends = `https://localhost:7231/api/Users/get-all-friends/${sessionStorage.getItem(
@@ -32,7 +55,7 @@ export function CreateDM({onNewGroup}) {
         const urlGroups = `https://localhost:7231/api/Groups/create/${sessionStorage.getItem(
           "currentUserId"
         )}/${event.id}`;
-        const Name = event.userName;
+        const Name = event.userName+' & '+user.userName
         const MediaUri = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         
         fetch(urlGroups, {
@@ -45,12 +68,11 @@ export function CreateDM({onNewGroup}) {
           },
           body: JSON.stringify({
             Name,
-            MediaUri
+            MediaUri,
           }),
         })
           .then((data) => data.json())
-          .then((data) => onNewGroup(data))
-          ;
+          .then((data) => onNewGroup(data));
       };
 
       createGroup()      
