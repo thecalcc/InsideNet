@@ -4,8 +4,6 @@ import React, { useEffect, useState } from "react";
 import { NavMenu } from "./NavMenu";
 import { Route } from "react-router";
 import { Home } from "./Home";
-import { Register } from "./Register";
-import { Login } from "./Login";
 import { MainPage } from "./MainPage";
 import useToken from "./useToken";
 
@@ -13,7 +11,7 @@ export function Layout() {
   const { token, setToken } = useToken();
   const [posts, setPosts] = useState();
   const [layoutState, setLayout] = useState({
-    left: "groupSelection",
+    left: "groupSelectiong",
     center: "timeline",
     right: "",
   });
