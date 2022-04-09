@@ -50,7 +50,7 @@ public class AuthenticationController : Controller
         var result =
             await _signInManager.PasswordSignInAsync(user.UserName, loginDto.Password, loginDto.RememberMe, false);
 
-        if (result != SignInResult.Success) return BadRequest(loginDto);
+        if (result != SignInResult.Success) return BadRequest("Login unsuccessful");
 
         var dto = await _userService.GetByEmail(loginDto.Email);
 
@@ -101,7 +101,7 @@ public class AuthenticationController : Controller
         _logger.LogInformation(3, "User account created successfully");
 
         HttpContext.Session.SetString("Token", generatedToken);
-        return Ok(generatedToken);
+        return Ok(new {generatedToken, registeredUser.Id});
     }
 
     // TODO Rework

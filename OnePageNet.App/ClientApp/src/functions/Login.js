@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { Buffer } from "buffer";
 import '../custom.css'
 import './styles/Login.css'
+
 export function Login({ setToken, onLayoutChange }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,9 +25,12 @@ export function Login({ setToken, onLayoutChange }) {
     })
       .then((result) => result.json())
       .then((result) => {
-        setToken(result.generatedToken);
-        sessionStorage.setItem("token", result.generatedToken);
-        sessionStorage.setItem("currentUserId", result.id);
+        if (result.generatedToken !== undefined && result.id !== undefined) {
+          setToken(result.generatedToken);
+          sessionStorage.setItem("token", result.generatedToken);
+          sessionStorage.setItem("currentUserId", result.id);
+          return;
+        }
       })
       .then(() => onLayoutChange("timeline", "center"))
       .then(history.push("/"));

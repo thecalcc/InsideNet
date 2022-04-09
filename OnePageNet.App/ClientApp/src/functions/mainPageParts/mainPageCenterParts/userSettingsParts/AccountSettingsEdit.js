@@ -1,7 +1,7 @@
 import { useState } from "react";
 import '../../../styles/UserSettings.css';
 
-export function AccountSettingsEdit({ user }) {
+export function AccountSettingsEdit({ user, onLayoutChange }) {
   const stars = "********";
   const [email, setEmail] = useState(user.email);
   const [userName, setUserName] = useState(user.userName);
@@ -27,6 +27,7 @@ export function AccountSettingsEdit({ user }) {
         newPassword,
       }),
     });
+    onLayoutChange("settings-account", "center");
   };
 
   return (

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import "./styles/Register.css";
 import "./styles/basics.css";
 
@@ -14,10 +12,6 @@ export function Register({ setToken }) {
   const [DoB, setDoB] = useState();
   const [gender, setGender] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
-
-  const atob = (base64) => {
-    return Buffer.from(base64, 'base64').toString('binary');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,20 +37,13 @@ export function Register({ setToken }) {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.includes("ey")) {
-          setToken(data);
-          console.log(atob(data));
-          sessionStorage.setItem("token", data);
-        } 
-      })
-      .then((data) => {
-        if (!data.ok) {
-          throw new Error("Ooopsie...");
+      .then((result) => {
+        if (result.generatedToken !== undefined && result.id !== undefined) {
+          setToken(result);
+          sessionStorage.setItem("token", result.generatedToken);
+          sessionStorage.setItem("currentUserId", result.id);
         }
-      })
-      .catch((e) => console.log(e));
+      });
   };
 
   return (
