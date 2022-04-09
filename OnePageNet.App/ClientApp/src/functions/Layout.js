@@ -11,7 +11,7 @@ export function Layout() {
   const { token, setToken } = useToken();
   const [posts, setPosts] = useState();
   const [layoutState, setLayout] = useState({
-    left: "groupSelectiong",
+    left: "groupSelection",
     center: "timeline",
     right: "",
   });

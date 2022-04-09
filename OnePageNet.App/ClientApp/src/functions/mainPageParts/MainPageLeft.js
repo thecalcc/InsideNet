@@ -57,7 +57,7 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         .then((data) => data.json())
         .then((data) => setGroups(data));
     };
-
+    
     const getChatHistory = async () => {
       const url = `https://localhost:7231/api/messages/get-history/${currentGroup.id}`;
 
@@ -74,8 +74,10 @@ export function MainPageLeft({ layoutState, onLayoutChange }) {
         .then((data) => setChatHistory(data));
     };
 
-    getChatHistory();
-    fetchUserGroups();
+    if(currentGroup?.id !== undefined){
+      getChatHistory();
+    }
+      fetchUserGroups();
   }, [rerender, currentGroup]);
 
   return (

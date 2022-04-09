@@ -15,6 +15,10 @@ export function Register({ setToken }) {
   const [gender, setGender] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
 
+  const atob = (base64) => {
+    return Buffer.from(base64, 'base64').toString('binary');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = "https://localhost:7231/api/authentication/register";
@@ -40,8 +44,10 @@ export function Register({ setToken }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.include("ey")) {
+        console.log(data);
+        if (data.includes("ey")) {
           setToken(data);
+          console.log(atob(data));
           sessionStorage.setItem("token", data);
         } 
       })

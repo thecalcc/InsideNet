@@ -31,9 +31,9 @@ export default function ChatWindow({ chat, group }) {
   return (
     <ul className='chat-window'>
       {chat.map((m) => (
-        <div className='msg'>
+        <div key={m} className='msg'>
           {(() => {
-            if (m.senderId == sessionStorage.getItem('currentUserId')) {
+            if (m.senderId === sessionStorage.getItem('currentUserId')) {
               return <div className='msg-self'>
                 <Message key={Date.now() * Math.random()} message={m} userName = {currentUserUsername}/>
               </div>

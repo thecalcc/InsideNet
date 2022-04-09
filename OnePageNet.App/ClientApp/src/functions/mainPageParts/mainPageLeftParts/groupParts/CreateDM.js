@@ -57,17 +57,23 @@ export function CreateDM({onNewGroup}) {
     }
 
     return (
-      <ul className = 'friends-list'>
+      <ul className="friends-list">
         {friends !== "You don't have any friends." ? (
           friends?.map((x) => {
             return (
-              <button className='chat-selection-btn' key={x.id} onClick={() => handleClick(x)}>
+              <button
+                className="chat-selection-btn"
+                key={x.id}
+                onClick={() => handleClick(x)}
+              >
                 {x.userName}
               </button>
             );
           })
         ) : (
-          <>get some bitches</>
+          <>
+            <h1>You do not have any friends</h1>
+          </>
         )}
       </ul>
     );

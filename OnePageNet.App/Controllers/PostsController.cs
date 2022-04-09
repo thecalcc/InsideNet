@@ -24,7 +24,6 @@ public class PostsController : BaseController<PostEntity, PostDto>
         try
         {
             var dtos = await _postService.GetTimeline(id);
-            if (dtos.First().Id == null) return BadRequest(id);
             return Ok(dtos);
         }
         catch (Exception e)
