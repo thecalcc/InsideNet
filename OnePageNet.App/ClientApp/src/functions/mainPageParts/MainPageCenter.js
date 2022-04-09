@@ -83,9 +83,6 @@ export function MainPageCenter({
                   user={user}
                   accountSettings={accountSettings}
                 />
-                <button onClick={() => onLayoutChange("timeline", "center")}>
-                  Back
-                </button>
               </>
             );
         }
