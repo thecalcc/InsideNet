@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
-export function Login({ setToken, onLayoutChange}) {
+import '../custom.css'
+import './styles/Login.css'
+export function Login({ setToken, onLayoutChange }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -20,43 +21,49 @@ export function Login({ setToken, onLayoutChange}) {
       },
       body: JSON.stringify({ email, password }),
     })
-        .then((result) => result.json())
-        .then((result) => {
-          setToken(result.generatedToken);
-          sessionStorage.setItem("token", result.generatedToken);
-          sessionStorage.setItem("currentUserId", result.id);
-        })
+      .then((result) => result.json())
+      .then((result) => {
+        setToken(result.generatedToken);
+        sessionStorage.setItem("token", result.generatedToken);
+        sessionStorage.setItem("currentUserId", result.id);
+      })
       .then(() => onLayoutChange("timeline", "center"))
       .then(history.push("/"));
   };
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-      <div className="container">
+      <div className='login-form'>
         <h1>Login</h1>
         <p>Please fill in this form to login to an account.</p>
 
-        <label>
-          <b>Email</b>
-        </label>
-        <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <fieldset className='login-fieldset'>
+          <label>
+            <b>Email</b>
+          </label>
+          <input
+            className='text-input'
+            name="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </fieldset>
 
-        <label>
-          <b>Password</b>
-        </label>
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <fieldset className = 'login-fieldset'>
+          <label>
+            <b>Password</b>
+          </label>
+          <input
+            className='text-input'
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </fieldset>
 
-        <input type="submit" value="Login" onClick={(e) => handleSubmit(e)} />
+        <button className='custom-btn' type="submit" value="Login" onClick={(e) => handleSubmit(e)}> Login </button>
       </div>
     </form>
   );

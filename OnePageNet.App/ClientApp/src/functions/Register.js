@@ -36,7 +36,6 @@ export function Register({ setToken }) {
         lastName,
         userName,
         gender,
-        phoneNumber,
       }),
     })
       .then((response) => response.json())
@@ -56,98 +55,114 @@ export function Register({ setToken }) {
 
   return (
     <>
-      <form className="form" onSubmit={(e) => handleSubmit(e)}>
-        <div className="cont">
+      <form className='register-form' onSubmit={(e) => handleSubmit(e)}>
+        <fieldset>
           <h1>Register</h1>
           <p>Please fill in this form to create an account.</p>
+        </fieldset>
 
+        <fieldset>
           <label>
             <b>Username</b>
           </label>
           <input
+            className='text-input'
             name="userName"
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
             required
           />
+        </fieldset>
 
+        <fieldset>
           <label>
             <b>Email</b>
           </label>
           <input
+            className='text-input'
             name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+        </fieldset>
 
+        <fieldset>
           <label>
             <b>Password</b>
           </label>
           <input
+            className='text-input'
             name="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+        </fieldset>
 
+
+        <fieldset>
           <label>
             <b>Repeat Password</b>
           </label>
           <input
+            className='text-input'
             name="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
+        </fieldset>
 
+
+        <fieldset>
           <label>
             <b>Date Of Birth</b>
           </label>
           <input
+            className='text-input'
             name="DoB"
             type="date"
             value={DoB}
             onChange={(e) => setDoB(e.target.value)}
             required
           />
+        </fieldset>
 
+        <fieldset>
           <label>
             <b>First Name</b>
           </label>
           <input
+            className='text-input'
             name="firstName"
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
+        </fieldset>
 
+
+        <fieldset>
           <label>
             <b>Last Name</b>
           </label>
           <input
+            className='text-input'
             name="lastName"
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
+        </fieldset>
 
-          <label>
-            <b>Phone</b>
-          </label>
-          <input
-            name="phone"
-            type="tel"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
+        <fieldset>
           <label>
             <b>Gender</b>
           </label>
@@ -183,10 +198,9 @@ export function Register({ setToken }) {
               Other
             </label>
           </div>
-          <input type="submit" value="Register" />
-        </div>
+        </fieldset>
+        <button className='custom-btn' type="submit">Register</button>
       </form>
-      <Link to="/">Back</Link>
     </>
   );
 }
