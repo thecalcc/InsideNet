@@ -36,4 +36,10 @@ public class PostEntityDatabaseService : DatabaseService<PostEntity, PostDto>, I
         var timeline = posts.Where(x => (userRelations.Where(y => (y.TargetUser.Id == x.PosterId) && (y.CurrentUser.Id == id) && (y.UserRelationship.Name == Helpers.Helpers.UserRelationConstants.Friends)).Any() || x.PosterId == id)).ToList();
         return _mapper.Map<List<PostDto>>(timeline);
     }
+
+    public async Task<List<PostDto>> GetPostsForUserById(string posterId)
+    {
+        var posts = await _dbContext.PostEntities.Where(x => x.PosterId == posterId).ToListAsync();
+        return _mapper.Map<List<PostDto>>(posts);
+    }
 }

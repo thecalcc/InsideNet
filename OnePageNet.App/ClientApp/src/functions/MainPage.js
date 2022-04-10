@@ -7,9 +7,17 @@ import "./styles/MainPage.css"
 export function MainPage({ currentLayout, onLayoutChange, posts }) {
   const [post, setPost] = useState(null);
   const [users, setUsers] = useState();
-  const selectPost = (post) => {
+  const [user, setUser] = useState();
+
+  const choosePost = (post) => {
     setPost(post);
+    onLayoutChange("post", "right");
   };
+
+  const selectUser = (user) => {
+    setUser(user);
+  }
+
   useEffect(() => {
     const fetchUsers = async () => {
       const urlUsers = "https://localhost:7231/api/Users/get-all";
@@ -38,16 +46,18 @@ export function MainPage({ currentLayout, onLayoutChange, posts }) {
         <MainPageCenter
           layoutState={currentLayout.center}
           onLayoutChange={onLayoutChange}
-          selectPost={selectPost}
+          selectUser={selectUser}
+          selectPost={choosePost}
           users={users}
           posts={posts}
         />
         <MainPageRight
           layoutState={currentLayout.right}
           post={post}
+          user={user}
           users={users}
           onLayoutChange={onLayoutChange}
-          changePost={selectPost}
+          choosePost={choosePost}
         />
       </div>
     </>
