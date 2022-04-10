@@ -1,8 +1,9 @@
 import React from "react"
 import dateFormat from 'dateformat';
+import '../../../styles/PostList.css'
 import "../../../../custom.css";
 
-export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
+export function PostListItem({ post, poster, isMyPost, onLayoutChange, selectUser}) {
   const onDelete = (id) => {
   const deletePost = async (id) => {
     const urlUsers = `https://localhost:7231/api/posts/delete/${id}`;
@@ -18,12 +19,17 @@ export function PostListItem({ post, poster, isMyPost, onLayoutChange}) {
   }
   deletePost(id);
 }
+
+const onCheckProfile = () => {
+  console.log(poster)
+  selectUser(poster);
+  onLayoutChange('profile', 'right');
+}
   return (
     <>
       <div className="post-header">
         <div className="post-poster">
-          <h6>@</h6>
-          <h2>{poster}</h2>
+          <button className = 'check-profile' onClick ={() => onCheckProfile()}><h5>@</h5><h2>{poster.userName}</h2></button>
           {isMyPost ? (
             <>
               <button className = 'custom-btn' onClick={() => onLayoutChange("edit", "right")}><img className = 'btn-img' src ='/resources/edit-icon.png' alt = 'edit-icon'/></button>

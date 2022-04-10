@@ -6,14 +6,15 @@ import { PostListItem } from "./mainPageCenterParts/postCenterParts/PostListItem
 import { CommentList } from "./mainPageRightParts/commentParts/CommentList";
 import { EditPost} from "./mainPageRightParts/postRightParts/EditPost"
 import { useEffect } from "react";
+import { UserProfile } from "./mainPageRightParts/userParts/UserProfile";
 
-export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
+export function MainPageRight({ layoutState, post, users, onLayoutChange, user, choosePost }) {
   const [internalPost, setInternalPost] = useState(post);
   const isMyPost = (posterId) => {
     return posterId == sessionStorage.currentUserId;
   };
-  const getPosterName = (posterId) => {
-    return users?.find((user) => user.id === posterId).userName;
+  const getPoster = (posterId) => {
+    return users?.find((user) => user.id === posterId);
   };
   useEffect(()=>{
       setInternalPost(post);
@@ -50,7 +51,7 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
                     <div className="post">
                       <PostListItem
                         post={internalPost}
-                        poster={getPosterName(internalPost.posterId)}
+                        poster={getPoster(internalPost.posterId)}
                         isMyPost={isMyPost(internalPost.posterId)}
                         onLayoutChange={onLayoutChange}
                       />
@@ -80,6 +81,14 @@ export function MainPageRight({ layoutState, post, users, onLayoutChange }) {
                 {/* <button onClick={() => setCurrentPost(null)}>Back</button> */}
               </>
             );
+            case 'profile':
+              return (
+              <UserProfile 
+                user = {user}
+                post={internalPost}
+                onLayoutChange={onLayoutChange}
+                onSelect = {choosePost}
+              />)
         }
       })()}
     </div>

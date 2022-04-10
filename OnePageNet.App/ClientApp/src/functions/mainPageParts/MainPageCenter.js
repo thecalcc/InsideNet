@@ -13,14 +13,10 @@ export function MainPageCenter({
   layoutState,
   users,
   posts,
+  selectUser
 }) {
   const [user, setUser] = useState();
   const [accountSettings, setAccountSettings] = useState();
-
-  const choosePost = (post) => {
-    selectPost(post);
-    onLayoutChange("post", "right");
-  };
 
   useEffect(() => {
     const fetchAccountSettings = async () => {
@@ -57,16 +53,16 @@ export function MainPageCenter({
     };
     fetchUser();
   }, [layoutState]);
-    
-    return (
+
+  return (
     <div className='main-page-center'>
       {(() => {
         switch (layoutState) {
           case "timeline":
             return (
               <div className='main-page-center-posts'>
-                <CreatePost onLayoutChange={onLayoutChange}/>
-                <PostList onSelect={choosePost} users={users} posts={posts} />
+                <CreatePost onLayoutChange={onLayoutChange} />
+                <PostList onSelect={selectPost} users={users} posts={posts} onLayoutChange={onLayoutChange} selectUser={selectUser} />
               </div>
             );
           case "settings-personal-info-edit":
@@ -76,14 +72,12 @@ export function MainPageCenter({
           case "settings-account":
           case "settings-contacts":
             return (
-              <>
-                <UserSettings
-                  onLayoutChange={onLayoutChange}
-                  layoutState={layoutState}
-                  user={user}
-                  accountSettings={accountSettings}
-                />
-              </>
+              <UserSettings
+                onLayoutChange={onLayoutChange}
+                layoutState={layoutState}
+                user={user}
+                accountSettings={accountSettings}
+              />
             );
         }
       })()}

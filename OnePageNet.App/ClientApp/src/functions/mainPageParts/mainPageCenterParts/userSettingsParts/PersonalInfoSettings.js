@@ -10,9 +10,13 @@ export function PersonalInfoSettings({ user, onLayoutChange }) {
         <li>Birth day: {dateFormat(user.doB, "dddd, mmmm dS, yyyy")}</li>
         <li>Gender: {user.gender ? user.gender : 'unspecified'}</li>
       </ul>
-      <button className = 'custom-btn'onClick={() => onLayoutChange('settings-personal-info-edit', 'center')}>
-        <img className='btn-img' src='/resources/edit-icon.png' alt = 'edit-icon'/>
-      </button>
+      {(() => {
+        if (user.id === sessionStorage.getItem('currentUserId')) {
+          return <button className='custom-btn' onClick={() => onLayoutChange('settings-personal-info-edit', 'center')}>
+            <img className='btn-img' src='/resources/edit-icon.png' alt='edit-icon' />
+          </button>
+        }
+      })()}
     </div>
   );
 }
