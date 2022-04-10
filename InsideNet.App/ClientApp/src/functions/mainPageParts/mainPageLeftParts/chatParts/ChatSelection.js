@@ -7,7 +7,7 @@ export function ChatSelection({ selectCurrentGroupChat, groups}) {
     <ul className="chat-selection">
       {groups !== "There are no such entities in the database." &&
       groups !== undefined ? (
-        groups?.map((x) => {
+        groups?.map((x) => {if(x.id !== undefined)
           return (
             <button
               key={x.id}

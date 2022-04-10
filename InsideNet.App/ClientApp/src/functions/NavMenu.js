@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./styles/NavMenu.css";
 import { useHistory } from "react-router-dom";
 
-export function NavMenu({ setToken, onLayoutChange }) {
+export function NavMenu({ setToken, onLayoutChange, onLogoClick}) {
   const history = useHistory();
 
   const handleClick = (e) => {
@@ -24,10 +24,11 @@ export function NavMenu({ setToken, onLayoutChange }) {
     };
   });
 
+
   return (
     <header>
       <Navbar className="nav">
-        <button className='logo-btn' onClick={() => onLayoutChange('timeline','center')}>
+        <button className='logo-btn' onClick={() => onLogoClick()}>
           <img className='logo-btn-img' src = '/resources/Logo.png' alt='Logo'/>
         </button>
         <ul className="menuItems">

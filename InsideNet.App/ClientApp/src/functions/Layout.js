@@ -35,6 +35,13 @@ export function Layout() {
         break;
     }
   };
+  const onLogoClick = () =>{
+    setLayout({
+      left: "groupSelection",
+      center: "timeline",
+      right: "",
+    });
+  }
   
   useEffect(() => {
     const fetchPosts = async () => {
@@ -73,6 +80,7 @@ export function Layout() {
             setToken={setToken}
             token={token}
             onLayoutChange={onLayoutChange}
+            onLogoClick={onLogoClick}
           />
           <Route exact path="/">
             <MainPage
