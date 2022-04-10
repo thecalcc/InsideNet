@@ -7,13 +7,13 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services
 {
-    public class MessageEntityDatabaseService : DatabaseService<MessageEntity, MessageDto>,
+    public class MessageEntityService : DatabaseService<MessageEntity, MessageDto>,
         IMessageEntityDatabaseService
     {
         private readonly OnePageNetDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public MessageEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
+        public MessageEntityService(OnePageNetDbContext dbContext, IMapper mapper)
             : base(dbContext, mapper)
         {
             _dbContext = dbContext;

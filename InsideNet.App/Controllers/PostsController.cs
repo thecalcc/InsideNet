@@ -28,7 +28,23 @@ public class PostsController : BaseController<PostEntity, PostDto>
         }
         catch (Exception e)
         {
-            return BadRequest(e);
+            return BadRequest(e.Message);
         }
+    }
+
+    [Route("get-all/{posterId}")]
+    [HttpGet]
+    public async Task<ActionResult<List<PostDto>>> GetPostsForUserId([FromRoute] string posterId)
+    {
+        try
+        {
+            var dtos = await _postService.GetPostsForUserById(posterId);
+            return Ok(dtos);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+
     }
 }

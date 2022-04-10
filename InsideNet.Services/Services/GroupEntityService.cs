@@ -7,9 +7,9 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services
 {
-    public class GroupService : DatabaseService<GroupEntity, GroupDto>, IGroupService
+    public class GroupEntityService : DatabaseService<GroupEntity, GroupDto>, IGroupService
     {
-        public GroupService(OnePageNetDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public GroupEntityService(OnePageNetDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 

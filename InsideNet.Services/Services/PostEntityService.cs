@@ -7,14 +7,16 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services;
 
-public class PostEntityDatabaseService : DatabaseService<PostEntity, PostDto>, IPostService
+public class PostEntityService : DatabaseService<PostEntity, PostDto>, IPostService
 {
     private readonly OnePageNetDbContext _dbContext;
+    private readonly IMapper _mapper;
 
-    public PostEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper)
+    public PostEntityService(OnePageNetDbContext dbContext, IMapper mapper)
         : base(dbContext, mapper)
     {
         _dbContext = dbContext;
+        _mapper = mapper;
     }
 
     public async Task<bool> AttachUser(PostDto postDto)
@@ -35,5 +37,11 @@ public class PostEntityDatabaseService : DatabaseService<PostEntity, PostDto>, I
                 .Include(x => x.UserRelationship).ToListAsync();
         var timeline = posts.Where(x => (userRelations.Where(y => (y.TargetUser.Id == x.PosterId) && (y.CurrentUser.Id == id) && (y.UserRelationship.Name == InsideNet.Helpers.Helpers.UserRelationConstants.Friends)).Any() || x.PosterId == id)).ToList();
         return Mapper.Map<List<PostDto>>(timeline);
+    }
+
+    public async Task<List<PostDto>> GetPostsForUserById(string posterId)
+    {
+        var posts = await _dbContext.PostEntities.Where(x => x.PosterId == posterId).ToListAsync();
+        return _mapper.Map<List<PostDto>>(posts);
     }
 }

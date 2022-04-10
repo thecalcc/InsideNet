@@ -63,16 +63,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserSettingsService, UserSettingsService>();
-builder.Services.AddScoped<IMessageEntityDatabaseService, MessageEntityDatabaseService>();
-builder.Services.AddScoped<IPostService, PostEntityDatabaseService>();
-builder.Services.AddScoped<ICommentService, CommentEntityDatabaseService>();
-builder.Services.AddScoped<IGroupService, GroupService>();
-builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityDatabaseService>();
-builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityDatabaseService>();
-builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityDatabaseService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRelationsService, UserRelationsService>();
-builder.Services.AddScoped<IUserGroupService, UserGroupService>();
+builder.Services.AddScoped<IMessageEntityDatabaseService, MessageEntityService>();
+builder.Services.AddScoped<IPostService, PostEntityService>();
+builder.Services.AddScoped<ICommentService, CommentEntityService>();
+builder.Services.AddScoped<IGroupService, GroupEntityService>();
+builder.Services.AddScoped<DatabaseService<PostEntity, PostDto>, PostEntityService>();
+builder.Services.AddScoped<DatabaseService<CommentEntity, CommentDto>, CommentEntityService>();
+builder.Services.AddScoped<DatabaseService<MessageEntity, MessageDto>, MessageEntityService>();
+builder.Services.AddScoped<IUserService, UserEntityService>();
+builder.Services.AddScoped<IUserRelationsService, UserRelationEntityService>();
+builder.Services.AddScoped<IUserGroupService, UserGroupEntityService>();
 builder.Services.AddScoped(typeof(IDatabaseService<,>), typeof(DatabaseService<,>));
 
 

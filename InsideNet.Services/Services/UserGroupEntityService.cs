@@ -7,12 +7,12 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services
 {
-    public class UserGroupService : IUserGroupService
+    public class UserGroupEntityService : IUserGroupService
     {
         private readonly OnePageNetDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UserGroupService(OnePageNetDbContext dbContext, IMapper mapper)
+        public UserGroupEntityService(OnePageNetDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;

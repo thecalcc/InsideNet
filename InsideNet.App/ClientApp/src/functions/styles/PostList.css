@@ -54,6 +54,23 @@
 .post-list::-webkit-scrollbar{
     display: none;
 }
+
+
+.post-list-small{
+    max-height: 60vh;
+    overflow: auto;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    width: 30vw;
+}
+.post-list-small::-webkit-scrollbar{
+    display: none;
+}
 .post-poster{
     display: flex;
     justify-content: flex-start;
@@ -73,4 +90,14 @@
     display: flex;
     width: 30vw;
     margin-top: 0.5vh;
+}
+
+.check-profile{
+    background-color: inherit;
+    color: inherit;
+    display: flex;
+    align-items: flex-end;
+    border: none;
+    padding: none;
+    margin: none;
 }

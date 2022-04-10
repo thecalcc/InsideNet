@@ -9,13 +9,13 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services;
 
-public class UserService : IUserService
+public class UserEntityService : IUserService
 {
     private readonly OnePageNetDbContext _dbContext;
     private readonly IMapper _mapper;
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public UserService(OnePageNetDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
+    public UserEntityService(OnePageNetDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager)
     {
         _dbContext = dbContext;
         _mapper = mapper;

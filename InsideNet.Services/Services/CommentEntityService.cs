@@ -7,12 +7,12 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services
 {
-    public class CommentEntityDatabaseService : DatabaseService<CommentEntity, CommentDto>,
+    public class CommentEntityService : DatabaseService<CommentEntity, CommentDto>,
         ICommentService
     {
         private readonly OnePageNetDbContext _dbContext;
 
-        public CommentEntityDatabaseService(OnePageNetDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
+        public CommentEntityService(OnePageNetDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
             _dbContext = dbContext;
         }

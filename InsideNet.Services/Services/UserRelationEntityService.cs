@@ -8,12 +8,12 @@ using InsideNet.Services.Services.Interfaces;
 
 namespace InsideNet.Services.Services
 {
-    public class UserRelationsService : IUserRelationsService
+    public class UserRelationEntityService : IUserRelationsService
     {
         private readonly OnePageNetDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public UserRelationsService(OnePageNetDbContext dbContext, IMapper mapper)
+        public UserRelationEntityService(OnePageNetDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
