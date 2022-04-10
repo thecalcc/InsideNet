@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnePageNet.App", "OnePageNet.App\OnePageNet.App.csproj", "{308CB402-D509-4EAC-B964-A6B2EFB14037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsideNet.App", "InsideNet.App\InsideNet.App.csproj", "{308CB402-D509-4EAC-B964-A6B2EFB14037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnePageNet.Services", "OnePageNet.Services\OnePageNet.Services.csproj", "{A103B509-FE3F-44B2-884F-A586547E68BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsideNet.Services", "InsideNet.Services\InsideNet.Services.csproj", "{A103B509-FE3F-44B2-884F-A586547E68BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnePageNet.Data", "OnePageNet.Data\OnePageNet.Data.csproj", "{A63139F3-5A5B-47E4-B24E-39AED2E4A08A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsideNet.Data", "InsideNet.Data\InsideNet.Data.csproj", "{A63139F3-5A5B-47E4-B24E-39AED2E4A08A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnePageNet.Helpers", "OnePageNet.Helpers\OnePageNet.Helpers.csproj", "{86E2A813-30D8-4557-935E-0BD2B46E0F47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsideNet.Helpers", "InsideNet.Helpers\InsideNet.Helpers.csproj", "{86E2A813-30D8-4557-935E-0BD2B46E0F47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
