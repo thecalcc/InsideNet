@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export function EditPost({ post, onLayoutChange }) {
     const [text, setText] = useState(post.text);
+    const [title, setTitle] = useState(post.title);
     const posterId = sessionStorage.currentUserId;
     const mediaUri = null;
     const commentsIds = null;
@@ -25,6 +26,7 @@ export function EditPost({ post, onLayoutChange }) {
             commentsIds,
             posterId,
             id:post.id,
+            title
           }),
         }).then(() => onLayoutChange("post", "right"))}
 
@@ -34,6 +36,16 @@ export function EditPost({ post, onLayoutChange }) {
       return (
         <>
           <form onSubmit={(e) => handleSubmit(e)}>
+              <label>
+                <h2>Title</h2>
+              </label>
+              <input
+                name="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+              <br/>
               <label>
                 <b>Text</b>
               </label>

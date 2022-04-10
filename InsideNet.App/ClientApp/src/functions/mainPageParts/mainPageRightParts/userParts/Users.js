@@ -51,7 +51,7 @@ export function Users() {
 
   useEffect(() => {
     fetchUsers();
-  }, [users]);
+  }, []);
 
   useEffect(() => {
     fetchUserRelations();  

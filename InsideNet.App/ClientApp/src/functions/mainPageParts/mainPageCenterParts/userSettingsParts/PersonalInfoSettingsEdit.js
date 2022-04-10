@@ -1,7 +1,7 @@
 import { useState } from "react";
 import '../../../styles/UserSettings.css';
 
-export function PersonalInfoSettingsEdit({ user }) {
+export function PersonalInfoSettingsEdit({ user, onLayoutChange }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [gender, setGender] = useState(user.gender);
@@ -17,7 +17,7 @@ export function PersonalInfoSettingsEdit({ user }) {
     
     const url = `https://localhost:7231/api/users/update/${user.id}`;
     
-    await fetch(url, {
+    fetch(url, {
       method: "PUT",
       mode: "cors",
       headers: {
@@ -34,9 +34,11 @@ export function PersonalInfoSettingsEdit({ user }) {
         id: user.id,
         phoneNumber,
         gender,
-        mediaUri
+        mediaUri,
+        about: user.about,
+        status: user.status
       }),
-    });
+    }).then(() => onLayoutChange("settings-personal-info","center"));
   };
 
   return (

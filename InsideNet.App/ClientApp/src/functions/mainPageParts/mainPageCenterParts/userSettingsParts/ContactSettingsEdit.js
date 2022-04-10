@@ -1,11 +1,12 @@
 import { useState } from "react";
 import '../../../styles/UserSettings.css';
 
-export function ContactSettingsEdit({ user }) {
+export function ContactSettingsEdit({ user, onLayoutChange }) {
   const [email, setEmail] = useState(user.email);
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const url = `https://localhost:7231/api/users/update/${user.id}`;
     await fetch(url, {
       method: "PUT",
@@ -23,9 +24,12 @@ export function ContactSettingsEdit({ user }) {
         id: user.id,
         phoneNumber,
         gender: user.gender,
-        mediaUri: user.mediaUri
+        mediaUri: user.mediaUri,
+        about: user.about,
+        status: user.status,
+        email: email
       }),
-    });
+    }).then(() => onLayoutChange("settings-contacts","center"));
   };
   return (
     <form className="edit-form" onSubmit={(e) => handleSubmit(e)}>
